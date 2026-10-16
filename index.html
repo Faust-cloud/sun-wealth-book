@@ -3,186 +3,210 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>财富自由革命之路 · 全集文字稿</title>
+<title>财富自由革命之路</title>
 <style>
 :root{
-  --paper:#f4eee2; --paper2:#ebe3d3; --ink:#1e1913; --ink2:#5b5246; --mute:#9a8f7f;
-  --seal:#b5321e; --seal-soft:rgba(181,50,30,.09); --rule:#d8cdb8;
+  --paper:#f4eee2; --side:#ebe3d3; --ink:#2b2520; --ink2:#5b5246; --mute:#9a8f7f; --rule:#dccfb8;
+  --accent:#9c3d2e; --hl:rgba(232,196,90,.38);
   --serif:"Songti SC","STSong","Noto Serif SC","Source Han Serif SC","Noto Serif CJK SC",serif;
-  --kai:"Kaiti SC","STKaiti","KaiTi","BiauKai",var(--serif);
-  --num:"Didot","Bodoni 72","Georgia",serif;
-  --fs:19px; --col:36em;
+  --kai:"Kaiti SC","STKaiti","KaiTi",var(--serif);
+  --sans:-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  --fs:19px; --col:34em;
 }
 html.dark{
-  --paper:#1c1a17; --paper2:#22201c; --ink:#e4dccb; --ink2:#b3a993; --mute:#7f7666;
-  --seal:#e0694f; --seal-soft:rgba(224,105,79,.12); --rule:#38342d;
+  --paper:#1d1b18; --side:#22201c; --ink:#dcd4c4; --ink2:#a8a090; --mute:#6f685d; --rule:#33302a;
+  --accent:#d08a73; --hl:rgba(232,196,90,.2);
 }
-html.dark .bar{background:rgba(28,26,23,.92)}
-html.dark body{background-image:radial-gradient(rgba(255,240,210,.025) 1px,transparent 1px)}
-html.dark .btn.pri{background:var(--ink);color:var(--paper)}
-html.dark .stamp{box-shadow:inset 0 0 0 3px var(--paper),inset 0 0 0 4px var(--seal)}
-html,body,aside,.bar{transition:background-color .3s,color .3s,border-color .3s}
 *{box-sizing:border-box}
 html,body{margin:0;background:var(--paper);color:var(--ink)}
-body{font-family:var(--serif);-webkit-font-smoothing:antialiased;
+body{font-family:var(--serif);-webkit-font-smoothing:antialiased;transition:background-color .3s,color .3s;
   background-image:radial-gradient(rgba(120,90,40,.05) 1px,transparent 1px);background-size:4px 4px}
-a{color:inherit}
-button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+html.dark .bar{background:rgba(29,27,24,.92)}
+html.dark body{background-image:radial-gradient(rgba(255,240,210,.025) 1px,transparent 1px)}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+::selection{background:rgba(156,61,46,.16)}
 
-/* ---------- top bar ---------- */
-.bar{position:fixed;inset:0 0 auto 0;height:52px;display:flex;align-items:center;gap:14px;padding:0 18px;
-  background:rgba(244,238,226,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--rule);z-index:20}
-.bar .brand{font-family:var(--kai);font-size:19px;letter-spacing:.08em;cursor:pointer;white-space:nowrap}
-.bar .brand b{color:var(--seal);font-weight:400}
+/* 顶栏 */
+.bar{position:fixed;inset:0 0 auto 0;height:48px;display:flex;align-items:center;gap:6px;padding:0 14px;backdrop-filter:blur(8px);
+  background:rgba(244,238,226,.92);border-bottom:1px solid var(--rule);z-index:20;font-family:var(--sans);transition:background-color .3s,border-color .3s}
+.bar .ico{width:34px;height:34px;display:grid;place-items:center;color:var(--ink2);font-size:16px;border-radius:4px}
+.bar .ico:hover{background:var(--side);color:var(--ink)}
+.bar .brand{font:15px var(--kai);letter-spacing:.12em;color:var(--ink2);cursor:pointer;padding:0 6px}
 .bar .sp{flex:1}
-.bar .tool{font-size:13px;color:var(--ink2);padding:6px 9px;border:1px solid transparent;border-radius:2px}
-.bar .tool:hover{border-color:var(--rule);color:var(--ink)}
-.bar .menu{font-size:18px;width:34px;height:34px;display:grid;place-items:center;border-radius:2px;color:var(--ink2)}
-.bar .menu:hover{background:var(--seal-soft);color:var(--seal)}
-.bar .theme{font-size:15px}
+.more{position:fixed;top:44px;right:14px;z-index:30;display:none;min-width:150px;padding:6px 0;background:var(--paper);
+  border:1px solid var(--rule);border-radius:6px;box-shadow:0 6px 24px rgba(0,0,0,.08);font:14px var(--sans)}
+.more.show{display:block}
+.more button{display:flex;justify-content:space-between;width:100%;padding:9px 16px;color:var(--ink2);text-align:left}
+.more button:hover{background:var(--side);color:var(--ink)}
+.more button span{color:var(--mute);font-size:12px}
+.prog{position:fixed;top:47px;left:0;height:1px;background:var(--ink2);opacity:.5;width:0;z-index:21}
+
+/* 布局 */
+.wrap{display:grid;grid-template-columns:280px minmax(0,1fr);padding-top:48px;min-height:100vh;transition:grid-template-columns .25s ease}
+aside{position:sticky;top:48px;height:calc(100vh - 48px);overflow:auto;padding:16px 10px 60px 18px;background:var(--side);
+  font-family:var(--sans);transition:background-color .3s}
 body.closed .wrap{grid-template-columns:0 minmax(0,1fr)}
-body.closed aside{padding:0;border:0;overflow:hidden;visibility:hidden}
-.wrap{transition:grid-template-columns .28s ease}
-.prog{position:fixed;top:52px;left:0;height:2px;background:var(--seal);width:0;z-index:21;transition:width .15s}
+body.closed aside{padding:0;overflow:hidden;visibility:hidden}
+.edge{position:fixed;top:50%;left:280px;transform:translate(-50%,-50%);z-index:22;width:16px;height:44px;display:grid;place-items:center;
+  color:var(--mute);background:var(--paper);border:1px solid var(--rule);border-radius:8px;font-size:12px;opacity:.7;transition:left .25s ease,opacity .2s}
+.edge:hover{opacity:1;color:var(--ink)}
+body.closed .edge{left:0;transform:translate(0,-50%);border-left:0;border-radius:0 8px 8px 0}
 
-/* ---------- layout ---------- */
-.wrap{display:grid;grid-template-columns:300px minmax(0,1fr);padding-top:52px;min-height:100vh}
-aside{position:sticky;top:52px;height:calc(100vh - 52px);overflow:auto;border-right:1px solid var(--rule);
-  padding:18px 14px 80px 22px;background:var(--paper2)}
-aside input{width:100%;padding:8px 10px;font:14px var(--serif);background:var(--paper);border:1px solid var(--rule);
-  border-radius:2px;outline:none;margin-bottom:12px}
-aside input:focus{border-color:var(--seal)}
-.part{margin:14px 0 4px}
-.part h4{margin:0 0 6px;font:400 13px var(--kai);color:var(--seal);letter-spacing:.12em;display:flex;justify-content:space-between;cursor:pointer}
-.part h4 span{color:var(--mute);font-family:var(--num)}
-.ep{display:flex;gap:8px;padding:5px 6px;font-size:13.5px;line-height:1.45;color:var(--ink2);text-decoration:none;border-left:2px solid transparent}
-.ep i{font:normal 12px var(--num);color:var(--mute);min-width:26px;padding-top:1px}
-.ep:hover{color:var(--ink);background:rgba(0,0,0,.025)}
-.ep.on{color:var(--ink);border-left-color:var(--seal);background:var(--seal-soft)}
-.ep.on i{color:var(--seal)}
-.ep.read i::before,.toc .blk a.read i::before{content:"✓";color:var(--seal);margin-right:2px;font-size:11px}
-.ep.read span{color:var(--mute)}
-.toc .blk a.read{color:var(--mute)}
-.toc .blk h3 small.dn{margin-left:auto;color:var(--mute)}
-.hits{font-style:normal;font-size:11px;color:var(--seal);margin-left:6px;white-space:nowrap}
-.qsum{font-size:12.5px;color:var(--ink2);line-height:1.6;margin:0 0 6px;padding:8px 10px;background:var(--seal-soft)}
-.readstat{font-size:12px;color:var(--mute);display:flex;align-items:center;gap:8px;margin:0 0 12px;white-space:nowrap}
-.readstat b{color:var(--seal);font-weight:400;font-family:var(--num);font-size:14px}
-.rbar{flex:1;height:3px;background:var(--rule);position:relative;min-width:40px}
-.rbar i{position:absolute;inset:0 auto 0 0;background:var(--seal)}
-.rb{font-size:12.5px;color:var(--seal);border-bottom:1px dotted var(--seal);padding:0}
-mark{background:rgba(235,190,60,.38);color:inherit;padding:0 1px;border-radius:1px}
-mark.cur{background:var(--seal);color:var(--paper)}
-html.dark mark{background:rgba(235,190,60,.25)}
-.find{position:fixed;right:22px;bottom:70px;z-index:30;display:none;align-items:center;gap:6px;padding:7px 8px 7px 12px;
-  background:var(--paper);border:1px solid var(--ink);font-size:13px;box-shadow:4px 4px 0 var(--seal-soft)}
+/* 目录 */
+aside input{width:100%;padding:7px 2px;font:13.5px var(--sans);color:var(--ink);background:none;border:0;border-bottom:1px solid var(--rule);outline:none;margin:0 0 10px}
+aside input:focus{border-bottom-color:var(--ink2)}
+aside input::placeholder{color:var(--mute)}
+.part h4{position:sticky;top:0;z-index:2;margin:0;padding:12px 4px 8px;background:var(--side);cursor:pointer;user-select:none;
+  display:flex;align-items:baseline;gap:10px;font:400 13.5px var(--sans);color:var(--ink2)}
+.part h4 .pn{color:var(--mute);font-size:12px;min-width:3em}
+.part h4 .pt{flex:1}
+.part h4 .pc{color:var(--mute);font-size:11.5px}
+.part h4:hover,.part.cur h4{color:var(--ink)}
+.part .eps{display:none;padding:0 0 8px}
+.part.open .eps{display:block}
+.ep{display:flex;align-items:baseline;gap:10px;padding:5px 4px 5px 8px;font-size:13px;line-height:1.5;color:var(--ink2);border-left:2px solid transparent}
+.ep i{font-style:normal;font-size:11.5px;color:var(--mute);min-width:2.2em;font-variant-numeric:tabular-nums}
+.ep .tt{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ep:hover{color:var(--ink)}
+.ep.on{color:var(--ink);border-left-color:var(--accent)}
+.ep .hits{font-style:normal;font-size:11px;color:var(--mute)}
+.qsum{font-size:12px;color:var(--mute);line-height:1.6;margin:0 0 4px}
+
+/* 搜索跳转 */
+mark{background:var(--hl);color:inherit;padding:0 1px}
+mark.cur{background:rgba(156,61,46,.25)}
+.find{position:fixed;right:20px;bottom:64px;z-index:30;display:none;align-items:center;gap:2px;padding:4px 6px 4px 12px;
+  background:var(--paper);border:1px solid var(--rule);border-radius:6px;box-shadow:0 6px 24px rgba(0,0,0,.08);font:13px var(--sans);color:var(--ink2)}
 .find.show{display:flex}
-.find .t{color:var(--seal);max-width:9em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.find .p{font-family:var(--num);color:var(--ink2);min-width:4.2em;text-align:center}
-.find button{width:26px;height:26px;display:grid;place-items:center;color:var(--ink2)}
-.find button:hover{background:var(--seal-soft);color:var(--seal)}
-@media print{.find{display:none!important} mark{background:none}}
+.find .t{max-width:8em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.find .p{color:var(--mute);min-width:4em;text-align:center;font-variant-numeric:tabular-nums}
+.find button{width:26px;height:26px;display:grid;place-items:center;color:var(--mute);border-radius:4px}
+.find button:hover{background:var(--side);color:var(--ink)}
 
-main{padding:0 28px 120px}
+/* 划线与笔记 */
+.hl{background:linear-gradient(transparent 62%,var(--hl) 62%);cursor:pointer}
+.hl.has-note{border-bottom:1px dashed var(--mute)}
+.hl.flash{animation:flash 1.6s ease}
+@keyframes flash{0%,50%{background:var(--hl)}}
+.pop{position:absolute;z-index:40;display:none;background:var(--paper);border:1px solid var(--rule);border-radius:6px;
+  box-shadow:0 6px 24px rgba(0,0,0,.1);font:13px var(--sans)}
+.pop.show{display:block}
+.pop .row{display:flex;padding:2px}
+.pop .row.end{justify-content:flex-end;padding:0 6px 6px}
+.pop button{padding:7px 12px;color:var(--ink2);white-space:nowrap;border-radius:4px}
+.pop button:hover{background:var(--side);color:var(--ink)}
+.pop .nt{max-width:300px;padding:10px 14px;font:14px/1.75 var(--serif);color:var(--ink);border-bottom:1px solid var(--rule);white-space:pre-wrap}
+.pop .q{max-width:320px;padding:10px 14px 0;font-size:12px;color:var(--mute);line-height:1.6;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.pop textarea{display:block;width:320px;max-width:calc(100vw - 40px);height:110px;margin:10px 12px 8px;padding:8px 10px;font:14px/1.75 var(--serif);
+  background:var(--side);color:var(--ink);border:1px solid var(--rule);border-radius:4px;outline:none;resize:vertical}
 
-/* ---------- cover ---------- */
-.cover{max-width:860px;margin:0 auto;padding:9vh 0 40px}
-.cover .kicker{font:13px var(--serif);letter-spacing:.4em;color:var(--mute)}
-.cover h1{font:400 clamp(44px,7vw,84px)/1.08 var(--kai);margin:18px 0 10px;letter-spacing:.04em}
-.cover h1 em{font-style:normal;color:var(--seal)}
-.cover .sub{font-size:16px;color:var(--ink2);line-height:1.9;max-width:34em}
-.stamp{display:inline-grid;place-items:center;width:78px;height:78px;border:2px solid var(--seal);color:var(--seal);
-  font:400 15px/1.15 var(--kai);text-align:center;transform:rotate(-6deg);margin-top:26px;letter-spacing:.1em;
-  box-shadow:inset 0 0 0 3px var(--paper),inset 0 0 0 4px var(--seal)}
-.stats{display:flex;gap:42px;margin:40px 0 8px;padding:18px 0;border-top:1px solid var(--ink);border-bottom:1px solid var(--rule)}
-.stats div b{display:block;font:400 34px var(--num);color:var(--ink)}
-.stats div span{font-size:12.5px;color:var(--mute);letter-spacing:.12em}
-.go{display:flex;gap:12px;margin:28px 0 46px;flex-wrap:wrap}
-.btn{padding:11px 20px;border:1px solid var(--ink);font-size:15px;letter-spacing:.08em;transition:all .2s}
-.btn.pri{background:var(--ink);color:var(--paper)}
-.btn:hover{background:var(--seal);border-color:var(--seal);color:var(--paper)}
-.toc{columns:2 340px;column-gap:48px}
-.toc .blk{break-inside:avoid;margin-bottom:26px}
-.toc .blk h3{font:400 20px var(--kai);margin:0 0 4px;display:flex;align-items:baseline;gap:10px}
-.toc .blk h3 small{font:13px var(--num);color:var(--seal)}
-.toc .blk p{margin:0 0 8px;font-size:13.5px;color:var(--mute);line-height:1.7}
-.toc .blk a{display:flex;gap:10px;font-size:14.5px;line-height:1.75;text-decoration:none;color:var(--ink2)}
-.toc .blk a i{font:normal 12.5px var(--num);color:var(--mute);min-width:28px;padding-top:3px}
-.toc .blk a:hover{color:var(--seal)}
-.note{font-size:12.5px;color:var(--mute);line-height:1.8;border-top:1px solid var(--rule);padding-top:14px;margin-top:20px}
+main{padding:0 32px 120px}
 
-/* ---------- chapter ---------- */
-.chap{max-width:var(--col);margin:0 auto;padding:7vh 0 0;animation:rise .45s ease both}
-@keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
-.chap .crumb{font-size:12.5px;letter-spacing:.3em;color:var(--mute)}
-.chap .head{display:flex;gap:22px;align-items:flex-start;margin:20px 0 34px;padding-bottom:26px;border-bottom:1px solid var(--ink)}
-.chap .no{flex:none;width:66px;height:66px;border:1.5px solid var(--seal);color:var(--seal);display:grid;place-items:center;
-  font:400 25px var(--num);transform:rotate(-4deg);margin-top:4px}
-.chap .tag{font:13px var(--serif);color:var(--seal);letter-spacing:.15em;margin-bottom:6px}
-.chap h2{font:400 clamp(26px,3.4vw,36px)/1.35 var(--kai);margin:0;letter-spacing:.02em}
-.chap .meta{margin-top:10px;font-size:12.5px;color:var(--mute)}
-.chap .meta a{color:var(--mute)}
-.chap .body p{font-size:var(--fs);line-height:2.02;margin:0 0 1.05em;text-align:justify;text-indent:2em;hyphens:auto;letter-spacing:.012em}
+/* 封面 */
+.cover{max-width:var(--col);margin:0 auto;padding:14vh 0 40px}
+.cover h1{font:400 clamp(40px,6vw,60px)/1.2 var(--kai);margin:0;letter-spacing:.06em;color:var(--accent)}
+.cover .sub{margin:14px 0 0;font-size:15px;color:var(--ink2);line-height:1.9}
+.cover .go{margin:36px 0 0;font:14px var(--sans);color:var(--ink2);display:flex;gap:22px;align-items:baseline}
+.cover .go a{color:var(--ink);border-bottom:1px solid var(--ink2);padding-bottom:2px}
+.cover .go a:hover{color:var(--accent);border-color:var(--accent)}
+.cover .go span{color:var(--mute);font-size:12.5px}
+.toc{margin:9vh 0 0}
+.toc .blk{margin:0 0 30px}
+.toc .blk h3{font:400 13px var(--sans);color:var(--mute);margin:0 0 8px;letter-spacing:.08em}
+.toc .blk a{display:flex;gap:14px;font-size:15.5px;line-height:2;color:var(--ink)}
+.toc .blk a i{font:normal 12px var(--sans);color:var(--mute);min-width:2.4em;padding-top:5px;font-variant-numeric:tabular-nums}
+.toc .blk a:hover{color:var(--accent)}
+.note{font:12px/1.9 var(--sans);color:var(--mute);margin-top:40px;padding-top:16px;border-top:1px solid var(--rule)}
+
+/* 正文 */
+.chap{max-width:var(--col);margin:0 auto;padding:10vh 0 0}
+.chap .crumb{font:12.5px var(--sans);color:var(--mute);letter-spacing:.06em}
+.chap h2{font:400 clamp(26px,3.2vw,34px)/1.45 var(--kai);margin:14px 0 0;letter-spacing:.02em;color:var(--accent)}
+.chap h2::after{content:"";display:block;width:28px;height:1px;background:var(--accent);opacity:.5;margin:22px 0 44px}
+.chap .body p{font-size:var(--fs);line-height:2;margin:0 0 1.1em;text-align:justify;text-indent:2em;letter-spacing:.01em}
 .chap .body p:first-child{text-indent:0}
-.chap .body p:first-child::first-letter{font-family:var(--kai);font-size:2.9em;float:left;line-height:1;margin:.06em .12em 0 0;color:var(--seal)}
-.pager{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:64px 0 0;padding-top:24px;border-top:1px solid var(--rule)}
-.pager a{display:block;text-decoration:none;padding:14px 0}
-.pager a small{display:block;font-size:12px;color:var(--mute);letter-spacing:.2em;margin-bottom:4px}
-.pager a span{font:400 17px/1.5 var(--kai)}
-.pager a:hover span{color:var(--seal)}
+.chap .end{margin:48px 0 0;font:12.5px var(--sans);color:var(--mute);display:flex;gap:18px}
+.chap .end a,.chap .end button{color:var(--mute);font-size:12.5px}
+.chap .end a:hover,.chap .end button:hover{color:var(--ink)}
+.pager{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin:28px 0 0;padding-top:22px;border-top:1px solid var(--rule);font-family:var(--sans)}
+.pager a{display:block;padding:6px 0}
+.pager a small{display:block;font-size:12px;color:var(--mute);margin-bottom:4px}
+.pager a span{font:15px/1.6 var(--serif);color:var(--ink2)}
+.pager a:hover span{color:var(--ink)}
 .pager .nx{text-align:right}
-.hint{text-align:center;font-size:12px;color:var(--mute);margin-top:22px}
 
-/* ---------- print-all ---------- */
-.printall .chap{animation:none;padding-top:0}
+/* 笔记页 */
+.notes{max-width:var(--col);margin:0 auto;padding:10vh 0 40px}
+.notes h1{font:400 34px var(--kai);margin:0;letter-spacing:.06em;color:var(--accent)}
+.notes .sub{margin:12px 0 0;font:13px/1.8 var(--sans);color:var(--mute)}
+.notes .acts{margin:14px 0 48px;font:13px var(--sans);display:flex;gap:18px;flex-wrap:wrap}
+.notes .acts button{color:var(--ink2);border-bottom:1px solid var(--rule);padding-bottom:1px}
+.notes .acts button:hover{color:var(--ink);border-color:var(--ink2)}
+.notes .empty{font-size:15.5px;line-height:2;color:var(--ink2)}
+.ng{margin:0 0 44px}
+.ng h3{font:400 13px var(--sans);color:var(--mute);margin:0 0 16px;letter-spacing:.04em}
+.ng h3 a:hover{color:var(--ink)}
+.ni{margin:0 0 26px}
+.ni blockquote{margin:0;padding-left:16px;border-left:2px solid var(--rule);font-size:16px;line-height:1.95;color:var(--ink)}
+.ni .nn{margin:10px 0 0 18px;font-size:14.5px;line-height:1.9;color:var(--ink2);white-space:pre-wrap}
+.ni .nm{margin:8px 0 0 18px;font:12px var(--sans);color:var(--mute);display:flex;gap:16px}
+.ni .nm button{font-size:12px;color:var(--mute)}
+.ni .nm button:hover{color:var(--ink)}
+
+/* 打印全书 */
+.printall .chap{padding-top:0}
 .printall .ptitle{text-align:center;padding:30vh 0}
-.printall .ptitle h1{font:400 56px var(--kai);margin:0}
+.printall .ptitle h1{font:400 48px var(--kai);margin:0;letter-spacing:.1em}
 
 @media (max-width:860px){
   .wrap{grid-template-columns:1fr}
-  aside{position:fixed;top:52px;left:0;width:86vw;max-width:340px;z-index:19;transform:translateX(-105%);transition:transform .25s;box-shadow:8px 0 30px rgba(0,0,0,.08)}
-  body.nav aside{transform:none;visibility:visible;padding:18px 14px 80px 22px}
+  aside{position:fixed;top:48px;left:0;width:84vw;max-width:320px;z-index:19;transform:translateX(-105%);transition:transform .25s;box-shadow:6px 0 24px rgba(0,0,0,.08)}
+  body.nav aside{transform:none;visibility:visible;padding:16px 10px 60px 18px}
   body.closed .wrap{grid-template-columns:1fr}
-  .bar .hide-s{display:none}
-  main{padding:0 20px 120px}
+  .edge{display:none}
+  main{padding:0 22px 120px}
+  .cover{padding-top:9vh}
+  .chap{padding-top:6vh}
   :root{--fs:17.5px}
 }
 @media print{
   @page{size:A5;margin:16mm 14mm 18mm}
-  html.dark{--paper:#f4eee2;--paper2:#ebe3d3;--ink:#1e1913;--ink2:#5b5246;--mute:#9a8f7f;--seal:#b5321e;--rule:#d8cdb8}
-  .bar,.prog,aside,.pager,.hint,.go{display:none!important}
+  html.dark{--paper:#fff;--ink:#222;--ink2:#555;--mute:#999;--rule:#ddd}
+  .bar,.prog,aside,.pager,.edge,.find,.pop,.more,.chap .end{display:none!important}
   .wrap{display:block;padding:0}
   main{padding:0}
-  body{background-image:none}
-  .chap{max-width:none;padding:0;break-before:page;animation:none}
+  mark{background:none}
+  .hl{background:none;border:0}
+  .chap{max-width:none;padding:0;break-before:page}
+  .chap h2{margin-bottom:24px}
   .chap .body p{font-size:10.5pt;line-height:1.85}
-  .chap .head{margin:0 0 18px}
-  .cover{padding:0}
-  .toc{columns:2}
 }
 </style>
 </head>
 <body>
 <div class="bar">
-  <button class="menu" id="menu" aria-label="收起或展开目录" title="收起 / 展开目录（快捷键 T）">☰</button>
-  <div class="brand" id="home">财富自由<b>革命</b>之路</div>
+  <button class="ico" id="menu" title="目录（T）" aria-label="目录">☰</button>
+  <div class="brand" id="home">财富自由革命之路</div>
   <div class="sp"></div>
-  <button class="tool theme" id="theme" title="夜间模式（快捷键 D）">☾</button>
-  <button class="tool" id="fminus" title="缩小字号">A−</button>
-  <button class="tool" id="fplus" title="放大字号">A＋</button>
-  <button class="tool hide-s" id="printall">整本存为 PDF</button>
+  <button class="ico" id="morebtn" title="更多" aria-label="更多">⋯</button>
+</div>
+<div class="more" id="more">
+  <button id="notesbtn">我的笔记<span id="ncount"></span></button>
+  <button id="theme">夜间模式<span>D</span></button>
+  <button id="printall">整本存为 PDF</button>
 </div>
 <div class="prog" id="prog"></div>
 <div class="find" id="find">
   <span class="t" id="fterm"></span><span class="p" id="fpos"></span>
-  <button id="fprev" title="上一处（Shift+Enter）">↑</button><button id="fnext" title="下一处（Enter）">↓</button><button id="fclose" title="关闭高亮（Esc）">✕</button>
+  <button id="fprev" title="上一处（Shift+Enter）">↑</button><button id="fnext" title="下一处（Enter）">↓</button><button id="fclose" title="关闭（Esc）">×</button>
 </div>
 <div class="wrap">
   <aside id="side">
-    <input id="q" placeholder="搜索标题或正文关键词…">
-    <div class="readstat" id="readstat"></div>
+    <input id="q" placeholder="搜索">
     <div id="nav"></div>
   </aside>
+  <button class="edge" id="edge"></button>
   <main id="main"></main>
 </div>
 
@@ -225,41 +249,48 @@ function paras(x){
 const chars=B.reduce((a,e)=>a+e.x.length,0);
 
 /* ---------- read state ---------- */
-let READ=new Set(JSON.parse(localStorage.getItem("sunbook:read")||"[]"));
-function saveRead(){localStorage.setItem("sunbook:read",JSON.stringify([...READ]));updRead()}
-function setRead(n,v){ if(v===READ.has(n)) return; v?READ.add(n):READ.delete(n); saveRead();
-  document.querySelectorAll(`.ep[data-n="${n}"]`).forEach(a=>a.classList.toggle("read",v));
-  const b=$("#readbtn"); if(b&&b.dataset.n===n) b.textContent=v?"✓ 已读（点此取消）":"标为已读";
-}
-function updRead(){
-  const k=READ.size, pct=Math.round(k/B.length*100);
-  $("#readstat").innerHTML=`已读 <b>${k}</b>/${B.length}<span class="rbar"><i style="width:${pct}%"></i></span>${pct}%`;
-}
 
 /* ---------- search ---------- */
 let Q="";
 const count=(s,q)=>{if(!q) return 0;let c=0,i=0;while((i=s.indexOf(q,i))!==-1){c++;i+=q.length}return c};
 
 /* ---------- nav ---------- */
+let OPEN=new Set(), lastPart=-1;
+function partStat(){}
 function buildNav(filter){
   const f=(filter||"").trim(); Q=f;
   let h="", tot=0, eps_n=0;
   PARTS.forEach((p,pi)=>{
     const eps=B.filter((e,i)=>{const n=i+1;return n>=p[2]&&n<=p[3]&&(!f||e.t.includes(f)||e.x.includes(f))});
     if(!eps.length) return;
-    h+=`<div class="part"><h4>${p[0]} · ${p[1]}<span>${eps.length}</span></h4>`;
-    eps.forEach(e=>{const c=f?count(e.x,f)+count(e.t,f):0; tot+=c; eps_n++;
-      h+=`<a class="ep${READ.has(e.n)?" read":""}" data-n="${e.n}" href="#/${e.n}"><i>${e.n}</i><span>${esc(e.t)}${c?`<em class="hits">${c} 处</em>`:""}</span></a>`});
-    h+=`</div>`;
+    let hc=0, rows="";
+    eps.forEach(e=>{const c=f?count(e.x,f)+count(e.t,f):0; hc+=c; eps_n++;
+      rows+=`<a class="ep" data-n="${e.n}" href="#/${e.n}" title="${esc(e.t).replace(/"/g,"&quot;")}"><i>${e.n}</i><span class="tt">${esc(split(e.t).title)}</span>${c?`<em class="hits">${c}</em>`:""}</a>`});
+    tot+=hc;
+    const open=f||OPEN.has(pi);
+    h+=`<div class="part${open?" open":""}" data-p="${pi}"><h4><span class="pn">${p[0]}</span><span class="pt">${p[1]}</span>${f?`<span class="pc">${hc}</span>`:""}</h4><div class="eps">${rows}</div></div>`;
   });
-  const sum=f&&h?`<p class="qsum">“${esc(f)}”出现在 ${eps_n} 期，共 ${tot} 处。点开会自动高亮并跳到第一处。</p>`:"";
-  $("#nav").innerHTML=h?sum+h:`<p style="color:var(--mute);font-size:13px">没有找到“${esc(f)}”</p>`;
+  const sum=f&&h?`<p class="qsum">${eps_n} 期，共 ${tot} 处</p>`:"";
+  $("#nav").innerHTML=h?sum+h:`<p class="qsum">没有找到</p>`;
   mark();
 }
+$("#nav").addEventListener("click",ev=>{
+  const h=ev.target.closest(".part h4"); if(!h) return;
+  const el=h.parentNode, pi=+el.dataset.p, o=el.classList.toggle("open");
+  o?OPEN.add(pi):OPEN.delete(pi);
+});
+function curN(){return (location.hash.match(/#\/(\d{3})/)||[])[1]}
 function mark(){
-  const cur=(location.hash.match(/#\/(\d{3})/)||[])[1];
+  const cur=curN(), pi=cur?partOf(B.findIndex(e=>e.n===cur)+1):-1;
   document.querySelectorAll(".ep").forEach(a=>{a.classList.toggle("on",a.dataset.n===cur)});
-  const on=$(".ep.on"); if(on) on.scrollIntoView({block:"nearest"});
+  document.querySelectorAll(".part").forEach(el=>el.classList.toggle("cur",+el.dataset.p===pi));
+  // 换卷时自动只展开当前卷
+  if(!Q && pi>=0 && pi!==lastPart){
+    OPEN=new Set([pi]);
+    document.querySelectorAll(".part").forEach(el=>el.classList.toggle("open",+el.dataset.p===pi));
+  }
+  if(pi>=0) lastPart=pi;
+  const on=$(".ep.on"); if(on && on.offsetParent) on.scrollIntoView({block:"nearest"});
 }
 
 /* ---------- views ---------- */
@@ -267,26 +298,18 @@ function cover(){
   const last=localStorage.getItem("sunbook:last");
   let toc="";
   PARTS.forEach(p=>{
-    let done=0; for(let n=p[2];n<=p[3];n++) if(READ.has(B[n-1].n)) done++;
-    toc+=`<div class="blk"><h3>${p[1]}<small>${p[0]}</small><small class="dn">${done}/${p[3]-p[2]+1}</small></h3><p>${p[4]}</p>`;
-    for(let n=p[2];n<=p[3];n++){const e=B[n-1];toc+=`<a href="#/${e.n}"${READ.has(e.n)?' class="read"':""}><i>${e.n}</i>${esc(e.t)}</a>`}
+    toc+=`<div class="blk"><h3>${p[0]}　${p[1]}</h3>`;
+    for(let n=p[2];n<=p[3];n++){const e=B[n-1];toc+=`<a href="#/${e.n}"><i>${e.n}</i>${esc(split(e.t).title)}</a>`}
     toc+=`</div>`;
   });
   $("#main").innerHTML=`<section class="cover">
-    <div class="kicker">孙宇晨 · 喜马拉雅专栏 · 全集文字稿</div>
-    <h1>财富自由<br><em>革命</em>之路</h1>
-    <div class="sub">2016 年 10 月 31 日开播，2017 年秋完结。145 期文字稿按原顺序编为十三卷，已去掉每期开头的自我介绍，长段落重新分段，方便连续阅读。</div>
-    <div class="stamp">十年<br>之约</div>
-    <div class="stats"><div><b>145</b><span>期</span></div><div><b>13</b><span>卷</span></div><div><b>${(chars/10000).toFixed(0)}</b><span>万字</span></div><div><b>${Math.round(chars/500/60)}</b><span>小时读完</span></div><div><b style="color:var(--seal)">${READ.size}</b><span>你已读</span></div></div>
-    <div class="go">
-      <a class="btn pri" href="#/${last||"001"}">${last?`继续读第 ${last} 期`:"从第一期开始"}</a>
-      <a class="btn" href="#/006">从创刊词读</a>
-      <button class="btn" onclick="printAll()">整本存为 PDF</button>
-    </div>
+    <h1>财富自由革命之路</h1>
+    <div class="sub">孙宇晨 · 喜马拉雅专栏全集文字稿<br>2016 年 10 月至 2017 年秋，共 145 期</div>
+    <div class="go"><a href="#/${last||"001"}">${last?`继续读第 ${last} 期`:"开始阅读"}</a></div>
     <div class="toc">${toc}</div>
-    <div class="note">文字稿来自 GitHub 仓库 diverHansun/justin-sun-podcast-markdown，由语音自动转写并润色，个别人名、术语可能有误。仓库约从第 101 期起，文件编号比口播期数少 1，本书统一按文件编号。快捷键：← → 翻页，T 收起目录，D 夜间模式。读到一期末尾会自动标为已读。</div>
+    <div class="note">文字稿整理自 GitHub 仓库 diverHansun/justin-sun-podcast-markdown，由语音转写，个别人名和术语可能有误。约从第 101 期起，编号比节目口播少 1。<br>选中正文可以划线和写笔记。← → 翻页，T 目录，D 夜间模式，N 笔记。</div>
   </section>`;
-  document.title="财富自由革命之路 · 全集文字稿"; CUR=-1; $("#find").classList.remove("show");
+  document.title="财富自由革命之路"; CUR=-1; $("#find").classList.remove("show");
   window.scrollTo(0,0); prog();
 }
 function hl(t,q){ if(!q) return esc(t); const qe=esc(q); return esc(t).split(qe).join(`<mark>${qe}</mark>`) }
@@ -294,13 +317,10 @@ function chapterHTML(i,q){
   const e=B[i], n=i+1, p=PARTS[partOf(n)], s=split(e.t);
   const body=paras(e.x).map(t=>`<p>${hl(t,q)}</p>`).join("");
   return `<article class="chap">
-    <div class="crumb">${p[0]} · ${p[1]}</div>
-    <div class="head"><div class="no">${e.n}</div><div>
-      ${s.tag?`<div class="tag">${esc(s.tag)}</div>`:""}
-      <h2>${hl(s.title,q)}</h2>
-      <div class="meta">约 ${Math.max(1,Math.round(e.x.length/500))} 分钟 · <a href="${U[i]||"#"}" target="_blank" rel="noopener">查看原文</a>${q===undefined?"":` · <button class="rb" id="readbtn" data-n="${e.n}">${READ.has(e.n)?"✓ 已读（点此取消）":"标为已读"}</button>`}</div>
-    </div></div>
+    <div class="crumb">${p[0]} · 第 ${e.n} 期${s.tag?` · ${esc(s.tag)}`:""}</div>
+    <h2>${hl(s.title,q)}</h2>
     <div class="body">${body}</div>
+    ${q===undefined?"":`<div class="end"><a href="${U[i]||"#"}" target="_blank" rel="noopener">查看原文</a></div>`}
   </article>`;
 }
 let MK=[], MI=0, CUR=-1;
@@ -322,16 +342,20 @@ function chapter(i){
   CUR=i;
   $("#main").innerHTML=chapterHTML(i,Q)+`<div style="max-width:var(--col);margin:0 auto">
     <nav class="pager">
-      ${prev?`<a href="#/${prev.n}"><small>← 上一期 ${prev.n}</small><span>${esc(prev.t)}</span></a>`:"<span></span>"}
-      ${next?`<a class="nx" href="#/${next.n}"><small>下一期 ${next.n} →</small><span>${esc(next.t)}</span></a>`:`<a class="nx" href="#/"><small>全书完</small><span>回到目录</span></a>`}
-    </nav><div class="hint">← → 键翻页</div></div>`;
+      ${prev?`<a href="#/${prev.n}"><small>上一期</small><span>${esc(split(prev.t).title)}</span></a>`:"<span></span>"}
+      ${next?`<a class="nx" href="#/${next.n}"><small>下一期</small><span>${esc(split(next.t).title)}</span></a>`:`<a class="nx" href="#/"><small>全书完</small><span>回到封面</span></a>`}
+    </nav></div>`;
   localStorage.setItem("sunbook:last",B[i].n);
   document.title=`${B[i].n} ${split(B[i].t).title} · 财富自由革命之路`;
-  $("#readbtn").onclick=()=>setRead(B[i].n,!READ.has(B[i].n));
   window.scrollTo(0,0); prog(); findBox();
+  applyNotes();
+  if(JUMP){const s=document.querySelector(`.hl[data-id="${JUMP}"]`); JUMP=null;
+    if(s){s.scrollIntoView({block:"center"}); document.querySelectorAll(`.hl[data-id="${s.dataset.id}"]`).forEach(x=>x.classList.add("flash"))}}
 }
 function route(){
-  document.body.classList.remove("nav");
+  document.body.classList.remove("nav"); if(window.updEdge) updEdge();
+  hidePop();
+  if(location.hash.startsWith("#/notes")){notesView(); mark(); return}
   const m=location.hash.match(/#\/(\d{3})/);
   if(m){const i=parseInt(m[1],10)-1; if(B[i]) chapter(i); else cover()} else cover();
   mark();
@@ -341,7 +365,7 @@ function printAll(){
   let h=`<div class="ptitle"><h1>财富自由革命之路</h1><p style="color:var(--mute);letter-spacing:.3em">孙宇晨 · 全集文字稿</p></div>`;
   for(let i=0;i<B.length;i++) h+=chapterHTML(i);
   box.innerHTML=h;
-  const main=$("#main"), old=main.innerHTML;
+  const main=$("#main");
   main.innerHTML=""; main.appendChild(box);
   setTimeout(()=>{window.print(); setTimeout(()=>{route()},300)},300);
 }
@@ -349,10 +373,10 @@ window.printAll=printAll;
 
 /* ---------- chrome ---------- */
 function prog(){const h=document.documentElement;const p=h.scrollTop/(h.scrollHeight-h.clientHeight||1);$("#prog").style.width=(Math.min(1,Math.max(0,p))*100)+"%";
-  if(CUR>=0 && location.hash.match(/#\/\d{3}/) && p>0.9 && h.scrollHeight>h.clientHeight*1.2) setRead(B[CUR].n,true)}
+  }
 function clearFind(){
   Q=""; $("#q").value=""; $("#find").classList.remove("show");
-  document.querySelectorAll(".chap mark").forEach(m=>m.replaceWith(m.textContent)); MK=[];
+  document.querySelectorAll(".chap mark").forEach(m=>m.replaceWith(...m.childNodes)); MK=[];
   buildNav("");
 }
 $("#fnext").onclick=()=>gotoMark(MI+1);
@@ -361,39 +385,215 @@ $("#fclose").onclick=clearFind;
 addEventListener("keydown",ev=>{
   if(!$("#find").classList.contains("show")) return;
   if(ev.key==="Escape"){clearFind()}
-  else if(ev.key==="Enter"&&ev.target.tagName!=="INPUT"){ev.preventDefault();gotoMark(ev.shiftKey?MI-1:MI+1)}
+  else if(ev.key==="Enter"&&!/INPUT|TEXTAREA/.test(ev.target.tagName)){ev.preventDefault();gotoMark(ev.shiftKey?MI-1:MI+1)}
 });
 addEventListener("scroll",prog,{passive:true});
 addEventListener("hashchange",route);
 addEventListener("keydown",ev=>{
-  if(ev.target.tagName==="INPUT") return;
-  const m=location.hash.match(/#\/(\d{3})/); const i=m?parseInt(m[1],10)-1:-1;
+  if(/INPUT|TEXTAREA/.test(ev.target.tagName)) return;
+  const m=location.hash.match(/#\/(\d{3})/); if(!m) return;
+  const i=parseInt(m[1],10)-1;
   if(ev.key==="ArrowRight"&&i<B.length-1) location.hash="#/"+B[i+1].n;
   if(ev.key==="ArrowLeft"&&i>0) location.hash="#/"+B[i-1].n;
+  if(ev.key==="Escape") hidePop();
 });
-let fs=parseFloat(localStorage.getItem("sunbook:fs")||"0");
-function setFs(){if(fs) document.documentElement.style.setProperty("--fs",fs+"px")}
-$("#fplus").onclick=()=>{fs=Math.min(26,(fs||19)+1);localStorage.setItem("sunbook:fs",fs);setFs()};
-$("#fminus").onclick=()=>{fs=Math.max(14,(fs||19)-1);localStorage.setItem("sunbook:fs",fs);setFs()};
 $("#printall").onclick=printAll;
 $("#home").onclick=()=>{location.hash="#/"};
 const mobile=()=>matchMedia("(max-width:860px)").matches;
 function toggleNav(){
   if(mobile()) document.body.classList.toggle("nav");
   else { const c=document.body.classList.toggle("closed"); localStorage.setItem("sunbook:closed",c?"1":"0") }
+  updEdge();
+}
+function updEdge(){
+  const open=mobile()?document.body.classList.contains("nav"):!document.body.classList.contains("closed");
+  $("#edge").textContent=open?"‹":"›";
+  $("#edge").title=open?"收起目录（快捷键 T）":"展开目录（快捷键 T）";
 }
 if(localStorage.getItem("sunbook:closed")==="1") document.body.classList.add("closed");
 $("#menu").onclick=toggleNav;
-function setTheme(d){document.documentElement.classList.toggle("dark",d);$("#theme").textContent=d?"☀":"☾";$("#theme").title=d?"日间模式（快捷键 D）":"夜间模式（快捷键 D）";localStorage.setItem("sunbook:dark",d?"1":"0")}
+$("#edge").onclick=toggleNav;
+// 手机上点正文区域收起目录抽屉
+$("#main").addEventListener("click",()=>{if(mobile()&&document.body.classList.contains("nav")){document.body.classList.remove("nav");updEdge()}});
+matchMedia("(max-width:860px)").addEventListener("change",updEdge);
+updEdge();
+function setTheme(d){document.documentElement.classList.toggle("dark",d);$("#theme").innerHTML=(d?"日间模式":"夜间模式")+"<span>D</span>";localStorage.setItem("sunbook:dark",d?"1":"0")}
 setTheme(localStorage.getItem("sunbook:dark")==="1");
 $("#theme").onclick=()=>setTheme(!document.documentElement.classList.contains("dark"));
 addEventListener("keydown",ev=>{
-  if(ev.target.tagName==="INPUT"||ev.metaKey||ev.ctrlKey) return;
+  if(/INPUT|TEXTAREA/.test(ev.target.tagName)||ev.metaKey||ev.ctrlKey) return;
   if(ev.key==="t"||ev.key==="T") toggleNav();
   if(ev.key==="d"||ev.key==="D") $("#theme").click();
+  if(ev.key==="n"||ev.key==="N") location.hash="#/notes";
 });
+/* ---------- 划线与笔记 ---------- */
+let NOTES=JSON.parse(localStorage.getItem("sunbook:notes")||"[]"), JUMP=null, PEND=null, EDITING=false, LR=null;
+function saveNotes(){localStorage.setItem("sunbook:notes",JSON.stringify(NOTES));updNcount()}
+function updNcount(){$("#ncount").textContent=NOTES.length?" "+NOTES.length:""}
+const nid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+const bodyPs=()=>[...document.querySelectorAll(".chap .body p")];
+const pad=v=>String(v).padStart(2,"0");
+const fmtd=t=>{const d=new Date(t);return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`};
+// 在段落 p 的文字偏移 [s,e) 上包一层 .hl（可跨越搜索高亮等子节点）
+function wrap(p,s,e,x){
+  const w=document.createTreeWalker(p,NodeFilter.SHOW_TEXT), segs=[]; let pos=0,n;
+  while(n=w.nextNode()){const a=Math.max(s,pos),b=Math.min(e,pos+n.length); if(a<b) segs.push([n,a-pos,b-pos]); pos+=n.length}
+  segs.forEach(([t,a,b])=>{ if(a>0) t=t.splitText(a); if(b-a<t.length) t.splitText(b-a);
+    const sp=document.createElement("span"); sp.className="hl"+(x.note?" has-note":""); sp.dataset.id=x.id;
+    t.parentNode.insertBefore(sp,t); sp.appendChild(t) });
+}
+// 找到一条划线在当前正文里的位置；文本对不上时按原句重新查找
+function locate(x,ps){
+  if(ps[x.p]&&ps[x.p2]){
+    const segs=[]; let txt="";
+    for(let k=x.p;k<=x.p2;k++){const L=ps[k].textContent, a=k===x.p?x.s:0, b=k===x.p2?x.e:L.length; segs.push([ps[k],a,b]); txt+=(k>x.p?"\n":"")+L.slice(a,b)}
+    if(txt===x.text) return segs;
+  }
+  if(!x.text.includes("\n")) for(const p of ps){const i=p.textContent.indexOf(x.text); if(i>=0) return [[p,i,i+x.text.length]]}
+  return null;
+}
+function applyNotes(){
+  if(CUR<0) return; const n=B[CUR].n, ps=bodyPs();
+  NOTES.filter(x=>x.n===n).forEach(x=>{const segs=locate(x,ps); if(segs) segs.forEach(([p,a,b])=>wrap(p,a,b,x))});
+}
+function selInfo(){
+  const sel=getSelection(); if(CUR<0||!sel.rangeCount||sel.isCollapsed) return null;
+  const r=sel.getRangeAt(0), ps=bodyPs();
+  const pOf=node=>{const el=node.nodeType===3?node.parentElement:node; return el&&el.closest(".chap .body p")};
+  const p1=pOf(r.startContainer), p2=pOf(r.endContainer); if(!p1||!p2) return null;
+  const off=(p,node,o)=>{const x=document.createRange();x.selectNodeContents(p);x.setEnd(node,o);return x.toString().length};
+  let i1=ps.indexOf(p1), i2=ps.indexOf(p2), s=off(p1,r.startContainer,r.startOffset), e=off(p2,r.endContainer,r.endOffset);
+  if(i2>i1&&e===0){i2--; e=ps[i2].textContent.length}
+  let text=""; for(let k=i1;k<=i2;k++){const L=ps[k].textContent, a=k===i1?s:0, b=k===i2?e:L.length; text+=(k>i1?"\n":"")+L.slice(a,b)}
+  if(!text.trim()) return null;
+  return {p:i1,s,p2:i2,e,text,rect:r.getBoundingClientRect()};
+}
+const POP=document.createElement("div"); POP.className="pop"; document.body.appendChild(POP);
+function showPop(html,rect){
+  POP.innerHTML=html; POP.classList.add("show"); LR=rect;
+  const w=POP.offsetWidth, h=POP.offsetHeight;
+  let x=rect.left+rect.width/2-w/2; x=Math.max(8,Math.min(x,innerWidth-w-8));
+  let y=rect.bottom+8; if(y+h>innerHeight-56 && rect.top-h-8>60) y=rect.top-h-8;
+  POP.style.left=(x+scrollX)+"px"; POP.style.top=(y+scrollY)+"px";
+}
+function hidePop(){POP.classList.remove("show"); PEND=null; EDITING=false}
+let st; document.addEventListener("selectionchange",()=>{clearTimeout(st); st=setTimeout(()=>{
+  if(EDITING) return;
+  const i=selInfo();
+  if(i){PEND=i; showPop(`<div class="row"><button data-a="hl">划线</button><button data-a="hlnote">划线并写笔记</button><button data-a="copy">复制</button></div>`,i.rect)}
+  else if(PEND) hidePop();
+},220)});
+POP.addEventListener("mousedown",ev=>{if(ev.target.tagName!=="TEXTAREA") ev.preventDefault()});
+function editNote(id){
+  const x=NOTES.find(z=>z.id===id); if(!x) return; EDITING=true;
+  showPop(`<div class="q">${esc(x.text)}</div><textarea id="nta" placeholder="写下你的想法…">${esc(x.note||"")}</textarea>
+    <div class="row end"><button data-a="cancel">取消</button><button data-a="save" data-id="${id}">保存　⌘↵</button></div>`,LR);
+  setTimeout(()=>{const t=$("#nta"); t.focus(); t.setSelectionRange(t.value.length,t.value.length)},0);
+}
+function saveNote(id){
+  const x=NOTES.find(z=>z.id===id); if(!x) return;
+  x.note=$("#nta").value.trim(); saveNotes();
+  document.querySelectorAll(`.hl[data-id="${id}"]`).forEach(s=>s.classList.toggle("has-note",!!x.note));
+  hidePop(); if(location.hash.startsWith("#/notes")) notesView(true);
+}
+function delNote(id){
+  NOTES=NOTES.filter(z=>z.id!==id); saveNotes();
+  document.querySelectorAll(`.hl[data-id="${id}"]`).forEach(s=>s.replaceWith(...s.childNodes));
+  hidePop(); if(location.hash.startsWith("#/notes")) notesView(true);
+}
+POP.addEventListener("click",ev=>{
+  const b=ev.target.closest("button"); if(!b) return; const a=b.dataset.a;
+  if((a==="hl"||a==="hlnote")&&PEND){
+    const x={id:nid(),n:B[CUR].n,p:PEND.p,s:PEND.s,p2:PEND.p2,e:PEND.e,text:PEND.text,note:"",t:Date.now()};
+    NOTES.push(x); saveNotes();
+    (locate(x,bodyPs())||[]).forEach(([p,s,e])=>wrap(p,s,e,x));
+    getSelection().removeAllRanges();
+    if(a==="hlnote") editNote(x.id); else hidePop();
+  }
+  else if(a==="copy"&&PEND){ if(navigator.clipboard) navigator.clipboard.writeText(PEND.text); getSelection().removeAllRanges(); hidePop() }
+  else if(a==="edit") editNote(b.dataset.id);
+  else if(a==="del") delNote(b.dataset.id);
+  else if(a==="save") saveNote(b.dataset.id);
+  else if(a==="cancel") hidePop();
+});
+POP.addEventListener("keydown",ev=>{
+  if(ev.target.id!=="nta") return; ev.stopPropagation();
+  if(ev.key==="Enter"&&(ev.metaKey||ev.ctrlKey)){ev.preventDefault(); const s=POP.querySelector('[data-a="save"]'); if(s) saveNote(s.dataset.id)}
+  if(ev.key==="Escape") hidePop();
+});
+document.addEventListener("click",ev=>{
+  if(POP.contains(ev.target)) return;
+  const h=ev.target.closest&&ev.target.closest(".hl");
+  if(h&&getSelection().isCollapsed){
+    const x=NOTES.find(z=>z.id===h.dataset.id); if(!x) return; PEND=null;
+    showPop(`${x.note?`<div class="nt">${esc(x.note)}</div>`:""}<div class="row"><button data-a="edit" data-id="${x.id}">${x.note?"编辑笔记":"写笔记"}</button><button data-a="del" data-id="${x.id}">删除划线</button></div>`,h.getBoundingClientRect());
+    return;
+  }
+  if(!EDITING&&getSelection().isCollapsed) hidePop();
+});
+
+/* 笔记页 */
+function grouped(){
+  const g={}; NOTES.forEach(x=>(g[x.n]=g[x.n]||[]).push(x));
+  return Object.keys(g).sort().map(n=>({n,e:B[parseInt(n,10)-1],list:g[n].sort((a,b)=>a.p-b.p||a.s-b.s)}));
+}
+function notesView(keep){
+  const y=scrollY;
+  CUR=-1; $("#find").classList.remove("show");
+  const gs=grouped(), withNote=NOTES.filter(x=>x.note).length;
+  const h=gs.map(g=>`<div class="ng"><h3><i>${g.n}</i><a href="#/${g.n}">${esc(split(g.e.t).title)}</a></h3>`+
+    g.list.map(x=>`<div class="ni${x.note?" has-note":""}"><blockquote>${esc(x.text).replace(/\n/g,"<br>")}</blockquote>${x.note?`<div class="nn">${esc(x.note)}</div>`:""}
+      <div class="nm"><span>${fmtd(x.t)}</span><button data-go="${x.id}">回到原文</button><button data-ed="${x.id}">${x.note?"编辑笔记":"写笔记"}</button><button data-del="${x.id}">删除</button></div></div>`).join("")+`</div>`).join("");
+  $("#main").innerHTML=`<section class="notes">
+    <h1>笔记</h1>
+    <div class="sub">${NOTES.length?`${gs.length} 期里共 ${NOTES.length} 处划线，其中 ${withNote} 条写了想法。`:"还没有划线。"}笔记只保存在当前浏览器里，换电脑或清理浏览器数据前，记得先导出或备份。</div>
+    <div class="acts"><button data-x="md">导出 Markdown</button><button data-x="copy">复制</button><button data-x="bak">备份</button><button data-x="res">恢复备份</button><input type="file" id="resf" accept=".json,application/json" hidden></div>
+    ${h||`<p class="empty">读的时候用鼠标选中一段正文，就可以划线或写下想法。划过的句子会汇总在这里，可以导出成 Markdown。</p>`}
+  </section>`;
+  document.title="我的笔记 · 财富自由革命之路"; window.scrollTo(0,keep?y:0); prog();
+}
+function toMD(){
+  let m=`# 《财富自由革命之路》读书笔记\n\n导出于 ${fmtd(Date.now())}，共 ${NOTES.length} 处划线。\n`;
+  grouped().forEach(g=>{
+    m+=`\n## ${g.n} ${split(g.e.t).title}\n\n`;
+    g.list.forEach(x=>{ m+=x.text.split("\n").map(l=>"> "+l).join("\n>\n")+"\n\n"; if(x.note) m+=x.note+"\n\n" });
+  });
+  return m;
+}
+function download(name,text,type){
+  const a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([text],{type})); a.download=name;
+  document.body.appendChild(a); a.click(); setTimeout(()=>{URL.revokeObjectURL(a.href); a.remove()},800);
+}
+function flashBtn(b,t){const o=b.textContent; b.textContent=t; setTimeout(()=>b.textContent=o,1600)}
+$("#main").addEventListener("click",ev=>{
+  const b=ev.target.closest("button"); if(!b||!location.hash.startsWith("#/notes")) return;
+  const d=b.dataset;
+  if(d.go){const x=NOTES.find(z=>z.id===d.go); if(x){JUMP=x.id; location.hash="#/"+x.n}}
+  else if(d.ed){LR=b.getBoundingClientRect(); editNote(d.ed)}
+  else if(d.del){if(confirm("删除这条划线？")) delNote(d.del)}
+  else if(d.x==="md"){ if(!NOTES.length) return flashBtn(b,"还没有划线"); download(`财富自由革命之路-笔记-${fmtd(Date.now())}.md`,toMD(),"text/markdown;charset=utf-8") }
+  else if(d.x==="copy"){ if(!NOTES.length) return flashBtn(b,"还没有划线"); navigator.clipboard.writeText(toMD()).then(()=>flashBtn(b,"已复制"),()=>flashBtn(b,"复制失败")) }
+  else if(d.x==="bak"){ download(`财富自由革命之路-备份-${fmtd(Date.now())}.json`,JSON.stringify({v:1,notes:NOTES},null,1),"application/json") }
+  else if(d.x==="res"){ $("#resf").click() }
+});
+$("#main").addEventListener("change",ev=>{
+  if(ev.target.id!=="resf"||!ev.target.files[0]) return;
+  const r=new FileReader();
+  r.onload=()=>{ try{
+    const o=JSON.parse(r.result), ids=new Set(NOTES.map(z=>z.id)); let k=0;
+    (o.notes||[]).forEach(z=>{if(z&&z.id&&!ids.has(z.id)){NOTES.push(z);k++}});
+    saveNotes(); buildNav(Q); notesView(); alert(`已恢复 ${k} 条新划线`);
+  }catch(e){alert("这个文件不是有效的备份")} };
+  r.readAsText(ev.target.files[0]);
+});
+$("#notesbtn").onclick=()=>{location.hash="#/notes"};
+// 「更多」菜单：点按钮开合，点菜单项或别处收起
+$("#morebtn").onclick=ev=>{ev.stopPropagation(); $("#more").classList.toggle("show")};
+document.addEventListener("click",ev=>{if(!ev.target.closest("#morebtn")) $("#more").classList.remove("show")});
+updNcount();
+
 let qt; $("#q").addEventListener("input",e=>{clearTimeout(qt);qt=setTimeout(()=>buildNav(e.target.value),150)});
-setFs(); updRead(); buildNav(); route();
+buildNav(); route();
 </script>
 </body>
 </html>
