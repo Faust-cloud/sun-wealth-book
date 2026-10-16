@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>财富自由革命之路 · 全集文字稿</title>
+<style>
+:root{
+  --paper:#f4eee2; --paper2:#ebe3d3; --ink:#1e1913; --ink2:#5b5246; --mute:#9a8f7f;
+  --seal:#b5321e; --seal-soft:rgba(181,50,30,.09); --rule:#d8cdb8;
+  --serif:"Songti SC","STSong","Noto Serif SC","Source Han Serif SC","Noto Serif CJK SC",serif;
+  --kai:"Kaiti SC","STKaiti","KaiTi","BiauKai",var(--serif);
+  --num:"Didot","Bodoni 72","Georgia",serif;
+  --fs:19px; --col:36em;
+}
+html.dark{
+  --paper:#1c1a17; --paper2:#22201c; --ink:#e4dccb; --ink2:#b3a993; --mute:#7f7666;
+  --seal:#e0694f; --seal-soft:rgba(224,105,79,.12); --rule:#38342d;
+}
+html.dark .bar{background:rgba(28,26,23,.92)}
+html.dark body{background-image:radial-gradient(rgba(255,240,210,.025) 1px,transparent 1px)}
+html.dark .btn.pri{background:var(--ink);color:var(--paper)}
+html.dark .stamp{box-shadow:inset 0 0 0 3px var(--paper),inset 0 0 0 4px var(--seal)}
+html,body,aside,.bar{transition:background-color .3s,color .3s,border-color .3s}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--paper);color:var(--ink)}
+body{font-family:var(--serif);-webkit-font-smoothing:antialiased;
+  background-image:radial-gradient(rgba(120,90,40,.05) 1px,transparent 1px);background-size:4px 4px}
+a{color:inherit}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+
+/* ---------- top bar ---------- */
+.bar{position:fixed;inset:0 0 auto 0;height:52px;display:flex;align-items:center;gap:14px;padding:0 18px;
+  background:rgba(244,238,226,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--rule);z-index:20}
+.bar .brand{font-family:var(--kai);font-size:19px;letter-spacing:.08em;cursor:pointer;white-space:nowrap}
+.bar .brand b{color:var(--seal);font-weight:400}
+.bar .sp{flex:1}
+.bar .tool{font-size:13px;color:var(--ink2);padding:6px 9px;border:1px solid transparent;border-radius:2px}
+.bar .tool:hover{border-color:var(--rule);color:var(--ink)}
+.bar .menu{font-size:18px;width:34px;height:34px;display:grid;place-items:center;border-radius:2px;color:var(--ink2)}
+.bar .menu:hover{background:var(--seal-soft);color:var(--seal)}
+.bar .theme{font-size:15px}
+body.closed .wrap{grid-template-columns:0 minmax(0,1fr)}
+body.closed aside{padding:0;border:0;overflow:hidden;visibility:hidden}
+.wrap{transition:grid-template-columns .28s ease}
+.prog{position:fixed;top:52px;left:0;height:2px;background:var(--seal);width:0;z-index:21;transition:width .15s}
+
+/* ---------- layout ---------- */
+.wrap{display:grid;grid-template-columns:300px minmax(0,1fr);padding-top:52px;min-height:100vh}
+aside{position:sticky;top:52px;height:calc(100vh - 52px);overflow:auto;border-right:1px solid var(--rule);
+  padding:18px 14px 80px 22px;background:var(--paper2)}
+aside input{width:100%;padding:8px 10px;font:14px var(--serif);background:var(--paper);border:1px solid var(--rule);
+  border-radius:2px;outline:none;margin-bottom:12px}
+aside input:focus{border-color:var(--seal)}
+.part{margin:14px 0 4px}
+.part h4{margin:0 0 6px;font:400 13px var(--kai);color:var(--seal);letter-spacing:.12em;display:flex;justify-content:space-between;cursor:pointer}
+.part h4 span{color:var(--mute);font-family:var(--num)}
+.ep{display:flex;gap:8px;padding:5px 6px;font-size:13.5px;line-height:1.45;color:var(--ink2);text-decoration:none;border-left:2px solid transparent}
+.ep i{font:normal 12px var(--num);color:var(--mute);min-width:26px;padding-top:1px}
+.ep:hover{color:var(--ink);background:rgba(0,0,0,.025)}
+.ep.on{color:var(--ink);border-left-color:var(--seal);background:var(--seal-soft)}
+.ep.on i{color:var(--seal)}
+.ep.read i::before,.toc .blk a.read i::before{content:"✓";color:var(--seal);margin-right:2px;font-size:11px}
+.ep.read span{color:var(--mute)}
+.toc .blk a.read{color:var(--mute)}
+.toc .blk h3 small.dn{margin-left:auto;color:var(--mute)}
+.hits{font-style:normal;font-size:11px;color:var(--seal);margin-left:6px;white-space:nowrap}
+.qsum{font-size:12.5px;color:var(--ink2);line-height:1.6;margin:0 0 6px;padding:8px 10px;background:var(--seal-soft)}
+.readstat{font-size:12px;color:var(--mute);display:flex;align-items:center;gap:8px;margin:0 0 12px;white-space:nowrap}
+.readstat b{color:var(--seal);font-weight:400;font-family:var(--num);font-size:14px}
+.rbar{flex:1;height:3px;background:var(--rule);position:relative;min-width:40px}
+.rbar i{position:absolute;inset:0 auto 0 0;background:var(--seal)}
+.rb{font-size:12.5px;color:var(--seal);border-bottom:1px dotted var(--seal);padding:0}
+mark{background:rgba(235,190,60,.38);color:inherit;padding:0 1px;border-radius:1px}
+mark.cur{background:var(--seal);color:var(--paper)}
+html.dark mark{background:rgba(235,190,60,.25)}
+.find{position:fixed;right:22px;bottom:70px;z-index:30;display:none;align-items:center;gap:6px;padding:7px 8px 7px 12px;
+  background:var(--paper);border:1px solid var(--ink);font-size:13px;box-shadow:4px 4px 0 var(--seal-soft)}
+.find.show{display:flex}
+.find .t{color:var(--seal);max-width:9em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.find .p{font-family:var(--num);color:var(--ink2);min-width:4.2em;text-align:center}
+.find button{width:26px;height:26px;display:grid;place-items:center;color:var(--ink2)}
+.find button:hover{background:var(--seal-soft);color:var(--seal)}
+@media print{.find{display:none!important} mark{background:none}}
+
+main{padding:0 28px 120px}
+
+/* ---------- cover ---------- */
+.cover{max-width:860px;margin:0 auto;padding:9vh 0 40px}
+.cover .kicker{font:13px var(--serif);letter-spacing:.4em;color:var(--mute)}
+.cover h1{font:400 clamp(44px,7vw,84px)/1.08 var(--kai);margin:18px 0 10px;letter-spacing:.04em}
+.cover h1 em{font-style:normal;color:var(--seal)}
+.cover .sub{font-size:16px;color:var(--ink2);line-height:1.9;max-width:34em}
+.stamp{display:inline-grid;place-items:center;width:78px;height:78px;border:2px solid var(--seal);color:var(--seal);
+  font:400 15px/1.15 var(--kai);text-align:center;transform:rotate(-6deg);margin-top:26px;letter-spacing:.1em;
+  box-shadow:inset 0 0 0 3px var(--paper),inset 0 0 0 4px var(--seal)}
+.stats{display:flex;gap:42px;margin:40px 0 8px;padding:18px 0;border-top:1px solid var(--ink);border-bottom:1px solid var(--rule)}
+.stats div b{display:block;font:400 34px var(--num);color:var(--ink)}
+.stats div span{font-size:12.5px;color:var(--mute);letter-spacing:.12em}
+.go{display:flex;gap:12px;margin:28px 0 46px;flex-wrap:wrap}
+.btn{padding:11px 20px;border:1px solid var(--ink);font-size:15px;letter-spacing:.08em;transition:all .2s}
+.btn.pri{background:var(--ink);color:var(--paper)}
+.btn:hover{background:var(--seal);border-color:var(--seal);color:var(--paper)}
+.toc{columns:2 340px;column-gap:48px}
+.toc .blk{break-inside:avoid;margin-bottom:26px}
+.toc .blk h3{font:400 20px var(--kai);margin:0 0 4px;display:flex;align-items:baseline;gap:10px}
+.toc .blk h3 small{font:13px var(--num);color:var(--seal)}
+.toc .blk p{margin:0 0 8px;font-size:13.5px;color:var(--mute);line-height:1.7}
+.toc .blk a{display:flex;gap:10px;font-size:14.5px;line-height:1.75;text-decoration:none;color:var(--ink2)}
+.toc .blk a i{font:normal 12.5px var(--num);color:var(--mute);min-width:28px;padding-top:3px}
+.toc .blk a:hover{color:var(--seal)}
+.note{font-size:12.5px;color:var(--mute);line-height:1.8;border-top:1px solid var(--rule);padding-top:14px;margin-top:20px}
+
+/* ---------- chapter ---------- */
+.chap{max-width:var(--col);margin:0 auto;padding:7vh 0 0;animation:rise .45s ease both}
+@keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.chap .crumb{font-size:12.5px;letter-spacing:.3em;color:var(--mute)}
+.chap .head{display:flex;gap:22px;align-items:flex-start;margin:20px 0 34px;padding-bottom:26px;border-bottom:1px solid var(--ink)}
+.chap .no{flex:none;width:66px;height:66px;border:1.5px solid var(--seal);color:var(--seal);display:grid;place-items:center;
+  font:400 25px var(--num);transform:rotate(-4deg);margin-top:4px}
+.chap .tag{font:13px var(--serif);color:var(--seal);letter-spacing:.15em;margin-bottom:6px}
+.chap h2{font:400 clamp(26px,3.4vw,36px)/1.35 var(--kai);margin:0;letter-spacing:.02em}
+.chap .meta{margin-top:10px;font-size:12.5px;color:var(--mute)}
+.chap .meta a{color:var(--mute)}
+.chap .body p{font-size:var(--fs);line-height:2.02;margin:0 0 1.05em;text-align:justify;text-indent:2em;hyphens:auto;letter-spacing:.012em}
+.chap .body p:first-child{text-indent:0}
+.chap .body p:first-child::first-letter{font-family:var(--kai);font-size:2.9em;float:left;line-height:1;margin:.06em .12em 0 0;color:var(--seal)}
+.pager{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:64px 0 0;padding-top:24px;border-top:1px solid var(--rule)}
+.pager a{display:block;text-decoration:none;padding:14px 0}
+.pager a small{display:block;font-size:12px;color:var(--mute);letter-spacing:.2em;margin-bottom:4px}
+.pager a span{font:400 17px/1.5 var(--kai)}
+.pager a:hover span{color:var(--seal)}
+.pager .nx{text-align:right}
+.hint{text-align:center;font-size:12px;color:var(--mute);margin-top:22px}
+
+/* ---------- print-all ---------- */
+.printall .chap{animation:none;padding-top:0}
+.printall .ptitle{text-align:center;padding:30vh 0}
+.printall .ptitle h1{font:400 56px var(--kai);margin:0}
+
+@media (max-width:860px){
+  .wrap{grid-template-columns:1fr}
+  aside{position:fixed;top:52px;left:0;width:86vw;max-width:340px;z-index:19;transform:translateX(-105%);transition:transform .25s;box-shadow:8px 0 30px rgba(0,0,0,.08)}
+  body.nav aside{transform:none;visibility:visible;padding:18px 14px 80px 22px}
+  body.closed .wrap{grid-template-columns:1fr}
+  .bar .hide-s{display:none}
+  main{padding:0 20px 120px}
+  :root{--fs:17.5px}
+}
+@media print{
+  @page{size:A5;margin:16mm 14mm 18mm}
+  html.dark{--paper:#f4eee2;--paper2:#ebe3d3;--ink:#1e1913;--ink2:#5b5246;--mute:#9a8f7f;--seal:#b5321e;--rule:#d8cdb8}
+  .bar,.prog,aside,.pager,.hint,.go{display:none!important}
+  .wrap{display:block;padding:0}
+  main{padding:0}
+  body{background-image:none}
+  .chap{max-width:none;padding:0;break-before:page;animation:none}
+  .chap .body p{font-size:10.5pt;line-height:1.85}
+  .chap .head{margin:0 0 18px}
+  .cover{padding:0}
+  .toc{columns:2}
+}
+</style>
+</head>
+<body>
+<div class="bar">
+  <button class="menu" id="menu" aria-label="收起或展开目录" title="收起 / 展开目录（快捷键 T）">☰</button>
+  <div class="brand" id="home">财富自由<b>革命</b>之路</div>
+  <div class="sp"></div>
+  <button class="tool theme" id="theme" title="夜间模式（快捷键 D）">☾</button>
+  <button class="tool" id="fminus" title="缩小字号">A−</button>
+  <button class="tool" id="fplus" title="放大字号">A＋</button>
+  <button class="tool hide-s" id="printall">整本存为 PDF</button>
+</div>
+<div class="prog" id="prog"></div>
+<div class="find" id="find">
+  <span class="t" id="fterm"></span><span class="p" id="fpos"></span>
+  <button id="fprev" title="上一处（Shift+Enter）">↑</button><button id="fnext" title="下一处（Enter）">↓</button><button id="fclose" title="关闭高亮（Esc）">✕</button>
+</div>
+<div class="wrap">
+  <aside id="side">
+    <input id="q" placeholder="搜索标题或正文关键词…">
+    <div class="readstat" id="readstat"></div>
+    <div id="nav"></div>
+  </aside>
+  <main id="main"></main>
+</div>
+
+<script src="data.js"></script>
+<script>
+const PARTS=[
+ ["卷一","开篇：什么是财富自由",1,17,"名人推荐、创刊词、财富自由的定义与两个开篇案例。"],
+ ["卷二","明道：时代与三观",18,39,"课纲、穷人思维、性与权力到金钱与自由、流动性过剩、自由意志与成年。"],
+ ["卷三","九零后不结婚",40,46,"婚姻是经济结盟，是选家庭合伙人。"],
+ ["卷四","九零后不买房、不买车",47,62,"房子祛魅、游牧民族、共享经济，以及十年之约。"],
+ ["卷五","原始积累",63,72,"复利、每项强 1%、1X50 与 5X10、一万小时与反馈。"],
+ ["卷六","个人奋斗与不确定性",73,87,"谋私利的正当性、拥抱不确定性、MVP、正收益系统、稳定的迷思。"],
+ ["卷七","互联网：新大陆",88,97,"增量、远离管制、洗牌、最后一条上升通道。"],
+ ["卷八","商业案例与比特币",98,105,"《大败局》、史玉柱、比特币原理与操作。"],
+ ["卷九","医疗：财富自由的防御",106,115,"看病与破案、护城河、保险、做自己健康的 CEO。"],
+ ["卷十","家人边界",116,123,"合伙之前先散伙、平等的至亲关系、与家人和解。"],
+ ["卷十一","财富天问",124,129,"财产权、抢劫文化、历史洗牌。"],
+ ["卷十二","财富流向",130,138,"规则制定领域、非线性通道、弯道超车。"],
+ ["卷十三","未来趋势与完结",139,145,"From It to Bit、战狼 2 与区块链、一周年复盘、完结篇。"]
+];
+const B=window.BOOK, U=window.URLS||[];
+const partOf=i=>PARTS.findIndex(p=>i>=p[2]&&i<=p[3]);
+const $=s=>document.querySelector(s);
+const esc=s=>s.replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+function split(t){const m=t.match(/^【([^】]+)】\s*(.*)$/);return m?{tag:m[1],title:m[2]}:{tag:"",title:t}}
+
+function paras(x){
+  const out=[];
+  x.split("\n").forEach(line=>{
+    line=line.replace(/\s*\[\d{1,2}:\d{2}(:\d{2})?\]\s*/g,"").replace(/。\s+/g,"。").replace(/\s{2,}/g," ").trim();
+    if(!line) return;
+    if(line.length<=320){out.push(line);return}
+    const ss=line.match(/[^。！？]+[。！？”"]*|[^。！？]+$/g)||[line];
+    let buf="";
+    ss.forEach(s=>{buf+=s; if(buf.length>=170){out.push(buf);buf=""}});
+    if(buf){ if(out.length && buf.length<60) out[out.length-1]+=buf; else out.push(buf) }
+  });
+  return out;
+}
+const chars=B.reduce((a,e)=>a+e.x.length,0);
+
+/* ---------- read state ---------- */
+let READ=new Set(JSON.parse(localStorage.getItem("sunbook:read")||"[]"));
+function saveRead(){localStorage.setItem("sunbook:read",JSON.stringify([...READ]));updRead()}
+function setRead(n,v){ if(v===READ.has(n)) return; v?READ.add(n):READ.delete(n); saveRead();
+  document.querySelectorAll(`.ep[data-n="${n}"]`).forEach(a=>a.classList.toggle("read",v));
+  const b=$("#readbtn"); if(b&&b.dataset.n===n) b.textContent=v?"✓ 已读（点此取消）":"标为已读";
+}
+function updRead(){
+  const k=READ.size, pct=Math.round(k/B.length*100);
+  $("#readstat").innerHTML=`已读 <b>${k}</b>/${B.length}<span class="rbar"><i style="width:${pct}%"></i></span>${pct}%`;
+}
+
+/* ---------- search ---------- */
+let Q="";
+const count=(s,q)=>{if(!q) return 0;let c=0,i=0;while((i=s.indexOf(q,i))!==-1){c++;i+=q.length}return c};
+
+/* ---------- nav ---------- */
+function buildNav(filter){
+  const f=(filter||"").trim(); Q=f;
+  let h="", tot=0, eps_n=0;
+  PARTS.forEach((p,pi)=>{
+    const eps=B.filter((e,i)=>{const n=i+1;return n>=p[2]&&n<=p[3]&&(!f||e.t.includes(f)||e.x.includes(f))});
+    if(!eps.length) return;
+    h+=`<div class="part"><h4>${p[0]} · ${p[1]}<span>${eps.length}</span></h4>`;
+    eps.forEach(e=>{const c=f?count(e.x,f)+count(e.t,f):0; tot+=c; eps_n++;
+      h+=`<a class="ep${READ.has(e.n)?" read":""}" data-n="${e.n}" href="#/${e.n}"><i>${e.n}</i><span>${esc(e.t)}${c?`<em class="hits">${c} 处</em>`:""}</span></a>`});
+    h+=`</div>`;
+  });
+  const sum=f&&h?`<p class="qsum">“${esc(f)}”出现在 ${eps_n} 期，共 ${tot} 处。点开会自动高亮并跳到第一处。</p>`:"";
+  $("#nav").innerHTML=h?sum+h:`<p style="color:var(--mute);font-size:13px">没有找到“${esc(f)}”</p>`;
+  mark();
+}
+function mark(){
+  const cur=(location.hash.match(/#\/(\d{3})/)||[])[1];
+  document.querySelectorAll(".ep").forEach(a=>{a.classList.toggle("on",a.dataset.n===cur)});
+  const on=$(".ep.on"); if(on) on.scrollIntoView({block:"nearest"});
+}
+
+/* ---------- views ---------- */
+function cover(){
+  const last=localStorage.getItem("sunbook:last");
+  let toc="";
+  PARTS.forEach(p=>{
+    let done=0; for(let n=p[2];n<=p[3];n++) if(READ.has(B[n-1].n)) done++;
+    toc+=`<div class="blk"><h3>${p[1]}<small>${p[0]}</small><small class="dn">${done}/${p[3]-p[2]+1}</small></h3><p>${p[4]}</p>`;
+    for(let n=p[2];n<=p[3];n++){const e=B[n-1];toc+=`<a href="#/${e.n}"${READ.has(e.n)?' class="read"':""}><i>${e.n}</i>${esc(e.t)}</a>`}
+    toc+=`</div>`;
+  });
+  $("#main").innerHTML=`<section class="cover">
+    <div class="kicker">孙宇晨 · 喜马拉雅专栏 · 全集文字稿</div>
+    <h1>财富自由<br><em>革命</em>之路</h1>
+    <div class="sub">2016 年 10 月 31 日开播，2017 年秋完结。145 期文字稿按原顺序编为十三卷，已去掉每期开头的自我介绍，长段落重新分段，方便连续阅读。</div>
+    <div class="stamp">十年<br>之约</div>
+    <div class="stats"><div><b>145</b><span>期</span></div><div><b>13</b><span>卷</span></div><div><b>${(chars/10000).toFixed(0)}</b><span>万字</span></div><div><b>${Math.round(chars/500/60)}</b><span>小时读完</span></div><div><b style="color:var(--seal)">${READ.size}</b><span>你已读</span></div></div>
+    <div class="go">
+      <a class="btn pri" href="#/${last||"001"}">${last?`继续读第 ${last} 期`:"从第一期开始"}</a>
+      <a class="btn" href="#/006">从创刊词读</a>
+      <button class="btn" onclick="printAll()">整本存为 PDF</button>
+    </div>
+    <div class="toc">${toc}</div>
+    <div class="note">文字稿来自 GitHub 仓库 diverHansun/justin-sun-podcast-markdown，由语音自动转写并润色，个别人名、术语可能有误。仓库约从第 101 期起，文件编号比口播期数少 1，本书统一按文件编号。快捷键：← → 翻页，T 收起目录，D 夜间模式。读到一期末尾会自动标为已读。</div>
+  </section>`;
+  document.title="财富自由革命之路 · 全集文字稿"; CUR=-1; $("#find").classList.remove("show");
+  window.scrollTo(0,0); prog();
+}
+function hl(t,q){ if(!q) return esc(t); const qe=esc(q); return esc(t).split(qe).join(`<mark>${qe}</mark>`) }
+function chapterHTML(i,q){
+  const e=B[i], n=i+1, p=PARTS[partOf(n)], s=split(e.t);
+  const body=paras(e.x).map(t=>`<p>${hl(t,q)}</p>`).join("");
+  return `<article class="chap">
+    <div class="crumb">${p[0]} · ${p[1]}</div>
+    <div class="head"><div class="no">${e.n}</div><div>
+      ${s.tag?`<div class="tag">${esc(s.tag)}</div>`:""}
+      <h2>${hl(s.title,q)}</h2>
+      <div class="meta">约 ${Math.max(1,Math.round(e.x.length/500))} 分钟 · <a href="${U[i]||"#"}" target="_blank" rel="noopener">查看原文</a>${q===undefined?"":` · <button class="rb" id="readbtn" data-n="${e.n}">${READ.has(e.n)?"✓ 已读（点此取消）":"标为已读"}</button>`}</div>
+    </div></div>
+    <div class="body">${body}</div>
+  </article>`;
+}
+let MK=[], MI=0, CUR=-1;
+function gotoMark(k){
+  if(!MK.length) return; MI=(k+MK.length)%MK.length;
+  MK.forEach(m=>m.classList.remove("cur")); MK[MI].classList.add("cur");
+  MK[MI].scrollIntoView({block:"center",behavior:"smooth"});
+  $("#fpos").textContent=`${MI+1} / ${MK.length}`;
+}
+function findBox(){
+  const box=$("#find");
+  MK=[...document.querySelectorAll(".chap mark")];
+  if(!Q||!MK.length){box.classList.remove("show");return}
+  $("#fterm").textContent=`“${Q}”`; box.classList.add("show");
+  setTimeout(()=>gotoMark(0),80);
+}
+function chapter(i){
+  const prev=B[i-1], next=B[i+1];
+  CUR=i;
+  $("#main").innerHTML=chapterHTML(i,Q)+`<div style="max-width:var(--col);margin:0 auto">
+    <nav class="pager">
+      ${prev?`<a href="#/${prev.n}"><small>← 上一期 ${prev.n}</small><span>${esc(prev.t)}</span></a>`:"<span></span>"}
+      ${next?`<a class="nx" href="#/${next.n}"><small>下一期 ${next.n} →</small><span>${esc(next.t)}</span></a>`:`<a class="nx" href="#/"><small>全书完</small><span>回到目录</span></a>`}
+    </nav><div class="hint">← → 键翻页</div></div>`;
+  localStorage.setItem("sunbook:last",B[i].n);
+  document.title=`${B[i].n} ${split(B[i].t).title} · 财富自由革命之路`;
+  $("#readbtn").onclick=()=>setRead(B[i].n,!READ.has(B[i].n));
+  window.scrollTo(0,0); prog(); findBox();
+}
+function route(){
+  document.body.classList.remove("nav");
+  const m=location.hash.match(/#\/(\d{3})/);
+  if(m){const i=parseInt(m[1],10)-1; if(B[i]) chapter(i); else cover()} else cover();
+  mark();
+}
+function printAll(){
+  const box=document.createElement("div"); box.className="printall";
+  let h=`<div class="ptitle"><h1>财富自由革命之路</h1><p style="color:var(--mute);letter-spacing:.3em">孙宇晨 · 全集文字稿</p></div>`;
+  for(let i=0;i<B.length;i++) h+=chapterHTML(i);
+  box.innerHTML=h;
+  const main=$("#main"), old=main.innerHTML;
+  main.innerHTML=""; main.appendChild(box);
+  setTimeout(()=>{window.print(); setTimeout(()=>{route()},300)},300);
+}
+window.printAll=printAll;
+
+/* ---------- chrome ---------- */
+function prog(){const h=document.documentElement;const p=h.scrollTop/(h.scrollHeight-h.clientHeight||1);$("#prog").style.width=(Math.min(1,Math.max(0,p))*100)+"%";
+  if(CUR>=0 && location.hash.match(/#\/\d{3}/) && p>0.9 && h.scrollHeight>h.clientHeight*1.2) setRead(B[CUR].n,true)}
+function clearFind(){
+  Q=""; $("#q").value=""; $("#find").classList.remove("show");
+  document.querySelectorAll(".chap mark").forEach(m=>m.replaceWith(m.textContent)); MK=[];
+  buildNav("");
+}
+$("#fnext").onclick=()=>gotoMark(MI+1);
+$("#fprev").onclick=()=>gotoMark(MI-1);
+$("#fclose").onclick=clearFind;
+addEventListener("keydown",ev=>{
+  if(!$("#find").classList.contains("show")) return;
+  if(ev.key==="Escape"){clearFind()}
+  else if(ev.key==="Enter"&&ev.target.tagName!=="INPUT"){ev.preventDefault();gotoMark(ev.shiftKey?MI-1:MI+1)}
+});
+addEventListener("scroll",prog,{passive:true});
+addEventListener("hashchange",route);
+addEventListener("keydown",ev=>{
+  if(ev.target.tagName==="INPUT") return;
+  const m=location.hash.match(/#\/(\d{3})/); const i=m?parseInt(m[1],10)-1:-1;
+  if(ev.key==="ArrowRight"&&i<B.length-1) location.hash="#/"+B[i+1].n;
+  if(ev.key==="ArrowLeft"&&i>0) location.hash="#/"+B[i-1].n;
+});
+let fs=parseFloat(localStorage.getItem("sunbook:fs")||"0");
+function setFs(){if(fs) document.documentElement.style.setProperty("--fs",fs+"px")}
+$("#fplus").onclick=()=>{fs=Math.min(26,(fs||19)+1);localStorage.setItem("sunbook:fs",fs);setFs()};
+$("#fminus").onclick=()=>{fs=Math.max(14,(fs||19)-1);localStorage.setItem("sunbook:fs",fs);setFs()};
+$("#printall").onclick=printAll;
+$("#home").onclick=()=>{location.hash="#/"};
+const mobile=()=>matchMedia("(max-width:860px)").matches;
+function toggleNav(){
+  if(mobile()) document.body.classList.toggle("nav");
+  else { const c=document.body.classList.toggle("closed"); localStorage.setItem("sunbook:closed",c?"1":"0") }
+}
+if(localStorage.getItem("sunbook:closed")==="1") document.body.classList.add("closed");
+$("#menu").onclick=toggleNav;
+function setTheme(d){document.documentElement.classList.toggle("dark",d);$("#theme").textContent=d?"☀":"☾";$("#theme").title=d?"日间模式（快捷键 D）":"夜间模式（快捷键 D）";localStorage.setItem("sunbook:dark",d?"1":"0")}
+setTheme(localStorage.getItem("sunbook:dark")==="1");
+$("#theme").onclick=()=>setTheme(!document.documentElement.classList.contains("dark"));
+addEventListener("keydown",ev=>{
+  if(ev.target.tagName==="INPUT"||ev.metaKey||ev.ctrlKey) return;
+  if(ev.key==="t"||ev.key==="T") toggleNav();
+  if(ev.key==="d"||ev.key==="D") $("#theme").click();
+});
+let qt; $("#q").addEventListener("input",e=>{clearTimeout(qt);qt=setTimeout(()=>buildNav(e.target.value),150)});
+setFs(); updRead(); buildNav(); route();
+</script>
+</body>
+</html>
