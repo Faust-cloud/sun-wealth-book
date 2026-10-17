@@ -7,21 +7,43 @@
 <style>
 :root{
   --paper:#f4eee2; --side:#ebe3d3; --ink:#2b2520; --ink2:#5b5246; --mute:#9a8f7f; --rule:#dccfb8;
-  --accent:#9c3d2e; --hl:rgba(232,196,90,.38);
+  --accent:#9c3d2e; --hl:rgba(232,196,90,.38); --barbg:rgba(244,238,226,.92);
   --serif:"Songti SC","STSong","Noto Serif SC","Source Han Serif SC","Noto Serif CJK SC",serif;
   --kai:"Kaiti SC","STKaiti","KaiTi",var(--serif);
   --sans:-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
   --fs:19px; --col:34em;
 }
 html.dark{
-  --paper:#1d1b18; --side:#22201c; --ink:#dcd4c4; --ink2:#a8a090; --mute:#6f685d; --rule:#33302a;
-  --accent:#d08a73; --hl:rgba(232,196,90,.2);
+  --paper:#262523; --side:#2d2b28; --ink:#c9c2b5; --ink2:#a39b8d; --mute:#746d62; --rule:#3a3733;
+  --accent:#d08a73; --hl:rgba(232,196,90,.2); --barbg:rgba(38,37,35,.92);
 }
+/* 护眼配色：豆沙绿、浅灰（浅色）；暖棕（深色） */
+html[data-theme="green"]{
+  --paper:#cfe3c9; --side:#c2d8bb; --ink:#26302a; --ink2:#4a5a4a; --mute:#7c8c78; --rule:#b0c7a9;
+  --accent:#8a3a2c; --barbg:rgba(207,227,201,.92);
+}
+html[data-theme="gray"]{
+  --paper:#d7d4ce; --side:#ccc8c1; --ink:#2b2926; --ink2:#55514b; --mute:#85807a; --rule:#bdb8b0;
+  --accent:#8f3a2c; --barbg:rgba(215,212,206,.92);
+}
+html[data-theme="brown"]{
+  --paper:#3a332b; --side:#332d26; --ink:#d6c9b0; --ink2:#b1a48c; --mute:#877b68; --rule:#4c443a;
+  --accent:#d9937a; --hl:rgba(232,196,90,.22); --barbg:rgba(58,51,43,.92);
+}
+.more .themes{display:flex;gap:10px;padding:10px 16px 12px;border-top:1px solid var(--rule);margin-top:4px}
+.more .fsz{display:flex;align-items:center;gap:4px;padding:8px 12px 10px;border-top:1px solid var(--rule);font:13px var(--sans);color:var(--mute)}
+.more .fsz span{flex:1;padding-left:4px}
+.more .fsz button{width:auto;padding:5px 10px;border:1px solid var(--rule);border-radius:4px;color:var(--ink2);justify-content:center}
+.more .fsz b{min-width:2.4em;text-align:center;font-weight:400;color:var(--ink2);font-variant-numeric:tabular-nums}
+.more .themes button{width:auto;padding:0;display:flex;flex-direction:column;align-items:center;gap:5px;font-size:11px;color:var(--mute)}
+.more .themes i{display:block;width:24px;height:24px;border-radius:50%;border:1px solid rgba(0,0,0,.15)}
+.more .themes button.on{color:var(--ink)}
+.more .themes button.on i{box-shadow:0 0 0 2px var(--paper),0 0 0 3px var(--ink2)}
 *{box-sizing:border-box}
 html,body{margin:0;background:var(--paper);color:var(--ink)}
 body{font-family:var(--serif);-webkit-font-smoothing:antialiased;transition:background-color .3s,color .3s;
   background-image:radial-gradient(rgba(120,90,40,.05) 1px,transparent 1px);background-size:4px 4px}
-html.dark .bar{background:rgba(29,27,24,.92)}
+
 html.dark body{background-image:radial-gradient(rgba(255,240,210,.025) 1px,transparent 1px)}
 a{color:inherit;text-decoration:none}
 button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
@@ -29,7 +51,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 
 /* 顶栏 */
 .bar{position:fixed;inset:0 0 auto 0;height:48px;display:flex;align-items:center;gap:6px;padding:0 14px;backdrop-filter:blur(8px);
-  background:rgba(244,238,226,.92);border-bottom:1px solid var(--rule);z-index:20;font-family:var(--sans);transition:background-color .3s,border-color .3s}
+  background:var(--barbg);border-bottom:1px solid var(--rule);z-index:20;font-family:var(--sans);transition:background-color .3s,border-color .3s}
 .bar .ico{width:34px;height:34px;display:grid;place-items:center;color:var(--ink2);font-size:16px;border-radius:4px}
 .bar .ico:hover{background:var(--side);color:var(--ink)}
 .bar .brand{font:15px var(--kai);letter-spacing:.12em;color:var(--ink2);cursor:pointer;padding:0 6px}
@@ -64,10 +86,13 @@ aside input::placeholder{color:var(--mute)}
 .part h4 .pc{color:var(--mute);font-size:11.5px}
 .part h4:hover,.part.cur h4{color:var(--ink)}
 .part .eps{display:none;padding:0 0 8px}
+.sect{margin:22px 0 4px;padding:16px 4px 4px;border-top:1px solid var(--rule);font:400 12px var(--sans);color:var(--accent);letter-spacing:.16em}
+.sect:first-of-type{margin-top:2px;padding-top:4px;border-top:0}
+.sect span{display:block;margin-top:3px;font:600 15px var(--serif);color:var(--ink);letter-spacing:.04em}
 .part.open .eps{display:block}
-.ep{display:flex;align-items:baseline;gap:10px;padding:5px 4px 5px 8px;font-size:13px;line-height:1.5;color:var(--ink2);border-left:2px solid transparent}
-.ep i{font-style:normal;font-size:11.5px;color:var(--mute);min-width:2.2em;font-variant-numeric:tabular-nums}
-.ep .tt{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ep{display:flex;align-items:baseline;gap:10px;padding:5px 4px 5px 8px;font:400 13px/1.55 var(--sans);color:var(--ink2);border-left:2px solid transparent}
+.ep i{font-style:normal;font-size:11.5px;color:var(--mute);min-width:2em;text-align:right;font-variant-numeric:tabular-nums}
+.ep .tt{flex:1;min-width:0}
 .ep:hover{color:var(--ink)}
 .ep.on{color:var(--ink);border-left-color:var(--accent)}
 .ep .hits{font-style:normal;font-size:11px;color:var(--mute)}
@@ -111,12 +136,17 @@ main{padding:0 32px 120px}
 .cover .go a{color:var(--ink);border-bottom:1px solid var(--ink2);padding-bottom:2px}
 .cover .go a:hover{color:var(--accent);border-color:var(--accent)}
 .cover .go span{color:var(--mute);font-size:12.5px}
-.toc{margin:9vh 0 0}
+.toc{margin:6vh 0 0}
 .toc .blk{margin:0 0 30px}
 .toc .blk h3{font:400 13px var(--sans);color:var(--mute);margin:0 0 8px;letter-spacing:.08em}
-.toc .blk a{display:flex;gap:14px;font-size:15.5px;line-height:2;color:var(--ink)}
-.toc .blk a i{font:normal 12px var(--sans);color:var(--mute);min-width:2.4em;padding-top:5px;font-variant-numeric:tabular-nums}
+.toc .blk a{display:flex;align-items:baseline;gap:14px;font-size:15.5px;line-height:2;color:var(--ink)}
+.toc .blk a i{font:normal 12px var(--sans);color:var(--mute);min-width:2em;text-align:right;font-variant-numeric:tabular-nums}
 .toc .blk a:hover{color:var(--accent)}
+.toc .sh{margin:52px 0 22px;padding-bottom:10px;border-bottom:1px solid var(--rule)}
+.toc .sh:first-child{margin-top:0}
+.toc .sh b{display:block;font:400 12px var(--sans);color:var(--accent);letter-spacing:.2em;margin-bottom:4px}
+.toc .sh span{font:600 23px var(--serif);color:var(--ink);letter-spacing:.04em}
+.toc .sh p{display:none}
 .note{font:12px/1.9 var(--sans);color:var(--mute);margin-top:40px;padding-top:16px;border-top:1px solid var(--rule)}
 
 /* 正文 */
@@ -124,7 +154,7 @@ main{padding:0 32px 120px}
 .chap .crumb{font:12.5px var(--sans);color:var(--mute);letter-spacing:.06em}
 .chap h2{font:400 clamp(26px,3.2vw,34px)/1.45 var(--kai);margin:14px 0 0;letter-spacing:.02em;color:var(--accent)}
 .chap h2::after{content:"";display:block;width:28px;height:1px;background:var(--accent);opacity:.5;margin:22px 0 44px}
-.chap .body p{font-size:var(--fs);line-height:2;margin:0 0 1.1em;text-align:justify;text-indent:2em;letter-spacing:.01em}
+.chap .body p{font-size:calc(var(--fs) + var(--fsd,0px));line-height:2;margin:0 0 1.1em;text-align:justify;text-indent:2em;letter-spacing:.01em}
 .chap .body p:first-child{text-indent:0}
 .chap .end{margin:48px 0 0;font:12.5px var(--sans);color:var(--mute);display:flex;gap:18px}
 .chap .end a,.chap .end button{color:var(--mute);font-size:12.5px}
@@ -172,7 +202,7 @@ main{padding:0 32px 120px}
 }
 @media print{
   @page{size:A5;margin:16mm 14mm 18mm}
-  html.dark{--paper:#fff;--ink:#222;--ink2:#555;--mute:#999;--rule:#ddd}
+  html.dark,html[data-theme]{--paper:#fff;--ink:#222;--ink2:#555;--mute:#999;--rule:#ddd}
   .bar,.prog,aside,.pager,.edge,.find,.pop,.more,.chap .end{display:none!important}
   .wrap{display:block;padding:0}
   main{padding:0}
@@ -193,7 +223,8 @@ main{padding:0 32px 120px}
 </div>
 <div class="more" id="more">
   <button id="notesbtn">我的笔记<span id="ncount"></span></button>
-  <button id="theme">夜间模式<span>D</span></button>
+  <div class="themes" id="themes"></div>
+  <div class="fsz"><span>字号</span><button id="fsm" title="缩小（-）">A−</button><b id="fsv"></b><button id="fsp" title="放大（+）">A＋</button></div>
   <button id="printall">整本存为 PDF</button>
 </div>
 <div class="prog" id="prog"></div>
@@ -212,23 +243,45 @@ main{padding:0 32px 120px}
 
 <script src="data.js"></script>
 <script>
-const PARTS=[
- ["卷一","开篇：什么是财富自由",1,17,"名人推荐、创刊词、财富自由的定义与两个开篇案例。"],
- ["卷二","明道：时代与三观",18,39,"课纲、穷人思维、性与权力到金钱与自由、流动性过剩、自由意志与成年。"],
- ["卷三","九零后不结婚",40,46,"婚姻是经济结盟，是选家庭合伙人。"],
- ["卷四","九零后不买房、不买车",47,62,"房子祛魅、游牧民族、共享经济，以及十年之约。"],
- ["卷五","原始积累",63,72,"复利、每项强 1%、1X50 与 5X10、一万小时与反馈。"],
- ["卷六","个人奋斗与不确定性",73,87,"谋私利的正当性、拥抱不确定性、MVP、正收益系统、稳定的迷思。"],
- ["卷七","互联网：新大陆",88,97,"增量、远离管制、洗牌、最后一条上升通道。"],
- ["卷八","商业案例与比特币",98,105,"《大败局》、史玉柱、比特币原理与操作。"],
- ["卷九","医疗：财富自由的防御",106,115,"看病与破案、护城河、保险、做自己健康的 CEO。"],
- ["卷十","家人边界",116,123,"合伙之前先散伙、平等的至亲关系、与家人和解。"],
- ["卷十一","财富天问",124,129,"财产权、抢劫文化、历史洗牌。"],
- ["卷十二","财富流向",130,138,"规则制定领域、非线性通道、弯道超车。"],
- ["卷十三","未来趋势与完结",139,145,"From It to Bit、战狼 2 与区块链、一周年复盘、完结篇。"]
+// 依照作者在 018、020、021 期公布的课纲编排：篇 → 卷 → 章；显示编号为阅读顺序，内部仍用原始期数（笔记与链接不受影响）
+const R=(a,b)=>Array.from({length:b-a+1},(_,k)=>a+k);
+const SECTS=[
+ ["第一篇","开宗明义","什么是财富自由，这门课要讲什么。"],
+ ["第二篇","明道：看清时代","为什么这个时代、这一代人最有机会。"],
+ ["第三篇","体用：三大革命","三十岁前不结婚、不买房、不买车。"],
+ ["第四篇","术：怎么做","从第一桶金到踩准行业和趋势。"],
+ ["第五篇","防御：守住财富","财富最常从疾病和家人那里流失。"],
+ ["尾声","一个人的明治维新","一周年复盘与完结。"],
+ ["附录","番外","演讲、对谈、荐书与问答，可按兴趣挑着读。"]
 ];
+// [卷, 卷名, 期号, 简介, 所属篇]
+const PARTS=[
+ ["卷一","发刊与课纲",[...R(1,7),18,20,21],"名人推荐、创刊词，以及作者亲口讲的五十二周课纲。",0],
+ ["卷二","财富自由是什么",[...R(8,17),19],"不为金钱做价值观的妥协；因精神自由而财富自由。",0],
+ ["卷三","中国九零后新时代",R(22,30),"传统社会的最后一次转型、穷人思维、性与权力、金钱与自由、兜底义务。",1],
+ ["卷四","全球流动性过剩",[31,32,33,34,36,37],"钱不值钱的大通胀时代、布雷顿森林、鼓励可控负债、激进而非保守。",1],
+ ["卷五","一人即一国",[38,39],"价值观战争、自由意志主义与利己主义、成年即自由选择。",1],
+ ["卷六","不结婚",R(40,46),"婚姻是经济结盟，是选家庭合伙人。",2],
+ ["卷七","不买房、不买车",[47,48,...R(50,54),116,56,57,58,61,60,62],"房子祛魅、游牧民族、共享经济，以及十年之约。",2],
+ ["卷八","原始积累与个人奋斗",[63,64,65,69,70,71,73,74],"复利、每项强 1%、1X50 与 5X10、一万小时、反馈；个人奋斗的合法性。",3],
+ ["卷九","拥抱不确定性",[75,76,...R(82,87)],"薛定谔的猫、MVP、正收益系统、稳定是最大的不稳定。",3],
+ ["卷十","互联网与比特币",[...R(88,97),...R(101,104)],"增量、远离管制、最后一条上升通道；比特币原理与买卖。",3],
+ ["卷十一","金钱流向",R(131,138),"金钱流向规则制定领域、非线性通道、弯道超车、打破规则。",3],
+ ["卷十二","新科技与区块链",R(139,142),"From It to Bit：碳基到硅基、数字资产、粉丝金融。",3],
+ ["卷十三","医疗",R(106,115),"看病与破案、护城河、安慰剂、保险、做自己健康的 CEO。",4],
+ ["卷十四","家人边界",R(117,123),"合伙之前先散伙、平等的至亲关系、与家人和解。",4],
+ ["卷十五","财富天问",R(124,129),"中国人为什么富不起来：财产权、抢劫文化、历史洗牌。",4],
+ ["卷十六","一个人的明治维新",[144,145],"一周年复盘与完结篇。",5],
+  ["卷十七","演讲与对谈",[66,67,68,78,79,80,81,143],"",6],
+  ["卷十八","问答与直播",[49,59,105,130],"",6],
+  ["卷十九","荐书与杂谈",[35,98,99,100,55,72,77],"",6]
+];
+const sectHead=pi=>pi===0||PARTS[pi][4]!==PARTS[pi-1][4];
 const B=window.BOOK, U=window.URLS||[];
-const partOf=i=>PARTS.findIndex(p=>i>=p[2]&&i<=p[3]);
+const ORDER=PARTS.flatMap(p=>p[2].map(n=>n-1));
+const partOf=i=>PARTS.findIndex(p=>p[2].includes(i));
+const SQ=n=>String(ORDER.indexOf(+n-1)+1);
+const step=(i,d)=>{const k=ORDER.indexOf(i)+d;return k>=0&&k<ORDER.length?ORDER[k]:-1};
 const $=s=>document.querySelector(s);
 const esc=s=>s.replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
 function split(t){const m=t.match(/^【([^】]+)】\s*(.*)$/);return m?{tag:m[1],title:m[2]}:{tag:"",title:t}}
@@ -261,16 +314,17 @@ function buildNav(filter){
   const f=(filter||"").trim(); Q=f;
   let h="", tot=0, eps_n=0;
   PARTS.forEach((p,pi)=>{
-    const eps=B.filter((e,i)=>{const n=i+1;return n>=p[2]&&n<=p[3]&&(!f||e.t.includes(f)||e.x.includes(f))});
+    const eps=p[2].map(n=>B[n-1]).filter(e=>!f||e.t.includes(f)||e.x.includes(f));
     if(!eps.length) return;
     let hc=0, rows="";
     eps.forEach(e=>{const c=f?count(e.x,f)+count(e.t,f):0; hc+=c; eps_n++;
-      rows+=`<a class="ep" data-n="${e.n}" href="#/${e.n}" title="${esc(e.t).replace(/"/g,"&quot;")}"><i>${e.n}</i><span class="tt">${esc(split(e.t).title)}</span>${c?`<em class="hits">${c}</em>`:""}</a>`});
+      rows+=`<a class="ep" data-n="${e.n}" href="#/${e.n}" title="${esc(e.t).replace(/"/g,"&quot;")}"><i>${SQ(e.n)}</i><span class="tt">${esc(split(e.t).title)}</span>${c?`<em class="hits">${c}</em>`:""}</a>`});
     tot+=hc;
     const open=f||OPEN.has(pi);
+    if(!f&&sectHead(pi)){const s=SECTS[p[4]];h+=`<div class="sect">${s[0]}<span>${s[1]}</span></div>`}
     h+=`<div class="part${open?" open":""}" data-p="${pi}"><h4><span class="pn">${p[0]}</span><span class="pt">${p[1]}</span>${f?`<span class="pc">${hc}</span>`:""}</h4><div class="eps">${rows}</div></div>`;
   });
-  const sum=f&&h?`<p class="qsum">${eps_n} 期，共 ${tot} 处</p>`:"";
+  const sum=f&&h?`<p class="qsum">${eps_n} 章，共 ${tot} 处</p>`:"";
   $("#nav").innerHTML=h?sum+h:`<p class="qsum">没有找到</p>`;
   mark();
 }
@@ -297,17 +351,18 @@ function mark(){
 function cover(){
   const last=localStorage.getItem("sunbook:last");
   let toc="";
-  PARTS.forEach(p=>{
+  PARTS.forEach((p,pi)=>{
+    if(sectHead(pi)){const s=SECTS[p[4]];toc+=`<div class="sh"><b>${s[0]}</b><span>${s[1]}</span></div>`}
     toc+=`<div class="blk"><h3>${p[0]}　${p[1]}</h3>`;
-    for(let n=p[2];n<=p[3];n++){const e=B[n-1];toc+=`<a href="#/${e.n}"><i>${e.n}</i>${esc(split(e.t).title)}</a>`}
+    for(const n of p[2]){const e=B[n-1];toc+=`<a href="#/${e.n}"><i>${SQ(e.n)}</i>${esc(split(e.t).title)}</a>`}
     toc+=`</div>`;
   });
   $("#main").innerHTML=`<section class="cover">
     <h1>财富自由革命之路</h1>
     <div class="sub">孙宇晨 · 喜马拉雅专栏全集文字稿<br>2016 年 10 月至 2017 年秋，共 145 期</div>
-    <div class="go"><a href="#/${last||"001"}">${last?`继续读第 ${last} 期`:"开始阅读"}</a></div>
+    <div class="go"><a href="#/${last||"001"}">${last?`继续读第 ${SQ(last)} 章`:"开始阅读"}</a></div>
     <div class="toc">${toc}</div>
-    <div class="note">文字稿整理自 GitHub 仓库 diverHansun/justin-sun-podcast-markdown，由语音转写，个别人名和术语可能有误。约从第 101 期起，编号比节目口播少 1。<br>选中正文可以划线和写笔记。← → 翻页，T 目录，D 夜间模式，N 笔记。</div>
+    <div class="note">目录依照作者公布的五十二周课纲编排为五篇加尾声，番外放在附录，编号按本书阅读顺序排列。<br>选中正文可以划线和写笔记。← → 翻页，T 目录，D 夜间模式，N 笔记。</div>
   </section>`;
   document.title="财富自由革命之路"; CUR=-1; $("#find").classList.remove("show");
   window.scrollTo(0,0); prog();
@@ -317,10 +372,9 @@ function chapterHTML(i,q){
   const e=B[i], n=i+1, p=PARTS[partOf(n)], s=split(e.t);
   const body=paras(e.x).map(t=>`<p>${hl(t,q)}</p>`).join("");
   return `<article class="chap">
-    <div class="crumb">${p[0]} · 第 ${e.n} 期${s.tag?` · ${esc(s.tag)}`:""}</div>
+    <div class="crumb">${SECTS[p[4]][0]} · ${p[0]} ${p[1]} · 第 ${SQ(e.n)} 章${s.tag?` · ${esc(s.tag)}`:""}</div>
     <h2>${hl(s.title,q)}</h2>
     <div class="body">${body}</div>
-    ${q===undefined?"":`<div class="end"><a href="${U[i]||"#"}" target="_blank" rel="noopener">查看原文</a></div>`}
   </article>`;
 }
 let MK=[], MI=0, CUR=-1;
@@ -338,15 +392,15 @@ function findBox(){
   setTimeout(()=>gotoMark(0),80);
 }
 function chapter(i){
-  const prev=B[i-1], next=B[i+1];
+  const prev=B[step(i,-1)], next=B[step(i,1)];
   CUR=i;
   $("#main").innerHTML=chapterHTML(i,Q)+`<div style="max-width:var(--col);margin:0 auto">
     <nav class="pager">
-      ${prev?`<a href="#/${prev.n}"><small>上一期</small><span>${esc(split(prev.t).title)}</span></a>`:"<span></span>"}
-      ${next?`<a class="nx" href="#/${next.n}"><small>下一期</small><span>${esc(split(next.t).title)}</span></a>`:`<a class="nx" href="#/"><small>全书完</small><span>回到封面</span></a>`}
+      ${prev?`<a href="#/${prev.n}"><small>上一章</small><span>${esc(split(prev.t).title)}</span></a>`:"<span></span>"}
+      ${next?`<a class="nx" href="#/${next.n}"><small>下一章</small><span>${esc(split(next.t).title)}</span></a>`:`<a class="nx" href="#/"><small>全书完</small><span>回到封面</span></a>`}
     </nav></div>`;
   localStorage.setItem("sunbook:last",B[i].n);
-  document.title=`${B[i].n} ${split(B[i].t).title} · 财富自由革命之路`;
+  document.title=`${SQ(B[i].n)} ${split(B[i].t).title} · 财富自由革命之路`;
   window.scrollTo(0,0); prog(); findBox();
   applyNotes();
   if(JUMP){const s=document.querySelector(`.hl[data-id="${JUMP}"]`); JUMP=null;
@@ -363,7 +417,7 @@ function route(){
 function printAll(){
   const box=document.createElement("div"); box.className="printall";
   let h=`<div class="ptitle"><h1>财富自由革命之路</h1><p style="color:var(--mute);letter-spacing:.3em">孙宇晨 · 全集文字稿</p></div>`;
-  for(let i=0;i<B.length;i++) h+=chapterHTML(i);
+  for(const i of ORDER) h+=chapterHTML(i);
   box.innerHTML=h;
   const main=$("#main");
   main.innerHTML=""; main.appendChild(box);
@@ -393,8 +447,8 @@ addEventListener("keydown",ev=>{
   if(/INPUT|TEXTAREA/.test(ev.target.tagName)) return;
   const m=location.hash.match(/#\/(\d{3})/); if(!m) return;
   const i=parseInt(m[1],10)-1;
-  if(ev.key==="ArrowRight"&&i<B.length-1) location.hash="#/"+B[i+1].n;
-  if(ev.key==="ArrowLeft"&&i>0) location.hash="#/"+B[i-1].n;
+  if(ev.key==="ArrowRight"&&step(i,1)>=0) location.hash="#/"+B[step(i,1)].n;
+  if(ev.key==="ArrowLeft"&&step(i,-1)>=0) location.hash="#/"+B[step(i,-1)].n;
   if(ev.key==="Escape") hidePop();
 });
 $("#printall").onclick=printAll;
@@ -417,13 +471,31 @@ $("#edge").onclick=toggleNav;
 $("#main").addEventListener("click",()=>{if(mobile()&&document.body.classList.contains("nav")){document.body.classList.remove("nav");updEdge()}});
 matchMedia("(max-width:860px)").addEventListener("change",updEdge);
 updEdge();
-function setTheme(d){document.documentElement.classList.toggle("dark",d);$("#theme").innerHTML=(d?"日间模式":"夜间模式")+"<span>D</span>";localStorage.setItem("sunbook:dark",d?"1":"0")}
-setTheme(localStorage.getItem("sunbook:dark")==="1");
-$("#theme").onclick=()=>setTheme(!document.documentElement.classList.contains("dark"));
+// 阅读配色：米黄、豆沙绿、浅灰为浅色，暖棕、夜间为深色
+const THEMES=[["paper","米黄","#f4eee2",0],["green","豆沙绿","#cfe3c9",0],["gray","浅灰","#d7d4ce",0],["brown","暖棕","#3a332b",1],["dark","夜间","#262523",1]];
+$("#themes").innerHTML=THEMES.map(t=>`<button data-th="${t[0]}"><i style="background:${t[2]}"></i>${t[1]}</button>`).join("");
+function setTheme(k){
+  const t=THEMES.find(x=>x[0]===k)||THEMES[0], h=document.documentElement;
+  h.classList.toggle("dark",!!t[3]);
+  if(t[0]==="paper"||t[0]==="dark") h.removeAttribute("data-theme"); else h.dataset.theme=t[0];
+  document.querySelectorAll("#themes button").forEach(b=>b.classList.toggle("on",b.dataset.th===t[0]));
+  localStorage.setItem("sunbook:theme",t[0]);
+}
+setTheme(localStorage.getItem("sunbook:theme")||(localStorage.getItem("sunbook:dark")==="1"?"dark":"paper"));
+$("#themes").addEventListener("click",ev=>{const b=ev.target.closest("button"); if(b){ev.stopPropagation(); setTheme(b.dataset.th)}});
+function nextTheme(){const k=localStorage.getItem("sunbook:theme")||"paper", i=THEMES.findIndex(x=>x[0]===k); setTheme(THEMES[(i+1)%THEMES.length][0])}
+// 字号：在默认字号上加减，范围 -3 到 +6，单位 px
+let FSD=parseInt(localStorage.getItem("sunbook:fsd")||"0",10)||0;
+function setFsd(d){FSD=Math.max(-3,Math.min(6,d)); document.documentElement.style.setProperty("--fsd",FSD+"px"); $("#fsv").textContent=FSD>0?"+"+FSD:FSD===0?"默认":FSD; localStorage.setItem("sunbook:fsd",FSD)}
+setFsd(FSD);
+$("#fsm").onclick=ev=>{ev.stopPropagation(); setFsd(FSD-1)};
+$("#fsp").onclick=ev=>{ev.stopPropagation(); setFsd(FSD+1)};
 addEventListener("keydown",ev=>{
   if(/INPUT|TEXTAREA/.test(ev.target.tagName)||ev.metaKey||ev.ctrlKey) return;
   if(ev.key==="t"||ev.key==="T") toggleNav();
-  if(ev.key==="d"||ev.key==="D") $("#theme").click();
+  if(ev.key==="d"||ev.key==="D") nextTheme();
+  if(ev.key==="="||ev.key==="+") setFsd(FSD+1);
+  if(ev.key==="-"||ev.key==="_") setFsd(FSD-1);
   if(ev.key==="n"||ev.key==="N") location.hash="#/notes";
 });
 /* ---------- 划线与笔记 ---------- */
@@ -541,12 +613,12 @@ function notesView(keep){
   const y=scrollY;
   CUR=-1; $("#find").classList.remove("show");
   const gs=grouped(), withNote=NOTES.filter(x=>x.note).length;
-  const h=gs.map(g=>`<div class="ng"><h3><i>${g.n}</i><a href="#/${g.n}">${esc(split(g.e.t).title)}</a></h3>`+
+  const h=gs.map(g=>`<div class="ng"><h3><i>${SQ(g.n)}</i><a href="#/${g.n}">${esc(split(g.e.t).title)}</a></h3>`+
     g.list.map(x=>`<div class="ni${x.note?" has-note":""}"><blockquote>${esc(x.text).replace(/\n/g,"<br>")}</blockquote>${x.note?`<div class="nn">${esc(x.note)}</div>`:""}
       <div class="nm"><span>${fmtd(x.t)}</span><button data-go="${x.id}">回到原文</button><button data-ed="${x.id}">${x.note?"编辑笔记":"写笔记"}</button><button data-del="${x.id}">删除</button></div></div>`).join("")+`</div>`).join("");
   $("#main").innerHTML=`<section class="notes">
     <h1>笔记</h1>
-    <div class="sub">${NOTES.length?`${gs.length} 期里共 ${NOTES.length} 处划线，其中 ${withNote} 条写了想法。`:"还没有划线。"}笔记只保存在当前浏览器里，换电脑或清理浏览器数据前，记得先导出或备份。</div>
+    <div class="sub">${NOTES.length?`${gs.length} 章里共 ${NOTES.length} 处划线，其中 ${withNote} 条写了想法。`:"还没有划线。"}笔记只保存在当前浏览器里，换电脑或清理浏览器数据前，记得先导出或备份。</div>
     <div class="acts"><button data-x="md">导出 Markdown</button><button data-x="copy">复制</button><button data-x="bak">备份</button><button data-x="res">恢复备份</button><input type="file" id="resf" accept=".json,application/json" hidden></div>
     ${h||`<p class="empty">读的时候用鼠标选中一段正文，就可以划线或写下想法。划过的句子会汇总在这里，可以导出成 Markdown。</p>`}
   </section>`;
