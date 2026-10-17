@@ -173,6 +173,10 @@ main{padding:0 32px 120px}
 .notes .acts{margin:14px 0 48px;font:13px var(--sans);display:flex;gap:18px;flex-wrap:wrap}
 .notes .acts button{color:var(--ink2);border-bottom:1px solid var(--rule);padding-bottom:1px}
 .notes .acts button:hover{color:var(--ink);border-color:var(--ink2)}
+.bakbox{margin:-30px 0 48px;font:13px/1.7 var(--sans);color:var(--ink2)}
+.bakbox textarea{display:block;box-sizing:border-box;width:100%;height:140px;margin:8px 0 10px;padding:10px;font:12px/1.5 ui-monospace,Menlo,monospace;color:var(--ink);background:transparent;border:1px solid var(--rule);border-radius:4px;resize:vertical}
+.bakbox button{margin-right:18px;color:var(--ink2);border-bottom:1px solid var(--rule);padding-bottom:1px}
+.bakbox button:hover{color:var(--ink);border-color:var(--ink2)}
 .notes .empty{font-size:15.5px;line-height:2;color:var(--ink2)}
 .ng{margin:0 0 44px}
 .ng h3{font:400 13px var(--sans);color:var(--mute);margin:0 0 16px;letter-spacing:.04em}
@@ -620,6 +624,7 @@ function notesView(keep){
     <h1>笔记</h1>
     <div class="sub">${NOTES.length?`${gs.length} 章里共 ${NOTES.length} 处划线，其中 ${withNote} 条写了想法。`:"还没有划线。"}笔记只保存在当前浏览器里，换电脑或清理浏览器数据前，记得先导出或备份。</div>
     <div class="acts"><button data-x="md">导出 Markdown</button><button data-x="copy">复制</button><button data-x="bak">备份</button><button data-x="res">恢复备份</button><input type="file" id="resf" accept=".json,application/json" hidden></div>
+    <div class="bakbox" id="bakbox" hidden></div>
     ${h||`<p class="empty">读的时候用鼠标选中一段正文，就可以划线或写下想法。划过的句子会汇总在这里，可以导出成 Markdown。</p>`}
   </section>`;
   document.title="我的笔记 · 财富自由革命之路"; window.scrollTo(0,keep?y:0); prog();
@@ -645,17 +650,34 @@ $("#main").addEventListener("click",ev=>{
   else if(d.del){if(confirm("删除这条划线？")) delNote(d.del)}
   else if(d.x==="md"){ if(!NOTES.length) return flashBtn(b,"还没有划线"); download(`财富自由革命之路-笔记-${fmtd(Date.now())}.md`,toMD(),"text/markdown;charset=utf-8") }
   else if(d.x==="copy"){ if(!NOTES.length) return flashBtn(b,"还没有划线"); navigator.clipboard.writeText(toMD()).then(()=>flashBtn(b,"已复制"),()=>flashBtn(b,"复制失败")) }
-  else if(d.x==="bak"){ download(`财富自由革命之路-备份-${fmtd(Date.now())}.json`,JSON.stringify({v:1,notes:NOTES},null,1),"application/json") }
-  else if(d.x==="res"){ $("#resf").click() }
+  else if(d.x==="bak"){
+    const j=JSON.stringify({v:1,notes:NOTES});
+    download(`财富自由革命之路-备份-${fmtd(Date.now())}.json`,j,"application/json");
+    // 有的页面不允许下载，所以同时把备份内容摆出来，复制粘贴也能搬
+    const bx=$("#bakbox"); bx.hidden=false;
+    bx.innerHTML=`如果没有自动下载，就把下面这段全部复制下来，到另一个页面点“恢复备份”粘贴进去。<textarea id="baktxt" readonly></textarea><button data-x="bakcopy">复制这段</button>`;
+    const t=$("#baktxt"); t.value=j; t.focus(); t.select();
+  }
+  else if(d.x==="bakcopy"){ const t=$("#baktxt"); t.select(); navigator.clipboard.writeText(t.value).then(()=>flashBtn(b,"已复制"),()=>{document.execCommand("copy")?flashBtn(b,"已复制"):flashBtn(b,"请按 Cmd+C 复制")}) }
+  else if(d.x==="res"){
+    const bx=$("#bakbox"); bx.hidden=false;
+    bx.innerHTML=`把备份内容粘贴到下面，再点“恢复”；也可以选择备份文件。<textarea id="restxt" placeholder="在这里粘贴备份内容"></textarea><button data-x="respaste">恢复</button><button data-x="resfile">选择备份文件</button><span id="resmsg"></span>`;
+    $("#restxt").focus();
+  }
+  else if(d.x==="respaste"){ restoreFrom($("#restxt").value) }
+  else if(d.x==="resfile"){ $("#resf").click() }
 });
+function restoreFrom(txt){
+  let o; try{o=JSON.parse(txt)}catch(e){ const m=$("#resmsg"); if(m) m.textContent="这段内容不是有效的备份，请确认完整复制了。"; return }
+  const ids=new Set(NOTES.map(z=>z.id)); let k=0;
+  (o.notes||[]).forEach(z=>{if(z&&z.id&&!ids.has(z.id)){NOTES.push(z);k++}});
+  saveNotes(); buildNav(Q); notesView();
+  const bx=$("#bakbox"); bx.hidden=false; bx.textContent=`已恢复 ${k} 条新划线，现在一共 ${NOTES.length} 条。`;
+}
 $("#main").addEventListener("change",ev=>{
   if(ev.target.id!=="resf"||!ev.target.files[0]) return;
   const r=new FileReader();
-  r.onload=()=>{ try{
-    const o=JSON.parse(r.result), ids=new Set(NOTES.map(z=>z.id)); let k=0;
-    (o.notes||[]).forEach(z=>{if(z&&z.id&&!ids.has(z.id)){NOTES.push(z);k++}});
-    saveNotes(); buildNav(Q); notesView(); alert(`已恢复 ${k} 条新划线`);
-  }catch(e){alert("这个文件不是有效的备份")} };
+  r.onload=()=>restoreFrom(r.result);
   r.readAsText(ev.target.files[0]);
 });
 $("#notesbtn").onclick=()=>{location.hash="#/notes"};
