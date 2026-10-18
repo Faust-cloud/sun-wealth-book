@@ -67,7 +67,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 /* 布局 */
 .wrap{display:grid;grid-template-columns:280px minmax(0,1fr);padding-top:48px;min-height:100vh;transition:grid-template-columns .25s ease}
 aside{position:sticky;top:48px;height:calc(100vh - 48px);overflow:auto;padding:16px 10px 60px 18px;background:var(--side);
-  font-family:var(--sans);transition:background-color .3s}
+  font-family:var(--sans)}
 body.closed .wrap{grid-template-columns:0 minmax(0,1fr)}
 body.closed aside{padding:0;overflow:hidden;visibility:hidden}
 .edge{position:fixed;top:50%;left:280px;transform:translate(-50%,-50%);z-index:22;width:16px;height:44px;display:grid;place-items:center;
@@ -484,6 +484,9 @@ function setTheme(k){
   if(t[0]==="paper"||t[0]==="dark") h.removeAttribute("data-theme"); else h.dataset.theme=t[0];
   document.querySelectorAll("#themes button").forEach(b=>b.classList.toggle("on",b.dataset.th===t[0]));
   localStorage.setItem("sunbook:theme",t[0]);
+  // 目录是可滚动的粘性区域，有的浏览器换色后不重画背景，这里强制重画一次，并保留滚动位置
+  const sd=document.getElementById("side");
+  if(sd){const st=sd.scrollTop; sd.style.display="none"; void sd.offsetHeight; sd.style.display=""; sd.scrollTop=st}
 }
 setTheme(localStorage.getItem("sunbook:theme")||(localStorage.getItem("sunbook:dark")==="1"?"dark":"paper"));
 $("#themes").addEventListener("click",ev=>{const b=ev.target.closest("button"); if(b){ev.stopPropagation(); setTheme(b.dataset.th)}});
