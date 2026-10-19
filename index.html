@@ -12,10 +12,12 @@
   --kai:"Kaiti SC","STKaiti","KaiTi",var(--serif);
   --sans:-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
   --fs:19px; --col:34em;
+  --sel:rgba(156,61,46,.16); --cur:rgba(156,61,46,.25);
 }
 html.dark{
   --paper:#262523; --side:#2d2b28; --ink:#c9c2b5; --ink2:#a39b8d; --mute:#746d62; --rule:#3a3733;
   --accent:#d08a73; --hl:rgba(232,196,90,.2); --barbg:rgba(38,37,35,.92);
+  --sel:rgba(208,138,115,.32); --cur:rgba(208,138,115,.45);
 }
 /* 护眼配色：豆沙绿、浅灰（浅色）；暖棕（深色） */
 html[data-theme="green"]{
@@ -29,6 +31,7 @@ html[data-theme="gray"]{
 html[data-theme="brown"]{
   --paper:#3a332b; --side:#332d26; --ink:#d6c9b0; --ink2:#b1a48c; --mute:#877b68; --rule:#4c443a;
   --accent:#d9937a; --hl:rgba(232,196,90,.22); --barbg:rgba(58,51,43,.92);
+  --sel:rgba(217,147,122,.32); --cur:rgba(217,147,122,.45);
 }
 .more .themes{display:flex;gap:10px;padding:10px 16px 12px;border-top:1px solid var(--rule);margin-top:4px}
 .more .fsz{display:flex;align-items:center;gap:4px;padding:8px 12px 10px;border-top:1px solid var(--rule);font:13px var(--sans);color:var(--mute)}
@@ -47,7 +50,7 @@ body{font-family:var(--serif);-webkit-font-smoothing:antialiased;transition:back
 html.dark body{background-image:radial-gradient(rgba(255,240,210,.025) 1px,transparent 1px)}
 a{color:inherit;text-decoration:none}
 button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
-::selection{background:rgba(156,61,46,.16)}
+::selection{background:var(--sel)}
 
 /* 顶栏 */
 .bar{position:fixed;inset:0 0 auto 0;height:48px;display:flex;align-items:center;gap:6px;padding:0 14px;backdrop-filter:blur(8px);
@@ -62,7 +65,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 .more button{display:flex;justify-content:space-between;width:100%;padding:9px 16px;color:var(--ink2);text-align:left}
 .more button:hover{background:var(--side);color:var(--ink)}
 .more button span{color:var(--mute);font-size:12px}
-.prog{position:fixed;top:47px;left:0;height:1px;background:var(--ink2);opacity:.5;width:0;z-index:21}
+.prog{position:fixed;top:46px;left:0;height:2px;background:var(--accent);opacity:.6;width:0;z-index:21}
 
 /* 布局 */
 .wrap{display:grid;grid-template-columns:280px minmax(0,1fr);padding-top:48px;min-height:100vh;transition:grid-template-columns .25s ease}
@@ -96,11 +99,14 @@ aside input::placeholder{color:var(--mute)}
 .ep:hover{color:var(--ink)}
 .ep.on{color:var(--ink);border-left-color:var(--accent)}
 .ep .hits{font-style:normal;font-size:11px;color:var(--mute)}
+/* 已读：标题变淡，当前章仍正常显示 */
+.ep.done .tt{color:var(--mute)}
+.ep.done.on .tt,.ep.done:hover .tt{color:var(--ink)}
 .qsum{font-size:12px;color:var(--mute);line-height:1.6;margin:0 0 4px}
 
 /* 搜索跳转 */
 mark{background:var(--hl);color:inherit;padding:0 1px}
-mark.cur{background:rgba(156,61,46,.25)}
+mark.cur{background:var(--cur)}
 .find{position:fixed;right:20px;bottom:64px;z-index:30;display:none;align-items:center;gap:2px;padding:4px 6px 4px 12px;
   background:var(--paper);border:1px solid var(--rule);border-radius:6px;box-shadow:0 6px 24px rgba(0,0,0,.08);font:13px var(--sans);color:var(--ink2)}
 .find.show{display:flex}
@@ -181,6 +187,7 @@ main{padding:0 32px 120px}
 .ng{margin:0 0 44px}
 .ng h3{font:400 13px var(--sans);color:var(--mute);margin:0 0 16px;letter-spacing:.04em}
 .ng h3 a:hover{color:var(--ink)}
+.ng h3 i{font-style:normal;margin-right:8px;font-variant-numeric:tabular-nums}
 .ni{margin:0 0 26px}
 .ni blockquote{margin:0;padding-left:16px;border-left:2px solid var(--rule);font-size:16px;line-height:1.95;color:var(--ink)}
 .ni .nn{margin:10px 0 0 18px;font-size:14.5px;line-height:1.9;color:var(--ink2);white-space:pre-wrap}
@@ -206,7 +213,7 @@ main{padding:0 32px 120px}
 }
 @media print{
   @page{size:A5;margin:16mm 14mm 18mm}
-  html.dark,html[data-theme]{--paper:#fff;--ink:#222;--ink2:#555;--mute:#999;--rule:#ddd}
+  html.dark,html[data-theme]{--paper:#fff;--ink:#222;--ink2:#555;--mute:#999;--rule:#ddd;--accent:#9c3d2e;--hl:transparent}
   .bar,.prog,aside,.pager,.edge,.find,.pop,.more,.chap .end{display:none!important}
   .wrap{display:block;padding:0}
   main{padding:0}
@@ -306,6 +313,15 @@ function paras(x){
 const chars=B.reduce((a,e)=>a+e.x.length,0);
 
 /* ---------- read state ---------- */
+// 已读章节与每章阅读位置（按原始期号存）
+let READ=new Set(JSON.parse(localStorage.getItem("sunbook:read")||"[]"));
+const posKey=n=>"sunbook:pos:"+n;
+function markRead(n){
+  if(READ.has(n)) return;
+  READ.add(n); localStorage.setItem("sunbook:read",JSON.stringify([...READ]));
+  const a=document.querySelector(`.ep[data-n="${n}"]`); if(a) a.classList.add("done");
+  const pi=partOf(+n), pr=document.querySelector(`.part[data-p="${pi}"] .pr`); if(pr) pr.textContent=partStat(pi);
+}
 
 /* ---------- search ---------- */
 let Q="";
@@ -313,7 +329,7 @@ const count=(s,q)=>{if(!q) return 0;let c=0,i=0;while((i=s.indexOf(q,i))!==-1){c
 
 /* ---------- nav ---------- */
 let OPEN=new Set(), lastPart=-1;
-function partStat(){}
+function partStat(pi){const ns=PARTS[pi][2];return `${ns.filter(n=>READ.has(B[n-1].n)).length}/${ns.length}`}
 function buildNav(filter){
   const f=(filter||"").trim(); Q=f;
   let h="", tot=0, eps_n=0;
@@ -322,11 +338,11 @@ function buildNav(filter){
     if(!eps.length) return;
     let hc=0, rows="";
     eps.forEach(e=>{const c=f?count(e.x,f)+count(e.t,f):0; hc+=c; eps_n++;
-      rows+=`<a class="ep" data-n="${e.n}" href="#/${e.n}" title="${esc(e.t).replace(/"/g,"&quot;")}"><i>${SQ(e.n)}</i><span class="tt">${esc(split(e.t).title)}</span>${c?`<em class="hits">${c}</em>`:""}</a>`});
+      rows+=`<a class="ep${READ.has(e.n)?" done":""}" data-n="${e.n}" href="#/${e.n}" title="${esc(e.t).replace(/"/g,"&quot;")}"><i>${SQ(e.n)}</i><span class="tt">${esc(split(e.t).title)}</span>${c?`<em class="hits">${c}</em>`:""}</a>`});
     tot+=hc;
     const open=f||OPEN.has(pi);
     if(!f&&sectHead(pi)){const s=SECTS[p[4]];h+=`<div class="sect">${s[0]}<span>${s[1]}</span></div>`}
-    h+=`<div class="part${open?" open":""}" data-p="${pi}"><h4><span class="pn">${p[0]}</span><span class="pt">${p[1]}</span>${f?`<span class="pc">${hc}</span>`:""}</h4><div class="eps">${rows}</div></div>`;
+    h+=`<div class="part${open?" open":""}" data-p="${pi}"><h4><span class="pn">${p[0]}</span><span class="pt">${p[1]}</span>${f?`<span class="pc">${hc}</span>`:`<span class="pc pr">${partStat(pi)}</span>`}</h4><div class="eps">${rows}</div></div>`;
   });
   const sum=f&&h?`<p class="qsum">${eps_n} 章，共 ${tot} 处</p>`:"";
   $("#nav").innerHTML=h?sum+h:`<p class="qsum">没有找到</p>`;
@@ -405,7 +421,9 @@ function chapter(i){
     </nav></div>`;
   localStorage.setItem("sunbook:last",B[i].n);
   document.title=`${SQ(B[i].n)} ${split(B[i].t).title} · 财富自由革命之路`;
-  window.scrollTo(0,0); prog(); findBox();
+  // 回到上次读到的位置；搜索跳转或从笔记跳回时以那个位置为准
+  const sp=(Q||JUMP)?0:(+localStorage.getItem(posKey(B[i].n))||0), H=document.documentElement;
+  window.scrollTo(0,sp>0&&sp<.98?sp*(H.scrollHeight-H.clientHeight):0); prog(); findBox();
   applyNotes();
   if(JUMP){const s=document.querySelector(`.hl[data-id="${JUMP}"]`); JUMP=null;
     if(s){s.scrollIntoView({block:"center"}); document.querySelectorAll(`.hl[data-id="${s.dataset.id}"]`).forEach(x=>x.classList.add("flash"))}}
@@ -414,6 +432,9 @@ function route(){
   document.body.classList.remove("nav"); if(window.updEdge) updEdge();
   hidePop();
   if(location.hash.startsWith("#/notes")){notesView(); mark(); return}
+  // 支持按阅读顺序的章号链接，如 #/c96，转成原始期号
+  const c=location.hash.match(/^#\/c(\d+)$/);
+  if(c){const i=ORDER[+c[1]-1]; if(i!=null){location.replace("#/"+B[i].n); return}}
   const m=location.hash.match(/#\/(\d{3})/);
   if(m){const i=parseInt(m[1],10)-1; if(B[i]) chapter(i); else cover()} else cover();
   mark();
@@ -430,7 +451,9 @@ function printAll(){
 window.printAll=printAll;
 
 /* ---------- chrome ---------- */
-function prog(){const h=document.documentElement;const p=h.scrollTop/(h.scrollHeight-h.clientHeight||1);$("#prog").style.width=(Math.min(1,Math.max(0,p))*100)+"%";
+function prog(){const h=document.documentElement, room=h.scrollHeight-h.clientHeight;const p=room>0?h.scrollTop/room:1;$("#prog").style.width=(Math.min(1,Math.max(0,p))*100)+"%";
+  // 打印全书时 CUR 不变但正文被替换，避免误记
+  if(CUR>=0&&!document.querySelector(".printall")){const n=B[CUR].n; localStorage.setItem(posKey(n),p.toFixed(3)); if(p>=.9) markRead(n)}
   }
 function clearFind(){
   Q=""; $("#q").value=""; $("#find").classList.remove("show");
@@ -614,7 +637,7 @@ document.addEventListener("click",ev=>{
 /* 笔记页 */
 function grouped(){
   const g={}; NOTES.forEach(x=>(g[x.n]=g[x.n]||[]).push(x));
-  return Object.keys(g).sort().map(n=>({n,e:B[parseInt(n,10)-1],list:g[n].sort((a,b)=>a.p-b.p||a.s-b.s)}));
+  return Object.keys(g).sort((a,b)=>ORDER.indexOf(+a-1)-ORDER.indexOf(+b-1)).map(n=>({n,e:B[parseInt(n,10)-1],list:g[n].sort((a,b)=>a.p-b.p||a.s-b.s)}));
 }
 function notesView(keep){
   const y=scrollY;
@@ -635,7 +658,7 @@ function notesView(keep){
 function toMD(){
   let m=`# 《财富自由革命之路》读书笔记\n\n导出于 ${fmtd(Date.now())}，共 ${NOTES.length} 处划线。\n`;
   grouped().forEach(g=>{
-    m+=`\n## ${g.n} ${split(g.e.t).title}\n\n`;
+    m+=`\n## ${SQ(g.n)} ${split(g.e.t).title}\n\n`;
     g.list.forEach(x=>{ m+=x.text.split("\n").map(l=>"> "+l).join("\n>\n")+"\n\n"; if(x.note) m+=x.note+"\n\n" });
   });
   return m;
