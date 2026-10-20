@@ -54,7 +54,12 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 
 /* 顶栏 */
 .bar{position:fixed;inset:0 0 auto 0;height:48px;display:flex;align-items:center;gap:6px;padding:0 14px;backdrop-filter:blur(8px);
-  background:var(--barbg);border-bottom:1px solid var(--rule);z-index:20;font-family:var(--sans);transition:background-color .3s,border-color .3s}
+  background:var(--barbg);border-bottom:1px solid var(--rule);z-index:20;font-family:var(--sans);transition:background-color .3s,border-color .3s,transform .25s ease}
+/* 下滑收起顶栏，上滑再出现；进度线和目录跟着上移 */
+body.barhide .bar{transform:translateY(-100%)}
+.prog,aside{transition:top .25s ease,height .25s ease}
+body.barhide .prog{top:0}
+body.barhide aside{top:0;height:100vh}
 .bar .ico{width:34px;height:34px;display:grid;place-items:center;color:var(--ink2);font-size:16px;border-radius:4px}
 .bar .ico:hover{background:var(--side);color:var(--ink)}
 .bar .brand{font:15px var(--kai);letter-spacing:.12em;color:var(--ink2);cursor:pointer;padding:0 6px}
@@ -469,6 +474,15 @@ addEventListener("keydown",ev=>{
   else if(ev.key==="Enter"&&!/INPUT|TEXTAREA/.test(ev.target.tagName)){ev.preventDefault();gotoMark(ev.shiftKey?MI-1:MI+1)}
 });
 addEventListener("scroll",prog,{passive:true});
+// 顶栏随滚动方向收起/出现：靠近顶部、打开菜单或手机目录时始终显示
+let lastY=scrollY;
+addEventListener("scroll",()=>{
+  const y=scrollY, d=y-lastY, b=document.body;
+  if(y<60||$("#more").classList.contains("show")||b.classList.contains("nav")) b.classList.remove("barhide");
+  else if(d>6) b.classList.add("barhide");
+  else if(d<-6) b.classList.remove("barhide");
+  if(Math.abs(d)>6||y<60) lastY=y;
+},{passive:true});
 addEventListener("hashchange",route);
 addEventListener("keydown",ev=>{
   if(/INPUT|TEXTAREA/.test(ev.target.tagName)) return;
