@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#f4eee2">
 <title>财富自由革命之路</title>
 <style>
 :root{
@@ -474,7 +475,7 @@ addEventListener("keydown",ev=>{
   else if(ev.key==="Enter"&&!/INPUT|TEXTAREA/.test(ev.target.tagName)){ev.preventDefault();gotoMark(ev.shiftKey?MI-1:MI+1)}
 });
 addEventListener("scroll",prog,{passive:true});
-// 顶栏：下滑收起；有鼠标时只在指针移到顶部才出现，触屏仍靠上滑出现
+// 顶栏：下滑收起，上滑不出现；鼠标移到顶部或手指点屏幕顶端才出现
 // 靠近顶部、打开菜单或手机目录时始终显示
 const HOVER=matchMedia("(hover:hover) and (pointer:fine)").matches;
 const keepBar=()=>scrollY<60||$("#more").classList.contains("show")||document.body.classList.contains("nav");
@@ -483,7 +484,6 @@ addEventListener("scroll",()=>{
   const y=scrollY, d=y-lastY, b=document.body;
   if(keepBar()) b.classList.remove("barhide");
   else if(d>6) b.classList.add("barhide");
-  else if(d<-6&&!HOVER) b.classList.remove("barhide");
   if(Math.abs(d)>6||y<60) lastY=y;
 },{passive:true});
 if(HOVER) addEventListener("mousemove",ev=>{
@@ -491,6 +491,10 @@ if(HOVER) addEventListener("mousemove",ev=>{
   if(ev.clientY<48) b.classList.remove("barhide");
   else if(ev.clientY>80&&!keepBar()) b.classList.add("barhide");
 },{passive:true});
+addEventListener("pointerdown",ev=>{
+  const b=document.body;
+  if(ev.pointerType!=="mouse"&&ev.clientY<48&&b.classList.contains("barhide")){b.classList.remove("barhide");ev.preventDefault()}
+});
 addEventListener("hashchange",route);
 addEventListener("keydown",ev=>{
   if(/INPUT|TEXTAREA/.test(ev.target.tagName)) return;
@@ -528,6 +532,8 @@ function setTheme(k){
   h.classList.toggle("dark",!!t[3]);
   if(t[0]==="paper"||t[0]==="dark") h.removeAttribute("data-theme"); else h.dataset.theme=t[0];
   document.querySelectorAll("#themes button").forEach(b=>b.classList.toggle("on",b.dataset.th===t[0]));
+  // 手机状态栏那一条的颜色跟着配色走
+  document.querySelector('meta[name="theme-color"]').content=t[2];
   localStorage.setItem("sunbook:theme",t[0]);
   // 目录是可滚动的粘性区域，有的浏览器换色后不重画背景，这里强制重画一次，并保留滚动位置
   const sd=document.getElementById("side");
