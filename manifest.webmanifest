@@ -1,0 +1,12 @@
+{
+"name":"财富自由革命之路",
+"short_name":"财富自由",
+"description":"孙宇晨《财富自由革命之路》145 期文字稿的网页阅读版",
+"lang":"zh-CN",
+"start_url":"./",
+"scope":"./",
+"display":"standalone",
+"background_color":"#f4eee2",
+"theme_color":"#f4eee2",
+"icons":[{"src":"icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any"}]
+}
