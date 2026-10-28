@@ -4,6 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#f4eee2">
+<script>
+// 在页面画出来之前先套上配色和字号，夜间模式就不会先闪一下米黄；第一次访问跟随系统深色模式
+try{const h=document.documentElement, s=localStorage, t=s.getItem("sunbook:theme")||(s.getItem("sunbook:dark")==="1"||matchMedia("(prefers-color-scheme:dark)").matches?"dark":"paper"), C={paper:"#f4eee2",green:"#cfe3c9",gray:"#d7d4ce",brown:"#3a332b",dark:"#262523"};
+if(t==="dark"||t==="brown") h.classList.add("dark");
+if(t==="green"||t==="gray"||t==="brown") h.dataset.theme=t;
+if(C[t]) document.querySelector('meta[name="theme-color"]').content=C[t];
+h.style.setProperty("--fsd",Math.max(-3,Math.min(6,parseInt(s.getItem("sunbook:fsd")||"0",10)||0))+"px")}catch(e){}
+</script>
 <title>财富自由革命之路</title>
 <meta name="description" content="孙宇晨《财富自由革命之路》145 期文字稿的网页阅读版。支持阅读进度记忆、划线笔记、多主题与字号调节，适合长文阅读。">
 <meta name="keywords" content="财富自由,阅读器,文字稿">
@@ -19,34 +27,37 @@
 <meta name="twitter:description" content="孙宇晨《财富自由革命之路》145 期文字稿的网页阅读版。支持阅读进度记忆、划线笔记、多主题与字号调节，适合长文阅读。">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%23b8860b'/><path d='M16 10c-2.5-1.8-5.5-2-8-1.6v14c2.5-.4 5.5-.2 8 1.6' fill='%23fff'/><path d='M16 10c2.5-1.8 5.5-2 8-1.6v14c-2.5-.4-5.5-.2-8 1.6' fill='%23ffffff' opacity='.6'/></svg>">
 <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%23b8860b'/><path d='M16 10c-2.5-1.8-5.5-2-8-1.6v14c2.5-.4 5.5-.2 8 1.6' fill='%23fff'/><path d='M16 10c2.5-1.8 5.5-2 8-1.6v14c-2.5-.4-5.5-.2-8 1.6' fill='%23ffffff' opacity='.6'/></svg>">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="财富自由">
 <style>
 :root{
-  --paper:#f4eee2; --side:#ebe3d3; --ink:#2b2520; --ink2:#5b5246; --mute:#9a8f7f; --rule:#dccfb8;
-  --accent:#9c3d2e; --hl:rgba(232,196,90,.38); --barbg:rgba(244,238,226,.92);
-  --serif:"Songti SC","STSong","Noto Serif SC","Source Han Serif SC","Noto Serif CJK SC",serif;
-  --kai:"Kaiti SC","STKaiti","KaiTi",var(--serif);
-  --sans:-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
-  --fs:19px; --col:34em;
-  --sel:rgba(156,61,46,.16); --cur:rgba(156,61,46,.25);
+--paper:#f4eee2; --side:#ebe3d3; --ink:#2b2520; --ink2:#5b5246; --mute:#9a8f7f; --rule:#dccfb8;
+--accent:#9c3d2e; --hl:rgba(232,196,90,.38); --barbg:rgba(244,238,226,.92);
+--serif:"Songti SC","STSong","Noto Serif SC","Source Han Serif SC","Noto Serif CJK SC",serif;
+--kai:"Kaiti SC","STKaiti","KaiTi",var(--serif);
+--sans:-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+--fs:19px; --col:34em;
+--sel:rgba(156,61,46,.16); --cur:rgba(156,61,46,.25);
 }
 html.dark{
-  --paper:#262523; --side:#2d2b28; --ink:#c9c2b5; --ink2:#a39b8d; --mute:#746d62; --rule:#3a3733;
-  --accent:#d08a73; --hl:rgba(232,196,90,.2); --barbg:rgba(38,37,35,.92);
-  --sel:rgba(208,138,115,.32); --cur:rgba(208,138,115,.45);
+--paper:#262523; --side:#2d2b28; --ink:#c9c2b5; --ink2:#a39b8d; --mute:#746d62; --rule:#3a3733;
+--accent:#d08a73; --hl:rgba(232,196,90,.2); --barbg:rgba(38,37,35,.92);
+--sel:rgba(208,138,115,.32); --cur:rgba(208,138,115,.45);
 }
 /* 护眼配色：豆沙绿、浅灰（浅色）；暖棕（深色） */
 html[data-theme="green"]{
-  --paper:#cfe3c9; --side:#c2d8bb; --ink:#26302a; --ink2:#4a5a4a; --mute:#7c8c78; --rule:#b0c7a9;
-  --accent:#8a3a2c; --barbg:rgba(207,227,201,.92);
+--paper:#cfe3c9; --side:#c2d8bb; --ink:#26302a; --ink2:#4a5a4a; --mute:#7c8c78; --rule:#b0c7a9;
+--accent:#8a3a2c; --barbg:rgba(207,227,201,.92);
 }
 html[data-theme="gray"]{
-  --paper:#d7d4ce; --side:#ccc8c1; --ink:#2b2926; --ink2:#55514b; --mute:#85807a; --rule:#bdb8b0;
-  --accent:#8f3a2c; --barbg:rgba(215,212,206,.92);
+--paper:#d7d4ce; --side:#ccc8c1; --ink:#2b2926; --ink2:#55514b; --mute:#85807a; --rule:#bdb8b0;
+--accent:#8f3a2c; --barbg:rgba(215,212,206,.92);
 }
 html[data-theme="brown"]{
-  --paper:#3a332b; --side:#332d26; --ink:#d6c9b0; --ink2:#b1a48c; --mute:#877b68; --rule:#4c443a;
-  --accent:#d9937a; --hl:rgba(232,196,90,.22); --barbg:rgba(58,51,43,.92);
-  --sel:rgba(217,147,122,.32); --cur:rgba(217,147,122,.45);
+--paper:#3a332b; --side:#332d26; --ink:#d6c9b0; --ink2:#b1a48c; --mute:#877b68; --rule:#4c443a;
+--accent:#d9937a; --hl:rgba(232,196,90,.22); --barbg:rgba(58,51,43,.92);
+--sel:rgba(217,147,122,.32); --cur:rgba(217,147,122,.45);
 }
 .more .themes{display:flex;gap:10px;padding:10px 16px 12px;border-top:1px solid var(--rule);margin-top:4px}
 .more .fsz{display:flex;align-items:center;gap:4px;padding:8px 12px 10px;border-top:1px solid var(--rule);font:13px var(--sans);color:var(--mute)}
@@ -59,17 +70,16 @@ html[data-theme="brown"]{
 .more .themes button.on i{box-shadow:0 0 0 2px var(--paper),0 0 0 3px var(--ink2)}
 *{box-sizing:border-box}
 html,body{margin:0;background:var(--paper);color:var(--ink)}
+html{-webkit-text-size-adjust:100%}
 body{font-family:var(--serif);-webkit-font-smoothing:antialiased;transition:background-color .3s,color .3s;
-  background-image:radial-gradient(rgba(120,90,40,.05) 1px,transparent 1px);background-size:4px 4px}
-
+background-image:radial-gradient(rgba(120,90,40,.05) 1px,transparent 1px);background-size:4px 4px}
 html.dark body{background-image:radial-gradient(rgba(255,240,210,.025) 1px,transparent 1px)}
 a{color:inherit;text-decoration:none}
 button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
 ::selection{background:var(--sel)}
-
 /* 顶栏 */
 .bar{position:fixed;inset:0 0 auto 0;height:48px;display:flex;align-items:center;gap:6px;padding:0 14px;backdrop-filter:blur(8px);
-  background:var(--barbg);border-bottom:1px solid var(--rule);z-index:20;font-family:var(--sans);transition:background-color .3s,border-color .3s,transform .25s ease}
+background:var(--barbg);border-bottom:1px solid var(--rule);z-index:20;font-family:var(--sans);transition:background-color .3s,border-color .3s,transform .25s ease}
 /* 下滑收起顶栏，上滑再出现；进度线和目录跟着上移 */
 body.barhide .bar{transform:translateY(-100%)}
 .prog,aside{transition:top .25s ease,height .25s ease}
@@ -80,30 +90,31 @@ body.barhide aside{top:0;height:100vh}
 .bar .brand{font:15px var(--kai);letter-spacing:.12em;color:var(--ink2);cursor:pointer;padding:0 6px}
 .bar .sp{flex:1}
 .more{position:fixed;top:44px;right:14px;z-index:30;display:none;min-width:150px;padding:6px 0;background:var(--paper);
-  border:1px solid var(--rule);border-radius:6px;box-shadow:0 6px 24px rgba(0,0,0,.08);font:14px var(--sans)}
+border:1px solid var(--rule);border-radius:6px;box-shadow:0 6px 24px rgba(0,0,0,.08);font:14px var(--sans)}
 .more.show{display:block}
 .more button{display:flex;justify-content:space-between;width:100%;padding:9px 16px;color:var(--ink2);text-align:left}
 .more button:hover{background:var(--side);color:var(--ink)}
 .more button span{color:var(--mute);font-size:12px}
 .prog{position:fixed;top:47px;left:0;height:1px;background:var(--ink2);opacity:.5;width:0;z-index:21}
-
 /* 布局 */
 .wrap{display:grid;grid-template-columns:280px minmax(0,1fr);padding-top:48px;min-height:100vh;transition:grid-template-columns .25s ease}
 aside{position:sticky;top:48px;height:calc(100vh - 48px);overflow:auto;padding:16px 10px 60px 18px;background:var(--side);
-  font-family:var(--sans)}
+font-family:var(--sans);overscroll-behavior:contain}
 body.closed .wrap{grid-template-columns:0 minmax(0,1fr)}
 body.closed aside{padding:0;overflow:hidden;visibility:hidden}
 .edge{position:fixed;top:50%;left:280px;transform:translate(-50%,-50%);z-index:22;width:16px;height:44px;display:grid;place-items:center;
-  color:var(--mute);background:var(--paper);border:1px solid var(--rule);border-radius:8px;font-size:12px;opacity:.7;transition:left .25s ease,opacity .2s}
+color:var(--mute);background:var(--paper);border:1px solid var(--rule);border-radius:8px;font-size:12px;opacity:.7;transition:left .25s ease,opacity .2s}
 .edge:hover{opacity:1;color:var(--ink)}
 body.closed .edge{left:0;transform:translate(0,-50%);border-left:0;border-radius:0 8px 8px 0}
-
+/* iOS 底部工具栏会挡住 100vh 的最后一截，支持的浏览器改用 dvh */
+@supports (height:100dvh){aside{height:calc(100dvh - 48px)} body.barhide aside{height:100dvh}}
+.loading{max-width:var(--col);margin:0 auto;padding:14vh 0;font:14px var(--sans);color:var(--mute)}
 /* 目录 */
 aside input{width:100%;padding:7px 2px;font:13.5px var(--sans);color:var(--ink);background:none;border:0;border-bottom:1px solid var(--rule);outline:none;margin:0 0 10px}
 aside input:focus{border-bottom-color:var(--ink2)}
 aside input::placeholder{color:var(--mute)}
 .part h4{position:sticky;top:0;z-index:2;margin:0;padding:12px 4px 8px;background:var(--side);cursor:pointer;user-select:none;
-  display:flex;align-items:baseline;gap:10px;font:400 13.5px var(--sans);color:var(--ink2)}
+display:flex;align-items:baseline;gap:10px;font:400 13.5px var(--sans);color:var(--ink2)}
 .part h4 .pn{color:var(--mute);font-size:12px;min-width:3em}
 .part h4 .pt{flex:1}
 .part h4 .pc{color:var(--mute);font-size:11.5px}
@@ -123,25 +134,23 @@ aside input::placeholder{color:var(--mute)}
 .ep.done .tt{color:var(--mute)}
 .ep.done.on .tt,.ep.done:hover .tt{color:var(--ink)}
 .qsum{font-size:12px;color:var(--mute);line-height:1.6;margin:0 0 4px}
-
 /* 搜索跳转 */
 mark{background:var(--hl);color:inherit;padding:0 1px}
 mark.cur{background:var(--cur)}
 .find{position:fixed;right:20px;bottom:64px;z-index:30;display:none;align-items:center;gap:2px;padding:4px 6px 4px 12px;
-  background:var(--paper);border:1px solid var(--rule);border-radius:6px;box-shadow:0 6px 24px rgba(0,0,0,.08);font:13px var(--sans);color:var(--ink2)}
+background:var(--paper);border:1px solid var(--rule);border-radius:6px;box-shadow:0 6px 24px rgba(0,0,0,.08);font:13px var(--sans);color:var(--ink2)}
 .find.show{display:flex}
 .find .t{max-width:8em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .find .p{color:var(--mute);min-width:4em;text-align:center;font-variant-numeric:tabular-nums}
 .find button{width:26px;height:26px;display:grid;place-items:center;color:var(--mute);border-radius:4px}
 .find button:hover{background:var(--side);color:var(--ink)}
-
 /* 划线与笔记 */
 .hl{background:linear-gradient(transparent 62%,var(--hl) 62%);cursor:pointer}
 .hl.has-note{border-bottom:1px dashed var(--mute)}
 .hl.flash{animation:flash 1.6s ease}
 @keyframes flash{0%,50%{background:var(--hl)}}
 .pop{position:absolute;z-index:40;display:none;background:var(--paper);border:1px solid var(--rule);border-radius:6px;
-  box-shadow:0 6px 24px rgba(0,0,0,.1);font:13px var(--sans)}
+box-shadow:0 6px 24px rgba(0,0,0,.1);font:13px var(--sans)}
 .pop.show{display:block}
 .pop .row{display:flex;padding:2px}
 .pop .row.end{justify-content:flex-end;padding:0 6px 6px}
@@ -150,10 +159,12 @@ mark.cur{background:var(--cur)}
 .pop .nt{max-width:300px;padding:10px 14px;font:14px/1.75 var(--serif);color:var(--ink);border-bottom:1px solid var(--rule);white-space:pre-wrap}
 .pop .q{max-width:320px;padding:10px 14px 0;font-size:12px;color:var(--mute);line-height:1.6;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
 .pop textarea{display:block;width:320px;max-width:calc(100vw - 40px);height:110px;margin:10px 12px 8px;padding:8px 10px;font:14px/1.75 var(--serif);
-  background:var(--side);color:var(--ink);border:1px solid var(--rule);border-radius:4px;outline:none;resize:vertical}
-
+background:var(--side);color:var(--ink);border:1px solid var(--rule);border-radius:4px;outline:none;resize:vertical}
+/* 手机：选中文字时工具条固定在屏幕底部，避开系统的拷贝菜单；写笔记时固定在顶部，避开键盘 */
+.pop.dock{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(20px + env(safe-area-inset-bottom));max-width:calc(100vw - 24px)}
+.pop.dock.top{bottom:auto;top:56px}
+.pop.dock .row button{padding:10px 16px;font-size:15px}
 main{padding:0 32px 120px}
-
 /* 封面 */
 .cover{max-width:var(--col);margin:0 auto;padding:14vh 0 40px}
 .cover h1{font:400 clamp(40px,6vw,60px)/1.2 var(--kai);margin:0;letter-spacing:.06em;color:var(--accent)}
@@ -174,7 +185,6 @@ main{padding:0 32px 120px}
 .toc .sh span{font:600 23px var(--serif);color:var(--ink);letter-spacing:.04em}
 .toc .sh p{display:none}
 .note{font:12px/1.9 var(--sans);color:var(--mute);margin-top:40px;padding-top:16px;border-top:1px solid var(--rule)}
-
 /* 正文 */
 .chap{max-width:var(--col);margin:0 auto;padding:10vh 0 0}
 .chap .crumb{font:12.5px var(--sans);color:var(--mute);letter-spacing:.06em}
@@ -191,7 +201,6 @@ main{padding:0 32px 120px}
 .pager a span{font:15px/1.6 var(--serif);color:var(--ink2)}
 .pager a:hover span{color:var(--ink)}
 .pager .nx{text-align:right}
-
 /* 笔记页 */
 .notes{max-width:var(--col);margin:0 auto;padding:10vh 0 40px}
 .notes h1{font:400 34px var(--kai);margin:0;letter-spacing:.06em;color:var(--accent)}
@@ -214,98 +223,99 @@ main{padding:0 32px 120px}
 .ni .nm{margin:8px 0 0 18px;font:12px var(--sans);color:var(--mute);display:flex;gap:16px}
 .ni .nm button{font-size:12px;color:var(--mute)}
 .ni .nm button:hover{color:var(--ink)}
-
+/* iOS 输入框字号小于 16px 时，点进去会自动放大页面 */
+@media (pointer:coarse){aside input,.pop textarea,.notes .bakbox textarea{font-size:16px}}
 /* 打印全书 */
 .printall .chap{padding-top:0}
 .printall .ptitle{text-align:center;padding:30vh 0}
 .printall .ptitle h1{font:400 48px var(--kai);margin:0;letter-spacing:.1em}
-
 @media (max-width:860px){
-  .wrap{grid-template-columns:1fr}
-  aside{position:fixed;top:48px;left:0;width:84vw;max-width:320px;z-index:19;transform:translateX(-105%);transition:transform .25s;box-shadow:6px 0 24px rgba(0,0,0,.08)}
-  body.nav aside{transform:none;visibility:visible;padding:16px 10px 60px 18px}
-  body.closed .wrap{grid-template-columns:1fr}
-  .edge{display:none}
-  main{padding:0 22px 120px}
-  .cover{padding-top:9vh}
-  .chap{padding-top:6vh}
-  :root{--fs:17.5px}
+.wrap{grid-template-columns:1fr}
+aside{position:fixed;top:48px;left:0;width:84vw;max-width:320px;z-index:19;transform:translateX(-105%);transition:transform .25s;box-shadow:6px 0 24px rgba(0,0,0,.08)}
+body.nav aside{transform:none;visibility:visible;padding:16px 10px 60px 18px;overflow:auto}
+body.closed .wrap{grid-template-columns:1fr}
+.edge{display:none}
+main{padding:0 22px 120px}
+.cover{padding-top:9vh}
+.chap{padding-top:6vh}
+:root{--fs:17.5px}
 }
 @media print{
-  @page{size:A5;margin:16mm 14mm 18mm}
-  html.dark,html[data-theme]{--paper:#fff;--ink:#222;--ink2:#555;--mute:#999;--rule:#ddd;--accent:#9c3d2e;--hl:transparent}
-  .bar,.prog,aside,.pager,.edge,.find,.pop,.more,.chap .end{display:none!important}
-  .wrap{display:block;padding:0}
-  main{padding:0}
-  mark{background:none}
-  .hl{background:none;border:0}
-  .chap{max-width:none;padding:0;break-before:page}
-  .chap h2{margin-bottom:24px}
-  .chap .body p{font-size:10.5pt;line-height:1.85}
+@page{size:A5;margin:16mm 14mm 18mm}
+html.dark,html[data-theme]{--paper:#fff;--ink:#222;--ink2:#555;--mute:#999;--rule:#ddd;--accent:#9c3d2e;--hl:transparent}
+.bar,.prog,aside,.pager,.edge,.find,.pop,.more,.chap .end{display:none!important}
+.wrap{display:block;padding:0}
+main{padding:0}
+mark{background:none}
+.hl{background:none;border:0}
+.chap{max-width:none;padding:0;break-before:page}
+.chap h2{margin-bottom:24px}
+.chap .body p{font-size:10.5pt;line-height:1.85}
 }
 </style>
 </head>
 <body>
+<script>try{if(localStorage.getItem("sunbook:closed")==="1")document.body.classList.add("closed")}catch(e){}</script>
 <div class="bar">
-  <button class="ico" id="menu" title="目录（T）" aria-label="目录">☰</button>
-  <div class="brand" id="home">财富自由革命之路</div>
-  <div class="sp"></div>
-  <button class="ico" id="morebtn" title="更多" aria-label="更多">⋯</button>
+<button class="ico" id="menu" title="目录（T）" aria-label="目录">☰</button>
+<div class="brand" id="home">财富自由革命之路</div>
+<div class="sp"></div>
+<button class="ico" id="morebtn" title="更多" aria-label="更多">⋯</button>
 </div>
 <div class="more" id="more">
-  <button id="notesbtn">我的笔记<span id="ncount"></span></button>
-  <div class="themes" id="themes"></div>
-  <div class="fsz"><span>字号</span><button id="fsm" title="缩小（-）">A−</button><b id="fsv"></b><button id="fsp" title="放大（+）">A＋</button></div>
-  <button id="printall">整本存为 PDF</button>
+<button id="notesbtn">我的笔记<span id="ncount"></span></button>
+<div class="themes" id="themes"></div>
+<div class="fsz"><span>字号</span><button id="fsm" title="缩小（-）">A−</button><b id="fsv"></b><button id="fsp" title="放大（+）">A＋</button></div>
+<button id="printall">整本存为 PDF</button>
 </div>
 <div class="prog" id="prog"></div>
 <div class="find" id="find">
-  <span class="t" id="fterm"></span><span class="p" id="fpos"></span>
-  <button id="fprev" title="上一处（Shift+Enter）">↑</button><button id="fnext" title="下一处（Enter）">↓</button><button id="fclose" title="关闭（Esc）">×</button>
+<span class="t" id="fterm"></span><span class="p" id="fpos"></span>
+<button id="fprev" title="上一处（Shift+Enter）">↑</button><button id="fnext" title="下一处（Enter）">↓</button><button id="fclose" title="关闭（Esc）">×</button>
 </div>
 <div class="wrap">
-  <aside id="side">
-    <input id="q" placeholder="搜索">
-    <div id="nav"></div>
-  </aside>
-  <button class="edge" id="edge"></button>
-  <main id="main"></main>
+<aside id="side">
+<input id="q" placeholder="搜索">
+<div id="nav"></div>
+</aside>
+<button class="edge" id="edge"></button>
+<main id="main"><p class="loading">正在载入…</p></main>
 </div>
-
 <script src="data.js"></script>
 <script>
+if(!window.BOOK){document.getElementById("main").innerHTML='<p class="loading">文字稿没有载入成功，请检查网络后刷新。</p>'; throw new Error("data.js 未载入")}
 // 依照作者在 018、020、021 期公布的课纲编排：篇 → 卷 → 章；显示编号为阅读顺序，内部仍用原始期数（笔记与链接不受影响）
 const R=(a,b)=>Array.from({length:b-a+1},(_,k)=>a+k);
 const SECTS=[
- ["第一篇","开宗明义","什么是财富自由，这门课要讲什么。"],
- ["第二篇","明道：看清时代","为什么这个时代、这一代人最有机会。"],
- ["第三篇","体用：三大革命","三十岁前不结婚、不买房、不买车。"],
- ["第四篇","术：怎么做","从第一桶金到踩准行业和趋势。"],
- ["第五篇","防御：守住财富","财富最常从疾病和家人那里流失。"],
- ["尾声","一个人的明治维新","一周年复盘与完结。"],
- ["附录","番外","演讲、对谈、荐书与问答，可按兴趣挑着读。"]
+["第一篇","开宗明义","什么是财富自由，这门课要讲什么。"],
+["第二篇","明道：看清时代","为什么这个时代、这一代人最有机会。"],
+["第三篇","体用：三大革命","三十岁前不结婚、不买房、不买车。"],
+["第四篇","术：怎么做","从第一桶金到踩准行业和趋势。"],
+["第五篇","防御：守住财富","财富最常从疾病和家人那里流失。"],
+["尾声","一个人的明治维新","一周年复盘与完结。"],
+["附录","番外","演讲、对谈、荐书与问答，可按兴趣挑着读。"]
 ];
 // [卷, 卷名, 期号, 简介, 所属篇]
 const PARTS=[
- ["卷一","发刊与课纲",[...R(1,7),18,20,21],"名人推荐、创刊词，以及作者亲口讲的五十二周课纲。",0],
- ["卷二","财富自由是什么",[...R(8,17),19],"不为金钱做价值观的妥协；因精神自由而财富自由。",0],
- ["卷三","中国九零后新时代",R(22,30),"传统社会的最后一次转型、穷人思维、性与权力、金钱与自由、兜底义务。",1],
- ["卷四","全球流动性过剩",[31,32,33,34,36,37],"钱不值钱的大通胀时代、布雷顿森林、鼓励可控负债、激进而非保守。",1],
- ["卷五","一人即一国",[38,39],"价值观战争、自由意志主义与利己主义、成年即自由选择。",1],
- ["卷六","不结婚",R(40,46),"婚姻是经济结盟，是选家庭合伙人。",2],
- ["卷七","不买房、不买车",[47,48,...R(50,54),116,56,57,58,61,60,62],"房子祛魅、游牧民族、共享经济，以及十年之约。",2],
- ["卷八","原始积累与个人奋斗",[63,64,65,69,70,71,73,74],"复利、每项强 1%、1X50 与 5X10、一万小时、反馈；个人奋斗的合法性。",3],
- ["卷九","拥抱不确定性",[75,76,...R(82,87)],"薛定谔的猫、MVP、正收益系统、稳定是最大的不稳定。",3],
- ["卷十","互联网与比特币",[...R(88,97),...R(101,104)],"增量、远离管制、最后一条上升通道；比特币原理与买卖。",3],
- ["卷十一","金钱流向",R(131,138),"金钱流向规则制定领域、非线性通道、弯道超车、打破规则。",3],
- ["卷十二","新科技与区块链",R(139,142),"From It to Bit：碳基到硅基、数字资产、粉丝金融。",3],
- ["卷十三","医疗",R(106,115),"看病与破案、护城河、安慰剂、保险、做自己健康的 CEO。",4],
- ["卷十四","家人边界",R(117,123),"合伙之前先散伙、平等的至亲关系、与家人和解。",4],
- ["卷十五","财富天问",R(124,129),"中国人为什么富不起来：财产权、抢劫文化、历史洗牌。",4],
- ["卷十六","一个人的明治维新",[144,145],"一周年复盘与完结篇。",5],
-  ["卷十七","演讲与对谈",[66,67,68,78,79,80,81,143],"",6],
-  ["卷十八","问答与直播",[49,59,105,130],"",6],
-  ["卷十九","荐书与杂谈",[35,98,99,100,55,72,77],"",6]
+["卷一","发刊与课纲",[...R(1,7),18,20,21],"名人推荐、创刊词，以及作者亲口讲的五十二周课纲。",0],
+["卷二","财富自由是什么",[...R(8,17),19],"不为金钱做价值观的妥协；因精神自由而财富自由。",0],
+["卷三","中国九零后新时代",R(22,30),"传统社会的最后一次转型、穷人思维、性与权力、金钱与自由、兜底义务。",1],
+["卷四","全球流动性过剩",[31,32,33,34,36,37],"钱不值钱的大通胀时代、布雷顿森林、鼓励可控负债、激进而非保守。",1],
+["卷五","一人即一国",[38,39],"价值观战争、自由意志主义与利己主义、成年即自由选择。",1],
+["卷六","不结婚",R(40,46),"婚姻是经济结盟，是选家庭合伙人。",2],
+["卷七","不买房、不买车",[47,48,...R(50,54),116,56,57,58,61,60,62],"房子祛魅、游牧民族、共享经济，以及十年之约。",2],
+["卷八","原始积累与个人奋斗",[63,64,65,69,70,71,73,74],"复利、每项强 1%、1X50 与 5X10、一万小时、反馈；个人奋斗的合法性。",3],
+["卷九","拥抱不确定性",[75,76,...R(82,87)],"薛定谔的猫、MVP、正收益系统、稳定是最大的不稳定。",3],
+["卷十","互联网与比特币",[...R(88,97),...R(101,104)],"增量、远离管制、最后一条上升通道；比特币原理与买卖。",3],
+["卷十一","金钱流向",R(131,138),"金钱流向规则制定领域、非线性通道、弯道超车、打破规则。",3],
+["卷十二","新科技与区块链",R(139,142),"From It to Bit：碳基到硅基、数字资产、粉丝金融。",3],
+["卷十三","医疗",R(106,115),"看病与破案、护城河、安慰剂、保险、做自己健康的 CEO。",4],
+["卷十四","家人边界",R(117,123),"合伙之前先散伙、平等的至亲关系、与家人和解。",4],
+["卷十五","财富天问",R(124,129),"中国人为什么富不起来：财产权、抢劫文化、历史洗牌。",4],
+["卷十六","一个人的明治维新",[144,145],"一周年复盘与完结篇。",5],
+["卷十七","演讲与对谈",[66,67,68,78,79,80,81,143],"",6],
+["卷十八","问答与直播",[49,59,105,130],"",6],
+["卷十九","荐书与杂谈",[35,98,99,100,55,72,77],"",6]
 ];
 const sectHead=pi=>pi===0||PARTS[pi][4]!==PARTS[pi-1][4];
 const B=window.BOOK, U=window.URLS||[];
@@ -316,220 +326,234 @@ const step=(i,d)=>{const k=ORDER.indexOf(i)+d;return k>=0&&k<ORDER.length?ORDER[
 const $=s=>document.querySelector(s);
 const esc=s=>s.replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
 function split(t){const m=t.match(/^【([^】]+)】\s*(.*)$/);return m?{tag:m[1],title:m[2]}:{tag:"",title:t}}
-
 function paras(x){
-  const out=[];
-  x.split("\n").forEach(line=>{
-    line=line.replace(/\s*\[\d{1,2}:\d{2}(:\d{2})?\]\s*/g,"").replace(/。\s+/g,"。").replace(/\s{2,}/g," ").trim();
-    if(!line) return;
-    if(line.length<=320){out.push(line);return}
-    const ss=line.match(/[^。！？]+[。！？”"]*|[^。！？]+$/g)||[line];
-    let buf="";
-    ss.forEach(s=>{buf+=s; if(buf.length>=170){out.push(buf);buf=""}});
-    if(buf){ if(out.length && buf.length<60) out[out.length-1]+=buf; else out.push(buf) }
-  });
-  return out;
+const out=[];
+x.split("\n").forEach(line=>{
+line=line.replace(/\s*\[\d{1,2}:\d{2}(:\d{2})?\]\s*/g,"").replace(/。\s+/g,"。").replace(/\s{2,}/g," ").trim();
+if(!line) return;
+if(line.length<=320){out.push(line);return}
+const ss=line.match(/[^。！？]+[。！？”"]*|[^。！？]+$/g)||[line];
+let buf="";
+ss.forEach(s=>{buf+=s; if(buf.length>=170){out.push(buf);buf=""}});
+if(buf){ if(out.length && buf.length<60) out[out.length-1]+=buf; else out.push(buf) }
+});
+return out;
 }
 const chars=B.reduce((a,e)=>a+e.x.length,0);
-
+// 搜索用的小写文本：正文按显示时的分段处理过，命中数才和正文里的高亮对得上
+const LT=B.map(e=>e.t.toLowerCase()), LX=B.map(e=>paras(e.x).join("\n").toLowerCase());
 /* ---------- read state ---------- */
 // 已读章节与每章阅读位置（按原始期号存）
 let READ=new Set(JSON.parse(localStorage.getItem("sunbook:read")||"[]"));
 const posKey=n=>"sunbook:pos:"+n;
 function markRead(n){
-  if(READ.has(n)) return;
-  READ.add(n); localStorage.setItem("sunbook:read",JSON.stringify([...READ]));
-  const a=document.querySelector(`.ep[data-n="${n}"]`); if(a) a.classList.add("done");
-  const pi=partOf(+n), pr=document.querySelector(`.part[data-p="${pi}"] .pr`); if(pr) pr.textContent=partStat(pi);
+if(READ.has(n)) return;
+READ.add(n); localStorage.setItem("sunbook:read",JSON.stringify([...READ]));
+const a=document.querySelector(`.ep[data-n="${n}"]`); if(a) a.classList.add("done");
+const pi=partOf(+n), pr=document.querySelector(`.part[data-p="${pi}"] .pr`); if(pr) pr.textContent=partStat(pi);
 }
-
 /* ---------- search ---------- */
 let Q="";
 const count=(s,q)=>{if(!q) return 0;let c=0,i=0;while((i=s.indexOf(q,i))!==-1){c++;i+=q.length}return c};
-
 /* ---------- nav ---------- */
 let OPEN=new Set(), lastPart=-1;
 function partStat(pi){const ns=PARTS[pi][2];return `${ns.filter(n=>READ.has(B[n-1].n)).length}/${ns.length}`}
 function buildNav(filter){
-  const f=(filter||"").trim(); Q=f;
-  let h="", tot=0, eps_n=0;
-  PARTS.forEach((p,pi)=>{
-    const eps=p[2].map(n=>B[n-1]).filter(e=>!f||e.t.includes(f)||e.x.includes(f));
-    if(!eps.length) return;
-    let hc=0, rows="";
-    eps.forEach(e=>{const c=f?count(e.x,f)+count(e.t,f):0; hc+=c; eps_n++;
-      rows+=`<a class="ep${READ.has(e.n)?" done":""}" data-n="${e.n}" href="#/${e.n}" title="${esc(e.t).replace(/"/g,"&quot;")}"><i>${SQ(e.n)}</i><span class="tt">${esc(split(e.t).title)}</span>${c?`<em class="hits">${c}</em>`:""}</a>`});
-    tot+=hc;
-    const open=f||OPEN.has(pi);
-    if(!f&&sectHead(pi)){const s=SECTS[p[4]];h+=`<div class="sect">${s[0]}<span>${s[1]}</span></div>`}
-    h+=`<div class="part${open?" open":""}" data-p="${pi}"><h4><span class="pn">${p[0]}</span><span class="pt">${p[1]}</span>${f?`<span class="pc">${hc}</span>`:`<span class="pc pr">${partStat(pi)}</span>`}</h4><div class="eps">${rows}</div></div>`;
-  });
-  const sum=f&&h?`<p class="qsum">${eps_n} 章，共 ${tot} 处</p>`:"";
-  $("#nav").innerHTML=h?sum+h:`<p class="qsum">没有找到</p>`;
-  mark();
+const f=(filter||"").trim(), prevQ=Q; Q=f;
+let h="", tot=0, eps_n=0;
+PARTS.forEach((p,pi)=>{
+const fl=f.toLowerCase(), eps=p[2].map(n=>B[n-1]).filter(e=>!f||LT[+e.n-1].includes(fl)||LX[+e.n-1].includes(fl));
+if(!eps.length) return;
+let hc=0, rows="";
+eps.forEach(e=>{const c=f?count(LX[+e.n-1],fl)+count(split(e.t).title.toLowerCase(),fl):0; hc+=c; eps_n++;
+rows+=`<a class="ep${READ.has(e.n)?" done":""}" data-n="${e.n}" href="#/${e.n}" title="${esc(e.t).replace(/"/g,"&quot;")}"><i>${SQ(e.n)}</i><span class="tt">${esc(split(e.t).title)}</span>${c?`<em class="hits">${c}</em>`:""}</a>`});
+tot+=hc;
+const open=f||OPEN.has(pi);
+if(!f&&sectHead(pi)){const s=SECTS[p[4]];h+=`<div class="sect">${s[0]}<span>${s[1]}</span></div>`}
+h+=`<div class="part${open?" open":""}" data-p="${pi}"><h4><span class="pn">${p[0]}</span><span class="pt">${p[1]}</span>${f?`<span class="pc">${hc}</span>`:`<span class="pc pr">${partStat(pi)}</span>`}</h4><div class="eps">${rows}</div></div>`;
+});
+const sum=f&&h?`<p class="qsum">${eps_n} 章，共 ${tot} 处</p>`:"";
+$("#nav").innerHTML=h?sum+h:`<p class="qsum">没有找到</p>`;
+// 搜索词变了：当前章里有命中就重绘高亮；没有命中或清空了搜索，就去掉旧高亮和跳转框
+if(f!==prevQ){
+const fl=f.toLowerCase();
+if(CUR>=0&&f&&(LT[CUR].includes(fl)||LX[CUR].includes(fl))) chapter(CUR);
+else{document.querySelectorAll(".chap mark").forEach(m=>m.replaceWith(...m.childNodes)); MK=[]; $("#find").classList.remove("show")}
+}
+mark();
 }
 $("#nav").addEventListener("click",ev=>{
-  const h=ev.target.closest(".part h4"); if(!h) return;
-  const el=h.parentNode, pi=+el.dataset.p, o=el.classList.toggle("open");
-  o?OPEN.add(pi):OPEN.delete(pi);
+// 点的就是正在读的那一章：网址不变、不会触发切换，手动收起手机目录
+const a=ev.target.closest(".ep"); if(a&&a.getAttribute("href")===location.hash){document.body.classList.remove("nav"); updEdge(); return}
+const h=ev.target.closest(".part h4"); if(!h) return;
+const el=h.parentNode, pi=+el.dataset.p, o=el.classList.toggle("open");
+o?OPEN.add(pi):OPEN.delete(pi);
 });
 function curN(){return (location.hash.match(/#\/(\d{3})/)||[])[1]}
 function mark(){
-  const cur=curN(), pi=cur?partOf(B.findIndex(e=>e.n===cur)+1):-1;
-  document.querySelectorAll(".ep").forEach(a=>{a.classList.toggle("on",a.dataset.n===cur)});
-  document.querySelectorAll(".part").forEach(el=>el.classList.toggle("cur",+el.dataset.p===pi));
-  // 换卷时自动只展开当前卷
-  if(!Q && pi>=0 && pi!==lastPart){
-    OPEN=new Set([pi]);
-    document.querySelectorAll(".part").forEach(el=>el.classList.toggle("open",+el.dataset.p===pi));
-  }
-  if(pi>=0) lastPart=pi;
-  const on=$(".ep.on"); if(on && on.offsetParent) on.scrollIntoView({block:"nearest"});
+const cur=curN(), pi=cur?partOf(B.findIndex(e=>e.n===cur)+1):-1;
+document.querySelectorAll(".ep").forEach(a=>{a.classList.toggle("on",a.dataset.n===cur)});
+document.querySelectorAll(".part").forEach(el=>el.classList.toggle("cur",+el.dataset.p===pi));
+// 换卷时自动只展开当前卷
+if(!Q && pi>=0 && pi!==lastPart){
+OPEN=new Set([pi]);
+document.querySelectorAll(".part").forEach(el=>el.classList.toggle("open",+el.dataset.p===pi));
 }
-
+if(pi>=0) lastPart=pi;
+const on=$(".ep.on"); if(on && on.offsetParent) on.scrollIntoView({block:"nearest"});
+}
 /* ---------- views ---------- */
 function cover(){
-  const last=localStorage.getItem("sunbook:last");
-  let toc="";
-  PARTS.forEach((p,pi)=>{
-    if(sectHead(pi)){const s=SECTS[p[4]];toc+=`<div class="sh"><b>${s[0]}</b><span>${s[1]}</span></div>`}
-    toc+=`<div class="blk"><h3>${p[0]}　${p[1]}</h3>`;
-    for(const n of p[2]){const e=B[n-1];toc+=`<a href="#/${e.n}"><i>${SQ(e.n)}</i>${esc(split(e.t).title)}</a>`}
-    toc+=`</div>`;
-  });
-  $("#main").innerHTML=`<section class="cover">
-    <h1>财富自由革命之路</h1>
-    <div class="sub">孙宇晨 · 喜马拉雅专栏全集文字稿<br>2016 年 10 月至 2017 年秋，共 145 期</div>
-    <div class="go"><a href="#/${last||"001"}">${last?`继续读第 ${SQ(last)} 章`:"开始阅读"}</a></div>
-    <div class="toc">${toc}</div>
-    <div class="note">目录依照作者公布的五十二周课纲编排为五篇加尾声，番外放在附录，编号按本书阅读顺序排列。<br>选中正文可以划线和写笔记。← → 翻页，T 目录，D 夜间模式，N 笔记。</div>
-  </section>`;
-  document.title="财富自由革命之路"; CUR=-1; $("#find").classList.remove("show");
-  window.scrollTo(0,0); prog();
+const last=localStorage.getItem("sunbook:last");
+let toc="";
+PARTS.forEach((p,pi)=>{
+if(sectHead(pi)){const s=SECTS[p[4]];toc+=`<div class="sh"><b>${s[0]}</b><span>${s[1]}</span></div>`}
+toc+=`<div class="blk"><h3>${p[0]}　${p[1]}</h3>`;
+for(const n of p[2]){const e=B[n-1];toc+=`<a href="#/${e.n}"><i>${SQ(e.n)}</i>${esc(split(e.t).title)}</a>`}
+toc+=`</div>`;
+});
+$("#main").innerHTML=`<section class="cover">
+<h1>财富自由革命之路</h1>
+<div class="sub">孙宇晨 · 喜马拉雅专栏全集文字稿<br>2016 年 10 月至 2017 年秋，共 145 期</div>
+<div class="go"><a href="#/${last||"001"}">${last?`继续读第 ${SQ(last)} 章`:"开始阅读"}</a></div>
+<div class="toc">${toc}</div>
+<div class="note">目录依照作者公布的五十二周课纲编排为五篇加尾声，番外放在附录，编号按本书阅读顺序排列。<br>选中正文可以划线和写笔记。← → 翻页，T 目录，D 切换配色，+ − 字号，N 笔记。</div>
+</section>`;
+document.title="财富自由革命之路"; CUR=-1; $("#find").classList.remove("show");
+window.scrollTo(0,0); prog();
 }
-function hl(t,q){ if(!q) return esc(t); const qe=esc(q); return esc(t).split(qe).join(`<mark>${qe}</mark>`) }
+// 不区分大小写；先在原文上找，再分段转义，避免搜到 &lt; 这类转义符里面
+function hl(t,q){ if(!q) return esc(t); const re=new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g,"\\$&"),"gi"); let o="",i=0; t.replace(re,(m,k)=>{o+=esc(t.slice(i,k))+`<mark>${esc(m)}</mark>`; i=k+m.length; return m}); return o+esc(t.slice(i)) }
 function chapterHTML(i,q){
-  const e=B[i], n=i+1, p=PARTS[partOf(n)], s=split(e.t);
-  const body=paras(e.x).map(t=>`<p>${hl(t,q)}</p>`).join("");
-  return `<article class="chap">
-    <div class="crumb">${SECTS[p[4]][0]} · ${p[0]} ${p[1]} · 第 ${SQ(e.n)} 章${s.tag?` · ${esc(s.tag)}`:""}</div>
-    <h2>${hl(s.title,q)}</h2>
-    <div class="body">${body}</div>
-  </article>`;
+const e=B[i], n=i+1, p=PARTS[partOf(n)], s=split(e.t);
+const body=paras(e.x).map(t=>`<p>${hl(t,q)}</p>`).join("");
+return `<article class="chap">
+<div class="crumb">${SECTS[p[4]][0]} · ${p[0]} ${p[1]} · 第 ${SQ(e.n)} 章${s.tag?` · ${esc(s.tag)}`:""}</div>
+<h2>${hl(s.title,q)}</h2>
+<div class="body">${body}</div>
+</article>`;
 }
 let MK=[], MI=0, CUR=-1;
 function gotoMark(k){
-  if(!MK.length) return; MI=(k+MK.length)%MK.length;
-  MK.forEach(m=>m.classList.remove("cur")); MK[MI].classList.add("cur");
-  MK[MI].scrollIntoView({block:"center",behavior:"smooth"});
-  $("#fpos").textContent=`${MI+1} / ${MK.length}`;
+if(!MK.length) return; MI=(k+MK.length)%MK.length;
+MK.forEach(m=>m.classList.remove("cur")); MK[MI].classList.add("cur");
+MK[MI].scrollIntoView({block:"center",behavior:"smooth"});
+$("#fpos").textContent=`${MI+1} / ${MK.length}`;
 }
 function findBox(){
-  const box=$("#find");
-  MK=[...document.querySelectorAll(".chap mark")];
-  if(!Q||!MK.length){box.classList.remove("show");return}
-  $("#fterm").textContent=`“${Q}”`; box.classList.add("show");
-  setTimeout(()=>gotoMark(0),80);
+const box=$("#find");
+MK=[...document.querySelectorAll(".chap mark")];
+if(!Q||!MK.length){box.classList.remove("show");return}
+$("#fterm").textContent=`“${Q}”`; box.classList.add("show");
+setTimeout(()=>gotoMark(0),80);
 }
 function chapter(i){
-  const prev=B[step(i,-1)], next=B[step(i,1)];
-  CUR=i;
-  $("#main").innerHTML=chapterHTML(i,Q)+`<div style="max-width:var(--col);margin:0 auto">
-    <nav class="pager">
-      ${prev?`<a href="#/${prev.n}"><small>上一章</small><span>${esc(split(prev.t).title)}</span></a>`:"<span></span>"}
-      ${next?`<a class="nx" href="#/${next.n}"><small>下一章</small><span>${esc(split(next.t).title)}</span></a>`:`<a class="nx" href="#/"><small>全书完</small><span>回到封面</span></a>`}
-    </nav></div>`;
-  localStorage.setItem("sunbook:last",B[i].n);
-  document.title=`${SQ(B[i].n)} ${split(B[i].t).title} · 财富自由革命之路`;
-  // 回到上次读到的位置；搜索跳转或从笔记跳回时以那个位置为准
-  const sp=(Q||JUMP)?0:(+localStorage.getItem(posKey(B[i].n))||0), H=document.documentElement;
-  window.scrollTo(0,sp>0&&sp<.98?sp*(H.scrollHeight-H.clientHeight):0); prog(); findBox();
-  applyNotes();
-  if(JUMP){const s=document.querySelector(`.hl[data-id="${JUMP}"]`); JUMP=null;
-    if(s){s.scrollIntoView({block:"center"}); document.querySelectorAll(`.hl[data-id="${s.dataset.id}"]`).forEach(x=>x.classList.add("flash"))}}
+const prev=B[step(i,-1)], next=B[step(i,1)];
+CUR=i;
+$("#main").innerHTML=chapterHTML(i,Q)+`<div style="max-width:var(--col);margin:0 auto">
+<nav class="pager">
+${prev?`<a href="#/${prev.n}"><small>上一章</small><span>${esc(split(prev.t).title)}</span></a>`:"<span></span>"}
+${next?`<a class="nx" href="#/${next.n}"><small>下一章</small><span>${esc(split(next.t).title)}</span></a>`:`<a class="nx" href="#/"><small>全书完</small><span>回到封面</span></a>`}
+</nav></div>`;
+localStorage.setItem("sunbook:last",B[i].n);
+document.title=`${SQ(B[i].n)} ${split(B[i].t).title} · 财富自由革命之路`;
+// 回到上次读到的位置；搜索跳转或从笔记跳回时以那个位置为准
+const sp=(Q||JUMP)?0:(+localStorage.getItem(posKey(B[i].n))||0), H=document.documentElement;
+window.scrollTo(0,sp>0&&sp<.98?sp*(H.scrollHeight-H.clientHeight):0); prog(); findBox();
+applyNotes();
+if(JUMP){const s=document.querySelector(`.hl[data-id="${JUMP}"]`); JUMP=null;
+if(s){s.scrollIntoView({block:"center"}); document.querySelectorAll(`.hl[data-id="${s.dataset.id}"]`).forEach(x=>x.classList.add("flash"))}}
 }
 function route(){
-  document.body.classList.remove("nav"); if(window.updEdge) updEdge();
-  hidePop();
-  if(location.hash.startsWith("#/notes")){notesView(); mark(); return}
-  // 支持按阅读顺序的章号链接，如 #/c96，转成原始期号
-  const c=location.hash.match(/^#\/c(\d+)$/);
-  if(c){const i=ORDER[+c[1]-1]; if(i!=null){location.replace("#/"+B[i].n); return}}
-  const m=location.hash.match(/#\/(\d{3})/);
-  if(m){const i=parseInt(m[1],10)-1; if(B[i]) chapter(i); else cover()} else cover();
-  mark();
+savePos(); document.body.classList.remove("nav"); if(window.updEdge) updEdge();
+hidePop();
+if(location.hash.startsWith("#/notes")){notesView(); mark(); return}
+// 支持按阅读顺序的章号链接，如 #/c96，转成原始期号
+const c=location.hash.match(/^#\/c(\d+)$/);
+if(c){const i=ORDER[+c[1]-1]; if(i!=null){location.replace("#/"+B[i].n); return}}
+const m=location.hash.match(/#\/(\d{3})/);
+if(m){const i=parseInt(m[1],10)-1; if(B[i]) chapter(i); else cover()} else cover();
+mark();
 }
 function printAll(){
-  const box=document.createElement("div"); box.className="printall";
-  let h=`<div class="ptitle"><h1>财富自由革命之路</h1><p style="color:var(--mute);letter-spacing:.3em">孙宇晨 · 全集文字稿</p></div>`;
-  for(const i of ORDER) h+=chapterHTML(i);
-  box.innerHTML=h;
-  const main=$("#main");
-  main.innerHTML=""; main.appendChild(box);
-  setTimeout(()=>{window.print(); setTimeout(()=>{route()},300)},300);
+const box=document.createElement("div"); box.className="printall";
+let h=`<div class="ptitle"><h1>财富自由革命之路</h1><p style="color:var(--mute);letter-spacing:.3em">孙宇晨 · 全集文字稿</p></div>`;
+for(const i of ORDER) h+=chapterHTML(i);
+box.innerHTML=h;
+const main=$("#main");
+main.innerHTML=""; main.appendChild(box);
+// 等打印框关掉再换回原页面；有的浏览器 print() 不会停下来等，所以靠 afterprint
+addEventListener("afterprint",()=>route(),{once:true});
+setTimeout(()=>window.print(),300);
 }
 window.printAll=printAll;
-
 /* ---------- chrome ---------- */
+// 阅读位置不必每次滚动都写：停下 300ms 再存，换章或离开页面时立刻存
+let POS=null, PT=0;
+function savePos(){clearTimeout(PT); if(POS){localStorage.setItem(posKey(POS[0]),POS[1]); POS=null}}
+addEventListener("pagehide",savePos);
+document.addEventListener("visibilitychange",()=>{if(document.hidden) savePos()});
 function prog(){const h=document.documentElement, room=h.scrollHeight-h.clientHeight;const p=room>0?h.scrollTop/room:1;$("#prog").style.width=(Math.min(1,Math.max(0,p))*100)+"%";
-  // 打印全书时 CUR 不变但正文被替换，避免误记
-  if(CUR>=0&&!document.querySelector(".printall")){const n=B[CUR].n; localStorage.setItem(posKey(n),p.toFixed(3)); if(p>=.9) markRead(n)}
-  }
+// 打印全书时 CUR 不变但正文被替换，避免误记；搜索跳转时停在命中处，不算阅读位置
+if(CUR>=0&&!document.querySelector(".printall")){const n=B[CUR].n; if(!Q){POS=[n,p.toFixed(3)]; clearTimeout(PT); PT=setTimeout(savePos,300)} if(p>=.9) markRead(n)}
+}
 function clearFind(){
-  Q=""; $("#q").value=""; $("#find").classList.remove("show");
-  document.querySelectorAll(".chap mark").forEach(m=>m.replaceWith(...m.childNodes)); MK=[];
-  buildNav("");
+Q=""; $("#q").value=""; $("#find").classList.remove("show");
+document.querySelectorAll(".chap mark").forEach(m=>m.replaceWith(...m.childNodes)); MK=[];
+buildNav("");
 }
 $("#fnext").onclick=()=>gotoMark(MI+1);
 $("#fprev").onclick=()=>gotoMark(MI-1);
 $("#fclose").onclick=clearFind;
 addEventListener("keydown",ev=>{
-  if(!$("#find").classList.contains("show")) return;
-  if(ev.key==="Escape"){clearFind()}
-  else if(ev.key==="Enter"&&!/INPUT|TEXTAREA/.test(ev.target.tagName)){ev.preventDefault();gotoMark(ev.shiftKey?MI-1:MI+1)}
+if(!$("#find").classList.contains("show")) return;
+if(ev.key==="Escape"){clearFind()}
+else if(ev.key==="Enter"&&!/INPUT|TEXTAREA/.test(ev.target.tagName)){ev.preventDefault();gotoMark(ev.shiftKey?MI-1:MI+1)}
 });
 addEventListener("scroll",prog,{passive:true});
-// 顶栏：下滑收起，上滑不出现；鼠标移到顶部或手指点屏幕顶端才出现
+// 顶栏：下滑收起；电脑上鼠标移到顶部才出现，手机上连续上滑一段或点屏幕顶端出现
 // 靠近顶部、打开菜单或手机目录时始终显示
 const HOVER=matchMedia("(hover:hover) and (pointer:fine)").matches;
 const keepBar=()=>scrollY<60||$("#more").classList.contains("show")||document.body.classList.contains("nav");
-let lastY=scrollY;
+let lastY=scrollY, prevY=scrollY, up=0;
 addEventListener("scroll",()=>{
-  const y=scrollY, d=y-lastY, b=document.body;
-  if(keepBar()) b.classList.remove("barhide");
-  else if(d>6) b.classList.add("barhide");
-  if(Math.abs(d)>6||y<60) lastY=y;
+const y=scrollY, d=y-lastY, b=document.body;
+// 累计连续上滑的距离，超过 80px 才算想找顶栏，手指轻微回弹不算
+const sy=y-prevY; prevY=y; up=sy<0?up-sy:sy>0?0:up;
+if(keepBar()||(!HOVER&&up>80)) b.classList.remove("barhide");
+else if(d>6) b.classList.add("barhide");
+if(Math.abs(d)>6||y<60) lastY=y;
 },{passive:true});
 if(HOVER) addEventListener("mousemove",ev=>{
-  const b=document.body;
-  if(ev.clientY<48) b.classList.remove("barhide");
-  else if(ev.clientY>80&&!keepBar()) b.classList.add("barhide");
+const b=document.body;
+if(ev.clientY<48) b.classList.remove("barhide");
+else if(ev.clientY>80&&!keepBar()) b.classList.add("barhide");
 },{passive:true});
 addEventListener("pointerdown",ev=>{
-  const b=document.body;
-  if(ev.pointerType!=="mouse"&&ev.clientY<48&&b.classList.contains("barhide")){b.classList.remove("barhide");ev.preventDefault()}
+const b=document.body;
+if(ev.pointerType!=="mouse"&&ev.clientY<48&&b.classList.contains("barhide")){b.classList.remove("barhide");ev.preventDefault()}
 });
 addEventListener("hashchange",route);
 addEventListener("keydown",ev=>{
-  if(/INPUT|TEXTAREA/.test(ev.target.tagName)) return;
-  const m=location.hash.match(/#\/(\d{3})/); if(!m) return;
-  const i=parseInt(m[1],10)-1;
-  if(ev.key==="ArrowRight"&&step(i,1)>=0) location.hash="#/"+B[step(i,1)].n;
-  if(ev.key==="ArrowLeft"&&step(i,-1)>=0) location.hash="#/"+B[step(i,-1)].n;
-  if(ev.key==="Escape") hidePop();
+if(/INPUT|TEXTAREA/.test(ev.target.tagName)||ev.metaKey||ev.ctrlKey||ev.altKey||ev.shiftKey) return;
+const m=location.hash.match(/#\/(\d{3})/); if(!m) return;
+const i=parseInt(m[1],10)-1;
+if(ev.key==="ArrowRight"&&step(i,1)>=0) location.hash="#/"+B[step(i,1)].n;
+if(ev.key==="ArrowLeft"&&step(i,-1)>=0) location.hash="#/"+B[step(i,-1)].n;
+if(ev.key==="Escape") hidePop();
 });
 $("#printall").onclick=printAll;
 $("#home").onclick=()=>{location.hash="#/"};
 const mobile=()=>matchMedia("(max-width:860px)").matches;
 function toggleNav(){
-  if(mobile()) document.body.classList.toggle("nav");
-  else { const c=document.body.classList.toggle("closed"); localStorage.setItem("sunbook:closed",c?"1":"0") }
-  updEdge();
+if(mobile()) document.body.classList.toggle("nav");
+else { const c=document.body.classList.toggle("closed"); localStorage.setItem("sunbook:closed",c?"1":"0") }
+updEdge();
 }
 function updEdge(){
-  const open=mobile()?document.body.classList.contains("nav"):!document.body.classList.contains("closed");
-  $("#edge").textContent=open?"‹":"›";
-  $("#edge").title=open?"收起目录（快捷键 T）":"展开目录（快捷键 T）";
+const open=mobile()?document.body.classList.contains("nav"):!document.body.classList.contains("closed");
+$("#edge").textContent=open?"‹":"›";
+$("#edge").title=open?"收起目录（快捷键 T）":"展开目录（快捷键 T）";
 }
 if(localStorage.getItem("sunbook:closed")==="1") document.body.classList.add("closed");
 $("#menu").onclick=toggleNav;
@@ -542,18 +566,18 @@ updEdge();
 const THEMES=[["paper","米黄","#f4eee2",0],["green","豆沙绿","#cfe3c9",0],["gray","浅灰","#d7d4ce",0],["brown","暖棕","#3a332b",1],["dark","夜间","#262523",1]];
 $("#themes").innerHTML=THEMES.map(t=>`<button data-th="${t[0]}"><i style="background:${t[2]}"></i>${t[1]}</button>`).join("");
 function setTheme(k){
-  const t=THEMES.find(x=>x[0]===k)||THEMES[0], h=document.documentElement;
-  h.classList.toggle("dark",!!t[3]);
-  if(t[0]==="paper"||t[0]==="dark") h.removeAttribute("data-theme"); else h.dataset.theme=t[0];
-  document.querySelectorAll("#themes button").forEach(b=>b.classList.toggle("on",b.dataset.th===t[0]));
-  // 手机状态栏那一条的颜色跟着配色走
-  document.querySelector('meta[name="theme-color"]').content=t[2];
-  localStorage.setItem("sunbook:theme",t[0]);
-  // 目录是可滚动的粘性区域，有的浏览器换色后不重画背景，这里强制重画一次，并保留滚动位置
-  const sd=document.getElementById("side");
-  if(sd){const st=sd.scrollTop; sd.style.display="none"; void sd.offsetHeight; sd.style.display=""; sd.scrollTop=st}
+const t=THEMES.find(x=>x[0]===k)||THEMES[0], h=document.documentElement;
+h.classList.toggle("dark",!!t[3]);
+if(t[0]==="paper"||t[0]==="dark") h.removeAttribute("data-theme"); else h.dataset.theme=t[0];
+document.querySelectorAll("#themes button").forEach(b=>b.classList.toggle("on",b.dataset.th===t[0]));
+// 手机状态栏那一条的颜色跟着配色走
+document.querySelector('meta[name="theme-color"]').content=t[2];
+localStorage.setItem("sunbook:theme",t[0]);
+// 目录是可滚动的粘性区域，有的浏览器换色后不重画背景，这里强制重画一次，并保留滚动位置
+const sd=document.getElementById("side");
+if(sd){const st=sd.scrollTop; sd.style.display="none"; void sd.offsetHeight; sd.style.display=""; sd.scrollTop=st}
 }
-setTheme(localStorage.getItem("sunbook:theme")||(localStorage.getItem("sunbook:dark")==="1"?"dark":"paper"));
+setTheme(localStorage.getItem("sunbook:theme")||(localStorage.getItem("sunbook:dark")==="1"||matchMedia("(prefers-color-scheme:dark)").matches?"dark":"paper"));
 $("#themes").addEventListener("click",ev=>{const b=ev.target.closest("button"); if(b){ev.stopPropagation(); setTheme(b.dataset.th)}});
 function nextTheme(){const k=localStorage.getItem("sunbook:theme")||"paper", i=THEMES.findIndex(x=>x[0]===k); setTheme(THEMES[(i+1)%THEMES.length][0])}
 // 字号：在默认字号上加减，范围 -3 到 +6，单位 px
@@ -563,12 +587,12 @@ setFsd(FSD);
 $("#fsm").onclick=ev=>{ev.stopPropagation(); setFsd(FSD-1)};
 $("#fsp").onclick=ev=>{ev.stopPropagation(); setFsd(FSD+1)};
 addEventListener("keydown",ev=>{
-  if(/INPUT|TEXTAREA/.test(ev.target.tagName)||ev.metaKey||ev.ctrlKey) return;
-  if(ev.key==="t"||ev.key==="T") toggleNav();
-  if(ev.key==="d"||ev.key==="D") nextTheme();
-  if(ev.key==="="||ev.key==="+") setFsd(FSD+1);
-  if(ev.key==="-"||ev.key==="_") setFsd(FSD-1);
-  if(ev.key==="n"||ev.key==="N") location.hash="#/notes";
+if(/INPUT|TEXTAREA/.test(ev.target.tagName)||ev.metaKey||ev.ctrlKey) return;
+if(ev.key==="t"||ev.key==="T") toggleNav();
+if(ev.key==="d"||ev.key==="D") nextTheme();
+if(ev.key==="="||ev.key==="+") setFsd(FSD+1);
+if(ev.key==="-"||ev.key==="_") setFsd(FSD-1);
+if(ev.key==="n"||ev.key==="N") location.hash="#/notes";
 });
 /* ---------- 划线与笔记 ---------- */
 let NOTES=JSON.parse(localStorage.getItem("sunbook:notes")||"[]"), JUMP=null, PEND=null, EDITING=false, LR=null;
@@ -580,182 +604,228 @@ const pad=v=>String(v).padStart(2,"0");
 const fmtd=t=>{const d=new Date(t);return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`};
 // 在段落 p 的文字偏移 [s,e) 上包一层 .hl（可跨越搜索高亮等子节点）
 function wrap(p,s,e,x){
-  const w=document.createTreeWalker(p,NodeFilter.SHOW_TEXT), segs=[]; let pos=0,n;
-  while(n=w.nextNode()){const a=Math.max(s,pos),b=Math.min(e,pos+n.length); if(a<b) segs.push([n,a-pos,b-pos]); pos+=n.length}
-  segs.forEach(([t,a,b])=>{ if(a>0) t=t.splitText(a); if(b-a<t.length) t.splitText(b-a);
-    const sp=document.createElement("span"); sp.className="hl"+(x.note?" has-note":""); sp.dataset.id=x.id;
-    t.parentNode.insertBefore(sp,t); sp.appendChild(t) });
+const w=document.createTreeWalker(p,NodeFilter.SHOW_TEXT), segs=[]; let pos=0,n;
+while(n=w.nextNode()){const a=Math.max(s,pos),b=Math.min(e,pos+n.length); if(a<b) segs.push([n,a-pos,b-pos]); pos+=n.length}
+segs.forEach(([t,a,b])=>{ if(a>0) t=t.splitText(a); if(b-a<t.length) t.splitText(b-a);
+const sp=document.createElement("span"); sp.className="hl"+(x.note?" has-note":""); sp.dataset.id=x.id;
+t.parentNode.insertBefore(sp,t); sp.appendChild(t) });
 }
 // 找到一条划线在当前正文里的位置；文本对不上时按原句重新查找
 function locate(x,ps){
-  if(ps[x.p]&&ps[x.p2]){
-    const segs=[]; let txt="";
-    for(let k=x.p;k<=x.p2;k++){const L=ps[k].textContent, a=k===x.p?x.s:0, b=k===x.p2?x.e:L.length; segs.push([ps[k],a,b]); txt+=(k>x.p?"\n":"")+L.slice(a,b)}
-    if(txt===x.text) return segs;
-  }
-  if(!x.text.includes("\n")) for(const p of ps){const i=p.textContent.indexOf(x.text); if(i>=0) return [[p,i,i+x.text.length]]}
-  return null;
+if(ps[x.p]&&ps[x.p2]){
+const segs=[]; let txt="";
+for(let k=x.p;k<=x.p2;k++){const L=ps[k].textContent, a=k===x.p?x.s:0, b=k===x.p2?x.e:L.length; segs.push([ps[k],a,b]); txt+=(k>x.p?"\n":"")+L.slice(a,b)}
+if(txt===x.text) return segs;
+}
+if(!x.text.includes("\n")) for(const p of ps){const i=p.textContent.indexOf(x.text); if(i>=0) return [[p,i,i+x.text.length]]}
+return null;
 }
 function applyNotes(){
-  if(CUR<0) return; const n=B[CUR].n, ps=bodyPs();
-  NOTES.filter(x=>x.n===n).forEach(x=>{const segs=locate(x,ps); if(segs) segs.forEach(([p,a,b])=>wrap(p,a,b,x))});
+if(CUR<0) return; const n=B[CUR].n, ps=bodyPs();
+NOTES.filter(x=>x.n===n).forEach(x=>{const segs=locate(x,ps); if(segs) segs.forEach(([p,a,b])=>wrap(p,a,b,x))});
 }
 function selInfo(){
-  const sel=getSelection(); if(CUR<0||!sel.rangeCount||sel.isCollapsed) return null;
-  const r=sel.getRangeAt(0), ps=bodyPs();
-  const pOf=node=>{const el=node.nodeType===3?node.parentElement:node; return el&&el.closest(".chap .body p")};
-  const p1=pOf(r.startContainer), p2=pOf(r.endContainer); if(!p1||!p2) return null;
-  const off=(p,node,o)=>{const x=document.createRange();x.selectNodeContents(p);x.setEnd(node,o);return x.toString().length};
-  let i1=ps.indexOf(p1), i2=ps.indexOf(p2), s=off(p1,r.startContainer,r.startOffset), e=off(p2,r.endContainer,r.endOffset);
-  if(i2>i1&&e===0){i2--; e=ps[i2].textContent.length}
-  let text=""; for(let k=i1;k<=i2;k++){const L=ps[k].textContent, a=k===i1?s:0, b=k===i2?e:L.length; text+=(k>i1?"\n":"")+L.slice(a,b)}
-  if(!text.trim()) return null;
-  return {p:i1,s,p2:i2,e,text,rect:r.getBoundingClientRect()};
+const sel=getSelection(); if(CUR<0||!sel.rangeCount||sel.isCollapsed) return null;
+const r=sel.getRangeAt(0), ps=bodyPs();
+const pOf=node=>{const el=node.nodeType===3?node.parentElement:node; return el&&el.closest(".chap .body p")};
+const p1=pOf(r.startContainer), p2=pOf(r.endContainer); if(!p1||!p2) return null;
+const off=(p,node,o)=>{const x=document.createRange();x.selectNodeContents(p);x.setEnd(node,o);return x.toString().length};
+let i1=ps.indexOf(p1), i2=ps.indexOf(p2), s=off(p1,r.startContainer,r.startOffset), e=off(p2,r.endContainer,r.endOffset);
+if(i2>i1&&e===0){i2--; e=ps[i2].textContent.length}
+let text=""; for(let k=i1;k<=i2;k++){const L=ps[k].textContent, a=k===i1?s:0, b=k===i2?e:L.length; text+=(k>i1?"\n":"")+L.slice(a,b)}
+if(!text.trim()) return null;
+return {p:i1,s,p2:i2,e,text,rect:r.getBoundingClientRect()};
 }
 const POP=document.createElement("div"); POP.className="pop"; document.body.appendChild(POP);
-function showPop(html,rect){
-  POP.innerHTML=html; POP.classList.add("show"); LR=rect;
-  const w=POP.offsetWidth, h=POP.offsetHeight;
-  let x=rect.left+rect.width/2-w/2; x=Math.max(8,Math.min(x,innerWidth-w-8));
-  let y=rect.bottom+8; if(y+h>innerHeight-56 && rect.top-h-8>60) y=rect.top-h-8;
-  POP.style.left=(x+scrollX)+"px"; POP.style.top=(y+scrollY)+"px";
+// 触屏设备：工具条固定在屏幕边上，不跟着选区走；HOLD 表示手指正按在工具条上
+const TOUCH=matchMedia("(hover:none) and (pointer:coarse)").matches; let HOLD=false;
+function showPop(html,rect,dock){
+POP.innerHTML=html; POP.classList.add("show"); LR=rect;
+POP.classList.toggle("dock",!!dock); POP.classList.toggle("top",dock==="top");
+if(dock){POP.style.left=POP.style.top=""; return}
+const w=POP.offsetWidth, h=POP.offsetHeight;
+let x=rect.left+rect.width/2-w/2; x=Math.max(8,Math.min(x,innerWidth-w-8));
+let y=rect.bottom+8; if(y+h>innerHeight-56 && rect.top-h-8>60) y=rect.top-h-8;
+POP.style.left=(x+scrollX)+"px"; POP.style.top=(y+scrollY)+"px";
 }
 function hidePop(){POP.classList.remove("show"); PEND=null; EDITING=false}
 let st; document.addEventListener("selectionchange",()=>{clearTimeout(st); st=setTimeout(()=>{
-  if(EDITING) return;
-  const i=selInfo();
-  if(i){PEND=i; showPop(`<div class="row"><button data-a="hl">划线</button><button data-a="hlnote">划线并写笔记</button><button data-a="copy">复制</button></div>`,i.rect)}
-  else if(PEND) hidePop();
+if(EDITING||HOLD) return;
+const i=selInfo();
+if(i){PEND=i; showPop(`<div class="row"><button data-a="hl">划线</button><button data-a="hlnote">划线并写笔记</button>${TOUCH?"":`<button data-a="copy">复制</button>`}</div>`,i.rect,TOUCH?"bottom":"")}
+else if(PEND) hidePop();
 },220)});
 POP.addEventListener("mousedown",ev=>{if(ev.target.tagName!=="TEXTAREA") ev.preventDefault()});
+// iOS 上手指一碰按钮，选区可能就先被系统取消了；按住工具条期间不理会选区变化
+POP.addEventListener("pointerdown",()=>{HOLD=true});
+const unhold=()=>setTimeout(()=>{HOLD=false},500);
+POP.addEventListener("pointerup",unhold); POP.addEventListener("pointercancel",unhold);
 function editNote(id){
-  const x=NOTES.find(z=>z.id===id); if(!x) return; EDITING=true;
-  showPop(`<div class="q">${esc(x.text)}</div><textarea id="nta" placeholder="写下你的想法…">${esc(x.note||"")}</textarea>
-    <div class="row end"><button data-a="cancel">取消</button><button data-a="save" data-id="${id}">保存　⌘↵</button></div>`,LR);
-  setTimeout(()=>{const t=$("#nta"); t.focus(); t.setSelectionRange(t.value.length,t.value.length)},0);
+const x=NOTES.find(z=>z.id===id); if(!x) return; EDITING=true;
+showPop(`<div class="q">${esc(x.text)}</div><textarea id="nta" placeholder="写下你的想法…">${esc(x.note||"")}</textarea>
+<div class="row end"><button data-a="cancel">取消</button><button data-a="save" data-id="${id}">${TOUCH?"保存":"保存　⌘↵"}</button></div>`,LR,TOUCH?"top":"");
+setTimeout(()=>{const t=$("#nta"); t.focus(); t.setSelectionRange(t.value.length,t.value.length)},0);
 }
 function saveNote(id){
-  const x=NOTES.find(z=>z.id===id); if(!x) return;
-  x.note=$("#nta").value.trim(); saveNotes();
-  document.querySelectorAll(`.hl[data-id="${id}"]`).forEach(s=>s.classList.toggle("has-note",!!x.note));
-  hidePop(); if(location.hash.startsWith("#/notes")) notesView(true);
+const x=NOTES.find(z=>z.id===id); if(!x) return;
+x.note=$("#nta").value.trim(); saveNotes();
+document.querySelectorAll(`.hl[data-id="${id}"]`).forEach(s=>s.classList.toggle("has-note",!!x.note));
+hidePop(); if(location.hash.startsWith("#/notes")) notesView(true);
 }
 function delNote(id){
-  NOTES=NOTES.filter(z=>z.id!==id); saveNotes();
-  document.querySelectorAll(`.hl[data-id="${id}"]`).forEach(s=>s.replaceWith(...s.childNodes));
-  hidePop(); if(location.hash.startsWith("#/notes")) notesView(true);
+NOTES=NOTES.filter(z=>z.id!==id); saveNotes();
+document.querySelectorAll(`.hl[data-id="${id}"]`).forEach(s=>s.replaceWith(...s.childNodes));
+hidePop(); if(location.hash.startsWith("#/notes")) notesView(true);
+}
+// 选区整个落在某条已有划线里时返回那一条，避免同一句叠出好几条划线
+function coveredBy(sel){
+const ps=bodyPs(), n=B[CUR].n;
+return NOTES.find(x=>{
+if(x.n!==n) return false; const sg=locate(x,ps); if(!sg) return false;
+const p1=ps.indexOf(sg[0][0]), a=sg[0][1], L=sg[sg.length-1], p2=ps.indexOf(L[0]), b=L[2];
+return (p1<sel.p||p1===sel.p&&a<=sel.s)&&(p2>sel.p2||p2===sel.p2&&b>=sel.e);
+});
 }
 POP.addEventListener("click",ev=>{
-  const b=ev.target.closest("button"); if(!b) return; const a=b.dataset.a;
-  if((a==="hl"||a==="hlnote")&&PEND){
-    const x={id:nid(),n:B[CUR].n,p:PEND.p,s:PEND.s,p2:PEND.p2,e:PEND.e,text:PEND.text,note:"",t:Date.now()};
-    NOTES.push(x); saveNotes();
-    (locate(x,bodyPs())||[]).forEach(([p,s,e])=>wrap(p,s,e,x));
-    getSelection().removeAllRanges();
-    if(a==="hlnote") editNote(x.id); else hidePop();
-  }
-  else if(a==="copy"&&PEND){ if(navigator.clipboard) navigator.clipboard.writeText(PEND.text); getSelection().removeAllRanges(); hidePop() }
-  else if(a==="edit") editNote(b.dataset.id);
-  else if(a==="del") delNote(b.dataset.id);
-  else if(a==="save") saveNote(b.dataset.id);
-  else if(a==="cancel") hidePop();
+const b=ev.target.closest("button"); if(!b) return; const a=b.dataset.a;
+if((a==="hl"||a==="hlnote")&&PEND){
+const old=coveredBy(PEND);
+if(old){
+getSelection().removeAllRanges();
+if(a==="hlnote") editNote(old.id);
+else{hidePop(); document.querySelectorAll(`.hl[data-id="${old.id}"]`).forEach(s=>{s.classList.remove("flash"); void s.offsetWidth; s.classList.add("flash")})}
+return;
+}
+const x={id:nid(),n:B[CUR].n,p:PEND.p,s:PEND.s,p2:PEND.p2,e:PEND.e,text:PEND.text,note:"",t:Date.now()};
+NOTES.push(x); saveNotes();
+(locate(x,bodyPs())||[]).forEach(([p,s,e])=>wrap(p,s,e,x));
+getSelection().removeAllRanges();
+if(a==="hlnote") editNote(x.id); else hidePop();
+}
+else if(a==="copy"&&PEND){ if(navigator.clipboard) navigator.clipboard.writeText(PEND.text); getSelection().removeAllRanges(); hidePop() }
+else if(a==="edit") editNote(b.dataset.id);
+else if(a==="del") delNote(b.dataset.id);
+else if(a==="save") saveNote(b.dataset.id);
+else if(a==="cancel") hidePop();
 });
 POP.addEventListener("keydown",ev=>{
-  if(ev.target.id!=="nta") return; ev.stopPropagation();
-  if(ev.key==="Enter"&&(ev.metaKey||ev.ctrlKey)){ev.preventDefault(); const s=POP.querySelector('[data-a="save"]'); if(s) saveNote(s.dataset.id)}
-  if(ev.key==="Escape") hidePop();
+if(ev.target.id!=="nta") return; ev.stopPropagation();
+if(ev.key==="Enter"&&(ev.metaKey||ev.ctrlKey)){ev.preventDefault(); const s=POP.querySelector('[data-a="save"]'); if(s) saveNote(s.dataset.id)}
+if(ev.key==="Escape") hidePop();
 });
 document.addEventListener("click",ev=>{
-  if(POP.contains(ev.target)) return;
-  const h=ev.target.closest&&ev.target.closest(".hl");
-  if(h&&getSelection().isCollapsed){
-    const x=NOTES.find(z=>z.id===h.dataset.id); if(!x) return; PEND=null;
-    showPop(`${x.note?`<div class="nt">${esc(x.note)}</div>`:""}<div class="row"><button data-a="edit" data-id="${x.id}">${x.note?"编辑笔记":"写笔记"}</button><button data-a="del" data-id="${x.id}">删除划线</button></div>`,h.getBoundingClientRect());
-    return;
-  }
-  if(!EDITING&&getSelection().isCollapsed) hidePop();
+if(POP.contains(ev.target)) return;
+const h=ev.target.closest&&ev.target.closest(".hl");
+if(h&&getSelection().isCollapsed){
+const x=NOTES.find(z=>z.id===h.dataset.id); if(!x) return; PEND=null;
+showPop(`${x.note?`<div class="nt">${esc(x.note)}</div>`:""}<div class="row"><button data-a="edit" data-id="${x.id}">${x.note?"编辑笔记":"写笔记"}</button><button data-a="del" data-id="${x.id}">删除划线</button></div>`,h.getBoundingClientRect());
+return;
+}
+if(!EDITING&&getSelection().isCollapsed) hidePop();
 });
-
 /* 笔记页 */
 function grouped(){
-  const g={}; NOTES.forEach(x=>(g[x.n]=g[x.n]||[]).push(x));
-  return Object.keys(g).sort((a,b)=>ORDER.indexOf(+a-1)-ORDER.indexOf(+b-1)).map(n=>({n,e:B[parseInt(n,10)-1],list:g[n].sort((a,b)=>a.p-b.p||a.s-b.s)}));
+const g={}; NOTES.forEach(x=>(g[x.n]=g[x.n]||[]).push(x));
+return Object.keys(g).sort((a,b)=>ORDER.indexOf(+a-1)-ORDER.indexOf(+b-1)).map(n=>({n,e:B[parseInt(n,10)-1],list:g[n].sort((a,b)=>a.p-b.p||a.s-b.s)}));
 }
 function notesView(keep){
-  const y=scrollY;
-  CUR=-1; $("#find").classList.remove("show");
-  const gs=grouped(), withNote=NOTES.filter(x=>x.note).length;
-  const h=gs.map(g=>`<div class="ng"><h3><i>${SQ(g.n)}</i><a href="#/${g.n}">${esc(split(g.e.t).title)}</a></h3>`+
-    g.list.map(x=>`<div class="ni${x.note?" has-note":""}"><blockquote>${esc(x.text).replace(/\n/g,"<br>")}</blockquote>${x.note?`<div class="nn">${esc(x.note)}</div>`:""}
-      <div class="nm"><span>${fmtd(x.t)}</span><button data-go="${x.id}">回到原文</button><button data-ed="${x.id}">${x.note?"编辑笔记":"写笔记"}</button><button data-del="${x.id}">删除</button></div></div>`).join("")+`</div>`).join("");
-  $("#main").innerHTML=`<section class="notes">
-    <h1>笔记</h1>
-    <div class="sub">${NOTES.length?`${gs.length} 章里共 ${NOTES.length} 处划线，其中 ${withNote} 条写了想法。`:"还没有划线。"}笔记只保存在当前浏览器里，换电脑或清理浏览器数据前，记得先导出或备份。</div>
-    <div class="acts"><button data-x="md">导出 Markdown</button><button data-x="copy">复制</button><button data-x="bak">备份</button><button data-x="res">恢复备份</button><input type="file" id="resf" accept=".json,application/json" hidden></div>
-    <div class="bakbox" id="bakbox" hidden></div>
-    ${h||`<p class="empty">读的时候用鼠标选中一段正文，就可以划线或写下想法。划过的句子会汇总在这里，可以导出成 Markdown。</p>`}
-  </section>`;
-  document.title="我的笔记 · 财富自由革命之路"; window.scrollTo(0,keep?y:0); prog();
+const y=scrollY;
+CUR=-1; $("#find").classList.remove("show");
+const gs=grouped(), withNote=NOTES.filter(x=>x.note).length;
+// 文字稿修订过的话，有的划线可能对不上原文了，在笔记里标出来
+const LOST=new Set(); gs.forEach(g=>{const ps=paras(g.e.x).map(t=>({textContent:t})); g.list.forEach(x=>{if(!locate(x,ps)) LOST.add(x.id)})});
+const h=gs.map(g=>`<div class="ng"><h3><i>${SQ(g.n)}</i><a href="#/${g.n}">${esc(split(g.e.t).title)}</a></h3>`+
+g.list.map(x=>`<div class="ni${x.note?" has-note":""}"><blockquote>${esc(x.text).replace(/\n/g,"<br>")}</blockquote>${x.note?`<div class="nn">${esc(x.note)}</div>`:""}
+<div class="nm"><span>${fmtd(x.t)}</span>${LOST.has(x.id)?"<span>原文已修订，未能定位</span>":""}<button data-go="${x.id}">回到原文</button><button data-ed="${x.id}">${x.note?"编辑笔记":"写笔记"}</button><button data-del="${x.id}">删除</button></div></div>`).join("")+`</div>`).join("");
+$("#main").innerHTML=`<section class="notes">
+<h1>笔记</h1>
+<div class="sub">${NOTES.length?`${gs.length} 章里共 ${NOTES.length} 处划线，其中 ${withNote} 条写了想法。`:"还没有划线。"}笔记只保存在当前浏览器里，换电脑或清理浏览器数据前，记得先导出或备份。</div>
+<div class="acts"><button data-x="md">导出 Markdown</button><button data-x="copy">复制</button><button data-x="bak">备份</button><button data-x="res">恢复备份</button><input type="file" id="resf" accept=".json,application/json" hidden></div>
+<div class="bakbox" id="bakbox" hidden></div>
+${h||`<p class="empty">读的时候用鼠标选中一段正文，就可以划线或写下想法。划过的句子会汇总在这里，可以导出成 Markdown。</p>`}
+</section>`;
+document.title="我的笔记 · 财富自由革命之路"; window.scrollTo(0,keep?y:0); prog();
 }
 function toMD(){
-  let m=`# 《财富自由革命之路》读书笔记\n\n导出于 ${fmtd(Date.now())}，共 ${NOTES.length} 处划线。\n`;
-  grouped().forEach(g=>{
-    m+=`\n## ${SQ(g.n)} ${split(g.e.t).title}\n\n`;
-    g.list.forEach(x=>{ m+=x.text.split("\n").map(l=>"> "+l).join("\n>\n")+"\n\n"; if(x.note) m+=x.note+"\n\n" });
-  });
-  return m;
+let m=`# 《财富自由革命之路》读书笔记\n\n导出于 ${fmtd(Date.now())}，共 ${NOTES.length} 处划线。\n`;
+grouped().forEach(g=>{
+m+=`\n## ${SQ(g.n)} ${split(g.e.t).title}\n\n`;
+g.list.forEach(x=>{ m+=x.text.split("\n").map(l=>"> "+l).join("\n>\n")+"\n\n"; if(x.note) m+=x.note+"\n\n" });
+});
+return m;
 }
 function download(name,text,type){
-  const a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([text],{type})); a.download=name;
-  document.body.appendChild(a); a.click(); setTimeout(()=>{URL.revokeObjectURL(a.href); a.remove()},800);
+const a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([text],{type})); a.download=name;
+document.body.appendChild(a); a.click(); setTimeout(()=>{URL.revokeObjectURL(a.href); a.remove()},800);
 }
 function flashBtn(b,t){const o=b.textContent; b.textContent=t; setTimeout(()=>b.textContent=o,1600)}
 $("#main").addEventListener("click",ev=>{
-  const b=ev.target.closest("button"); if(!b||!location.hash.startsWith("#/notes")) return;
-  const d=b.dataset;
-  if(d.go){const x=NOTES.find(z=>z.id===d.go); if(x){JUMP=x.id; location.hash="#/"+x.n}}
-  else if(d.ed){LR=b.getBoundingClientRect(); editNote(d.ed)}
-  else if(d.del){if(confirm("删除这条划线？")) delNote(d.del)}
-  else if(d.x==="md"){ if(!NOTES.length) return flashBtn(b,"还没有划线"); download(`财富自由革命之路-笔记-${fmtd(Date.now())}.md`,toMD(),"text/markdown;charset=utf-8") }
-  else if(d.x==="copy"){ if(!NOTES.length) return flashBtn(b,"还没有划线"); navigator.clipboard.writeText(toMD()).then(()=>flashBtn(b,"已复制"),()=>flashBtn(b,"复制失败")) }
-  else if(d.x==="bak"){
-    const j=JSON.stringify({v:1,notes:NOTES});
-    download(`财富自由革命之路-备份-${fmtd(Date.now())}.json`,j,"application/json");
-    // 有的页面不允许下载，所以同时把备份内容摆出来，复制粘贴也能搬
-    const bx=$("#bakbox"); bx.hidden=false;
-    bx.innerHTML=`如果没有自动下载，就把下面这段全部复制下来，到另一个页面点“恢复备份”粘贴进去。<textarea id="baktxt" readonly></textarea><button data-x="bakcopy">复制这段</button>`;
-    const t=$("#baktxt"); t.value=j; t.focus(); t.select();
-  }
-  else if(d.x==="bakcopy"){ const t=$("#baktxt"); t.select(); navigator.clipboard.writeText(t.value).then(()=>flashBtn(b,"已复制"),()=>{document.execCommand("copy")?flashBtn(b,"已复制"):flashBtn(b,"请按 Cmd+C 复制")}) }
-  else if(d.x==="res"){
-    const bx=$("#bakbox"); bx.hidden=false;
-    bx.innerHTML=`把备份内容粘贴到下面，再点“恢复”；也可以选择备份文件。<textarea id="restxt" placeholder="在这里粘贴备份内容"></textarea><button data-x="respaste">恢复</button><button data-x="resfile">选择备份文件</button><span id="resmsg"></span>`;
-    $("#restxt").focus();
-  }
-  else if(d.x==="respaste"){ restoreFrom($("#restxt").value) }
-  else if(d.x==="resfile"){ $("#resf").click() }
+const b=ev.target.closest("button"); if(!b||!location.hash.startsWith("#/notes")) return;
+const d=b.dataset;
+if(d.go){const x=NOTES.find(z=>z.id===d.go); if(x){JUMP=x.id; location.hash="#/"+x.n}}
+else if(d.ed){LR=b.getBoundingClientRect(); editNote(d.ed)}
+else if(d.del){if(confirm("删除这条划线？")) delNote(d.del)}
+else if(d.x==="md"){ if(!NOTES.length) return flashBtn(b,"还没有划线"); download(`财富自由革命之路-笔记-${fmtd(Date.now())}.md`,toMD(),"text/markdown;charset=utf-8") }
+else if(d.x==="copy"){ if(!NOTES.length) return flashBtn(b,"还没有划线"); navigator.clipboard.writeText(toMD()).then(()=>flashBtn(b,"已复制"),()=>flashBtn(b,"复制失败")) }
+else if(d.x==="bak"){
+// v2 起备份里也带上已读章节、每章读到的位置和上次读到哪一章
+const pos={}; for(let k=0;k<localStorage.length;k++){const key=localStorage.key(k); if(key.startsWith("sunbook:pos:")) pos[key.slice(12)]=localStorage.getItem(key)}
+const j=JSON.stringify({v:2,notes:NOTES,read:[...READ],last:localStorage.getItem("sunbook:last"),pos});
+download(`财富自由革命之路-备份-${fmtd(Date.now())}.json`,j,"application/json");
+// 有的页面不允许下载，所以同时把备份内容摆出来，复制粘贴也能搬
+const bx=$("#bakbox"); bx.hidden=false;
+bx.innerHTML=`如果没有自动下载，就把下面这段全部复制下来，到另一个页面点“恢复备份”粘贴进去。<textarea id="baktxt" readonly></textarea><button data-x="bakcopy">复制这段</button>`;
+const t=$("#baktxt"); t.value=j; t.focus(); t.select();
+}
+else if(d.x==="bakcopy"){ const t=$("#baktxt"); t.select(); navigator.clipboard.writeText(t.value).then(()=>flashBtn(b,"已复制"),()=>{document.execCommand("copy")?flashBtn(b,"已复制"):flashBtn(b,"请按 Cmd+C 复制")}) }
+else if(d.x==="res"){
+const bx=$("#bakbox"); bx.hidden=false;
+bx.innerHTML=`把备份内容粘贴到下面，再点“恢复”；也可以选择备份文件。<textarea id="restxt" placeholder="在这里粘贴备份内容"></textarea><button data-x="respaste">恢复</button><button data-x="resfile">选择备份文件</button><span id="resmsg"></span>`;
+$("#restxt").focus();
+}
+else if(d.x==="respaste"){ restoreFrom($("#restxt").value) }
+else if(d.x==="resfile"){ $("#resf").click() }
 });
 function restoreFrom(txt){
-  let o; try{o=JSON.parse(txt)}catch(e){ const m=$("#resmsg"); if(m) m.textContent="这段内容不是有效的备份，请确认完整复制了。"; return }
-  const ids=new Set(NOTES.map(z=>z.id)); let k=0;
-  (o.notes||[]).forEach(z=>{if(z&&z.id&&!ids.has(z.id)){NOTES.push(z);k++}});
-  saveNotes(); buildNav(Q); notesView();
-  const bx=$("#bakbox"); bx.hidden=false; bx.textContent=`已恢复 ${k} 条新划线，现在一共 ${NOTES.length} 条。`;
+let o; try{o=JSON.parse(txt)}catch(e){o=null}
+const list=o&&Array.isArray(o.notes)?o.notes:null;
+if(!list){ const m=$("#resmsg"); if(m) m.textContent="这段内容不是有效的备份，请确认完整复制了。"; return }
+const ids=new Set(NOTES.map(z=>z.id)); let k=0;
+// 只收结构完整、章节存在的条目；id 会拼进属性里，只允许字母和数字
+list.forEach(z=>{if(z&&typeof z.id==="string"&&/^[a-z0-9]+$/i.test(z.id)&&typeof z.text==="string"&&B[+z.n-1]&&B[+z.n-1].n===z.n&&!ids.has(z.id)){NOTES.push(z);ids.add(z.id);k++}});
+// 已读章节取并集；阅读位置和"上次读到"只补本机没有的，不覆盖
+if(Array.isArray(o.read)) o.read.forEach(n=>{if(typeof n==="string"&&B[+n-1]&&B[+n-1].n===n) READ.add(n)});
+localStorage.setItem("sunbook:read",JSON.stringify([...READ]));
+if(o.pos&&typeof o.pos==="object") for(const n in o.pos){if(B[+n-1]&&B[+n-1].n===n&&!localStorage.getItem(posKey(n))) localStorage.setItem(posKey(n),String(+o.pos[n]||0))}
+if(typeof o.last==="string"&&B[+o.last-1]&&B[+o.last-1].n===o.last&&!localStorage.getItem("sunbook:last")) localStorage.setItem("sunbook:last",o.last);
+saveNotes(); buildNav(Q); notesView();
+const bx=$("#bakbox"); bx.hidden=false; bx.textContent=`已恢复 ${k} 条新划线，现在一共 ${NOTES.length} 条。`;
 }
 $("#main").addEventListener("change",ev=>{
-  if(ev.target.id!=="resf"||!ev.target.files[0]) return;
-  const r=new FileReader();
-  r.onload=()=>restoreFrom(r.result);
-  r.readAsText(ev.target.files[0]);
+if(ev.target.id!=="resf"||!ev.target.files[0]) return;
+const r=new FileReader();
+r.onload=()=>restoreFrom(r.result);
+r.readAsText(ev.target.files[0]);
 });
 $("#notesbtn").onclick=()=>{location.hash="#/notes"};
 // 「更多」菜单：点按钮开合，点菜单项或别处收起
 $("#morebtn").onclick=ev=>{ev.stopPropagation(); $("#more").classList.toggle("show")};
 document.addEventListener("click",ev=>{if(!ev.target.closest("#morebtn")) $("#more").classList.remove("show")});
 updNcount();
-
 let qt; $("#q").addEventListener("input",e=>{clearTimeout(qt);qt=setTimeout(()=>buildNav(e.target.value),150)});
+// 搜索框里按回车：当前章有命中就逐处跳（Shift 反向），否则打开第一个命中的章节；输入法选字时的回车不算
+$("#q").addEventListener("keydown",ev=>{
+if(ev.key!=="Enter"||ev.isComposing||ev.keyCode===229) return;
+ev.preventDefault();
+const fresh=ev.target.value.trim()!==Q;
+if(fresh){clearTimeout(qt); buildNav(ev.target.value)}
+if(!Q) return;
+if(CUR>=0&&MK.length){if(!fresh) gotoMark(ev.shiftKey?MI-1:MI+1); return}
+const a=$("#nav .ep"); if(a){ev.target.blur(); location.hash=a.getAttribute("href")}
+});
 buildNav(); route();
+// 离线阅读：只在网页上注册，本地直接双击打开文件时跳过
+if("serviceWorker" in navigator&&location.protocol.startsWith("http")) navigator.serviceWorker.register("sw.js").catch(()=>{});
 </script>
 </body>
 </html>
